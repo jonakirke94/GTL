@@ -9,11 +9,9 @@
 *.dll.config
 *.cache
 *.suo
-<<<<<<< HEAD
+
 # Include dlls if they’re in the NuGet packages directory
-=======
-# Include dlls if theyâ€™re in the NuGet packages directory
->>>>>>> cbec97400d01fd2678833abed6d3f679062e9b7f
+
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
 # Include dlls if they're in the CommonReferences directory
@@ -85,8 +83,5 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 
-<<<<<<< HEAD
 .vs/
-=======
-.vs/
->>>>>>> cbec97400d01fd2678833abed6d3f679062e9b7f
+
