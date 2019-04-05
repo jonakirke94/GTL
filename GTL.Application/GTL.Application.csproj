@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.2.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Books\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GTL.Domain\GTL.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
