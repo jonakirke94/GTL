@@ -1,4 +1,5 @@
-﻿using GTL.Application.Interfaces.Repositories;
+﻿using GTL.Application.Interfaces;
+using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,12 @@ namespace GTL.Persistence.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        private readonly IAdoContext _context;
+
+        public UserRepository(IAdoContext context)
+        {
+            _context = context;
+        }
   
         public IEnumerable<User> GetUsers()
         {
@@ -19,21 +26,19 @@ namespace GTL.Persistence.Repositories
             {
                 List<User> users = new List<User>();
 
-                using (SqlConnection connection = new DbConnection().GetConnection())
+                using (var command = _context.CreateCommand())
                 {
-                    using (SqlCommand command = connection.CreateCommand())
+                    command.CommandText = "SELECT * FROM Users";
+                    using (var reader = command.ExecuteReader())
                     {
-                        command.CommandText = "SELECT * FROM Users";
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
-                            {
-                                User user = BuildUserObject(reader);
-                                users.Add(user);
-                            }
+                            User user = BuildUserObject(reader);
+                            users.Add(user);
                         }
                     }
                 }
+                
                 return users.AsEnumerable();
             }
             catch (Exception)
@@ -46,33 +51,32 @@ namespace GTL.Persistence.Repositories
         {
             try
             {
-                    using (SqlConnection connection = new DbConnection().GetConnection())
-                    {
-                        using (SqlCommand command = connection.CreateCommand())
-                        {
-                            command.CommandText =
-                                "UPDATE USERS Set name = @param2, city = @param3, zipcode = @param4 WHERE id = @param1";
+                using (var command = _context.CreateCommand())
+                {
+                    command.CommandText =
+                        "UPDATE USERS Set name = @param2, city = @param3, zipcode = @param4 WHERE id = @param1";
 
-                            SqlParameter p1 = new SqlParameter(@"param1", SqlDbType.Int);
-                            SqlParameter p2 = new SqlParameter(@"param2", SqlDbType.VarChar);
-                            SqlParameter p3 = new SqlParameter(@"param3", SqlDbType.VarChar);
-                            SqlParameter p4 = new SqlParameter(@"param4", SqlDbType.VarChar);
+                    SqlParameter p1 = new SqlParameter(@"param1", SqlDbType.Int);
+                    SqlParameter p2 = new SqlParameter(@"param2", SqlDbType.VarChar);
+                    SqlParameter p3 = new SqlParameter(@"param3", SqlDbType.VarChar);
+                    SqlParameter p4 = new SqlParameter(@"param4", SqlDbType.VarChar);
 
 
-                            p1.Value = user.Id;
-                            p2.Value = user.Name;
-                            p3.Value = user.City;
-                            p4.Value = user.ZipCode;
+                    p1.Value = user.Id;
+                    p2.Value = user.Name;
+                    p3.Value = user.City;
+                    p4.Value = user.ZipCode;
 
-                            command.Parameters.Add(p1);
-                            command.Parameters.Add(p2);
-                            command.Parameters.Add(p3);
-                            command.Parameters.Add(p4);
+                    command.Parameters.Add(p1);
+                    command.Parameters.Add(p2);
+                    command.Parameters.Add(p3);
+                    command.Parameters.Add(p4);
 
-                            command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    _context.SaveChanges();
 
-                        }
-                    }                
+                }
+
             }
             catch (Exception e)
             {
@@ -83,24 +87,23 @@ namespace GTL.Persistence.Repositories
         public User GetUser(int id)
         {
             User user = new User();
-            using (SqlConnection connection = new DbConnection().GetConnection())
+
+            using (var command = _context.CreateCommand())
             {
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT * FROM Users WHERE id = @param1;";
+                command.CommandText = "SELECT * FROM Users WHERE id = @param1;";
                     SqlParameter p1 = new SqlParameter(@"param1", SqlDbType.Int)
                     {
                         Value = id
                     };
                     command.Parameters.Add(p1);
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             user = BuildUserObject(reader);
                         }
                     }
-                }
+                
             }
             return user;
         }
@@ -108,23 +111,31 @@ namespace GTL.Persistence.Repositories
         public int AddUser(User user)
         {
             try
-            {                
-                using (SqlConnection connection = new DbConnection().GetConnection())
+            {
+
+                using (var command = _context.CreateCommand())
                 {
-                    using (SqlCommand command = connection.CreateCommand())
-                    {
-                        command.CommandText =
+                    command.CommandText =
                             "insert into Users(name, city, zipcode)" +
-                            "values (@param2, @param3, @param4) SELECT SCOPE_IDENTITY();";
+                            "values (@param1, @param2, @param3) SELECT SCOPE_IDENTITY();";
 
-                        command.Parameters.AddWithValue("@param2", user.Name);
-                        command.Parameters.AddWithValue("@param3", user.City);
-                        command.Parameters.AddWithValue("@param4", user.ZipCode);
+                    SqlParameter p1 = new SqlParameter(@"param1", SqlDbType.VarChar);
+                    SqlParameter p2 = new SqlParameter(@"param2", SqlDbType.VarChar);
+                    SqlParameter p3 = new SqlParameter(@"param3", SqlDbType.VarChar);
 
-                        int id = Convert.ToInt32(command.ExecuteScalar());
-                        return id;
-                    }
+                    p1.Value = user.Name;
+                    p2.Value = user.City;
+                    p3.Value = user.ZipCode;
+
+                    command.Parameters.Add(p1);
+                    command.Parameters.Add(p2);
+                    command.Parameters.Add(p3);
+
+                    int id = Convert.ToInt32(command.ExecuteScalar());
+                    _context.SaveChanges();
+                    return id;
                 }
+                
             }
             catch (Exception e)
             {
@@ -136,15 +147,17 @@ namespace GTL.Persistence.Repositories
         {
             try
             {
-                using (SqlConnection connection = new DbConnection().GetConnection())
+
+                using (var command = _context.CreateCommand())
                 {
-                    using (SqlCommand command = connection.CreateCommand())
-                    {
-                        command.CommandText = "DELETE from USERS where id = @param1";
-                        command.Parameters.AddWithValue("@param1", id);
+                    command.CommandText = "DELETE from USERS where id = @param1";
+
+                        AddParam(command, "@param1", id);
                         command.ExecuteNonQuery();
-                    }
+                        _context.SaveChanges();
+
                 }
+
             }
             catch (Exception e)
             {
@@ -153,7 +166,7 @@ namespace GTL.Persistence.Repositories
         }
 
 
-        private User BuildUserObject(SqlDataReader reader)
+        private User BuildUserObject(IDataReader reader)
         {
             User user = new User
             {
@@ -165,6 +178,17 @@ namespace GTL.Persistence.Repositories
 
             return user;
         }
+
+        //make extension method
+        private void AddParam<T>(IDbCommand cmd, string name, T value)
+        {
+            var parameter = cmd.CreateParameter();
+            parameter.ParameterName = name;
+            parameter.Value = value;
+
+            cmd.Parameters.Add(parameter);
+        }
+
 
     }
 }

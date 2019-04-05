@@ -10,6 +10,8 @@ using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Users.Queries.GetUser;
 using GTL.Infrastructure;
+using GTL.Persistence;
+using GTL.Persistence.Configurations;
 using GTL.Persistence.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +46,16 @@ namespace GTL.Web
             services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+
+            services.Configure<DataBaseSettings>(mySettings =>
+            {
+                mySettings.ConnectionString = Configuration.GetConnectionString("AdoContext");
+                mySettings.OwnConnection = true;
+            });
+
+            // Unit Of Work and Context            
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IAdoContext, AdoContext>();
 
             // Add Repositories
             services.AddTransient<IUserRepository, UserRepository>();
