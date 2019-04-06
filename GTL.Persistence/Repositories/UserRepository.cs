@@ -1,6 +1,7 @@
 ﻿using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
+using GTL.Persistence.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,6 +38,7 @@ namespace GTL.Persistence.Repositories
                             users.Add(user);
                         }
                     }
+                    command.Dispose();
                 }
                 
                 return users.AsEnumerable();
@@ -56,21 +58,10 @@ namespace GTL.Persistence.Repositories
                     command.CommandText =
                         "UPDATE USERS Set name = @param2, city = @param3, zipcode = @param4 WHERE id = @param1";
 
-                    SqlParameter p1 = new SqlParameter(@"param1", SqlDbType.Int);
-                    SqlParameter p2 = new SqlParameter(@"param2", SqlDbType.VarChar);
-                    SqlParameter p3 = new SqlParameter(@"param3", SqlDbType.VarChar);
-                    SqlParameter p4 = new SqlParameter(@"param4", SqlDbType.VarChar);
-
-
-                    p1.Value = user.Id;
-                    p2.Value = user.Name;
-                    p3.Value = user.City;
-                    p4.Value = user.ZipCode;
-
-                    command.Parameters.Add(p1);
-                    command.Parameters.Add(p2);
-                    command.Parameters.Add(p3);
-                    command.Parameters.Add(p4);
+                    command.AddParamWithValue("@param1", user.Id);
+                    command.AddParamWithValue("@param2", user.Name);
+                    command.AddParamWithValue("@param3", user.City);
+                    command.AddParamWithValue("@param4", user.ZipCode);
 
                     command.ExecuteNonQuery();
                     _context.SaveChanges();
@@ -91,12 +82,9 @@ namespace GTL.Persistence.Repositories
             using (var command = _context.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM Users WHERE id = @param1;";
-                    SqlParameter p1 = new SqlParameter(@"param1", SqlDbType.Int)
-                    {
-                        Value = id
-                    };
-                    command.Parameters.Add(p1);
-                    using (var reader = command.ExecuteReader())
+                command.AddParamWithValue("@param1", user.Id);
+
+                using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -119,17 +107,9 @@ namespace GTL.Persistence.Repositories
                             "insert into Users(name, city, zipcode)" +
                             "values (@param1, @param2, @param3) SELECT SCOPE_IDENTITY();";
 
-                    SqlParameter p1 = new SqlParameter(@"param1", SqlDbType.VarChar);
-                    SqlParameter p2 = new SqlParameter(@"param2", SqlDbType.VarChar);
-                    SqlParameter p3 = new SqlParameter(@"param3", SqlDbType.VarChar);
-
-                    p1.Value = user.Name;
-                    p2.Value = user.City;
-                    p3.Value = user.ZipCode;
-
-                    command.Parameters.Add(p1);
-                    command.Parameters.Add(p2);
-                    command.Parameters.Add(p3);
+                    command.AddParamWithValue("@param1", user.Name);
+                    command.AddParamWithValue("@param2", user.City);
+                    command.AddParamWithValue("@param3", user.ZipCode);
 
                     int id = Convert.ToInt32(command.ExecuteScalar());
                     _context.SaveChanges();
@@ -152,10 +132,9 @@ namespace GTL.Persistence.Repositories
                 {
                     command.CommandText = "DELETE from USERS where id = @param1";
 
-                        AddParam(command, "@param1", id);
-                        command.ExecuteNonQuery();
-                        _context.SaveChanges();
-
+                    command.AddParamWithValue("@param1", id);
+                    command.ExecuteNonQuery();
+                     _context.SaveChanges();
                 }
 
             }
@@ -178,17 +157,5 @@ namespace GTL.Persistence.Repositories
 
             return user;
         }
-
-        //make extension method
-        private void AddParam<T>(IDbCommand cmd, string name, T value)
-        {
-            var parameter = cmd.CreateParameter();
-            parameter.ParameterName = name;
-            parameter.Value = value;
-
-            cmd.Parameters.Add(parameter);
-        }
-
-
     }
 }
