@@ -42,11 +42,7 @@ TestResults/
 ############
 # Packages #
 ############
-<<<<<<< HEAD
 # it’s better to unpack these files and commit the raw source
-=======
-# itâ€™s better to unpack these files and commit the raw source
->>>>>>> cbec97400d01fd2678833abed6d3f679062e9b7f
 # git has its own built in compression methods
 *.7z
 *.dmg
