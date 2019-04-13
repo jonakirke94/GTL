@@ -46,15 +46,7 @@ namespace GTL.Web.Controllers
 
         public async Task<IActionResult> Login()
         {
-            var user = new User
-            {
-                Id = "FAKEID",
-                Name = "FAKEUSERNAME",
-                PasswordHash = "FAKEHASH"
-
-            };
-
-            await _signInManager.SignInAsync(user, true);
+            await _signInManager.SignInAsync("Test", "FAKEHASH", true);
             return RedirectToAction(nameof(Index));
 
         }

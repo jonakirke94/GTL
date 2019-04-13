@@ -5,12 +5,12 @@ using System.Text;
 
 namespace GTL.Application.Interfaces.Authentication.IdentityModels
 {
-    public class SignUpResult
+    public class SignInResult
     {
         public User User { get; set; }
         public bool Success { get; set; }
 
-        public SignUpResult(User user = null, bool success = false)
+        public SignInResult(User user = null, bool success = false)
         {
             User = user;
             Success = success;

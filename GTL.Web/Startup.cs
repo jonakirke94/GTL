@@ -14,6 +14,7 @@ using GTL.Domain.Entities;
 using GTL.Domain.Entities.Identity;
 using GTL.Infrastructure;
 using GTL.Persistence;
+using GTL.Persistence.Authentication;
 using GTL.Persistence.Configurations;
 using GTL.Persistence.Repositories;
 using GTL.Web.Authentication;
@@ -49,6 +50,8 @@ namespace GTL.Web
 
             //services.AddScoped<IUserStore<User>, UserStore>();
 
+            services.AddScoped<IUserStore, UserStore>();
+            services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<ISignInManager, SignInManager>();
 
             services.AddHttpContextAccessor();
@@ -58,20 +61,11 @@ namespace GTL.Web
             {
                 options.LoginPath = new PathString("/account/login");
                 options.LogoutPath = new PathString("/account/logout");
-                options.Events = new CookieAuthenticationEvents()
-                {
-                    // #3
-                    OnValidatePrincipal = async (c) =>
-                    {
-                        var membership = c.HttpContext.RequestServices.GetRequiredService<ISignInManager>();
-                        var isValid = await membership.ValidateLoginAsync(c.Principal);
-                        if (!isValid)
-                        {
-                            c.RejectPrincipal();
-                        }
-                    }
-                };
+                options.EventsType = typeof(CustomCookieAuthenticationEvents);            
             });
+
+            services.AddScoped<CustomCookieAuthenticationEvents>();
+
 
             // Add AutoMapper
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });

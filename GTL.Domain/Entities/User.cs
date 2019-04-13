@@ -27,6 +27,8 @@ namespace GTL.Domain.Entities
 
         public string ZipCode { get; set; }
 
+        public DateTime LastChanged { get; set; }
+
         public ICollection<Book> Books { get; private set; }
     }
 }
