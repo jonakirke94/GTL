@@ -7,20 +7,28 @@ using AutoMapper;
 using GTL.Application.Infrastructure;
 using GTL.Application.Infrastructure.AutoMapper;
 using GTL.Application.Interfaces;
+using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Users.Queries.GetUser;
+using GTL.Domain.Entities;
+using GTL.Domain.Entities.Identity;
 using GTL.Infrastructure;
 using GTL.Persistence;
 using GTL.Persistence.Configurations;
 using GTL.Persistence.Repositories;
+using GTL.Web.Authentication;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GTL.Web
 {
@@ -36,6 +44,35 @@ namespace GTL.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddIdentity<User, Role>()
+            //.AddDefaultTokenProviders();
+
+            //services.AddScoped<IUserStore<User>, UserStore>();
+
+            services.AddScoped<ISignInManager, SignInManager>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+            AddCookie((options) =>
+            {
+                options.LoginPath = new PathString("/account/login");
+                options.LogoutPath = new PathString("/account/logout");
+                options.Events = new CookieAuthenticationEvents()
+                {
+                    // #3
+                    OnValidatePrincipal = async (c) =>
+                    {
+                        var membership = c.HttpContext.RequestServices.GetRequiredService<ISignInManager>();
+                        var isValid = await membership.ValidateLoginAsync(c.Principal);
+                        if (!isValid)
+                        {
+                            c.RejectPrincipal();
+                        }
+                    }
+                };
+            });
+
             // Add AutoMapper
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
@@ -81,6 +118,11 @@ namespace GTL.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            app.UseAuthentication();
+
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -21,14 +21,15 @@ namespace GTL.Application.Users.Queries.GetUser
 
         public async Task<UserDetailModel> Handle(GetUserDetailQuery request, CancellationToken cancellationToken)
         {
-            var entity = _userRepo.GetUser(request.Id);
+            //var entity = _userRepo.GetUser(request.Id);
 
-            if (entity == null)
-            {
-                throw new NotFoundException(nameof(User), request.Id);
-            }
+            //if (entity == null)
+            //{
+            //    throw new NotFoundException(nameof(User), request.Id);
+            //}
 
-            return UserDetailModel.Create(entity);
+            //return UserDetailModel.Create(entity);
+            return null;
         }
     }
 }

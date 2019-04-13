@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdoContext.cs" />
+    <Compile Include="Authentication\UserStore.cs" />
     <Compile Include="Configurations\DataBaseSettings.cs" />
     <Compile Include="Helpers\AdoExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

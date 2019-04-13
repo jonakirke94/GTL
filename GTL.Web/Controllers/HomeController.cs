@@ -10,13 +10,25 @@ using GTL.Application.Users.Commands.DeleteUser;
 using GTL.Application.Users.Queries.GetUser;
 using GTL.Application.Users.Commands.CreateUser;
 using GTL.Application.Users.Commands.UpdateUser;
+using GTL.Domain.Entities;
+using GTL.Application.Interfaces.Authentication;
 
 namespace GTL.Web.Controllers
 {
     public class HomeController : BaseController
     {
+        private readonly ISignInManager _signInManager;
+
+        public HomeController(ISignInManager signInManager)
+        {
+            _signInManager = signInManager;
+
+        }
+
         public async Task<IActionResult> Index()
         {
+
+         
             var users = await Mediator.Send(new GetUserListQuery());
             return View(users);
         }
@@ -30,6 +42,27 @@ namespace GTL.Web.Controllers
 
             var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int) });
             return View(user);
+        }
+
+        public async Task<IActionResult> Login()
+        {
+            var user = new User
+            {
+                Id = "FAKEID",
+                Name = "FAKEUSERNAME",
+                PasswordHash = "FAKEHASH"
+
+            };
+
+            await _signInManager.SignInAsync(user, true);
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Create()

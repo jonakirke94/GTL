@@ -58,7 +58,7 @@ namespace GTL.Persistence.Repositories
                     command.CommandText =
                         "UPDATE USERS Set name = @param2, city = @param3, zipcode = @param4 WHERE id = @param1";
 
-                    command.AddParamWithValue("@param1", user.Id);
+                    //command.AddParamWithValue("@param1", user.Id);
                     command.AddParamWithValue("@param2", user.Name);
                     command.AddParamWithValue("@param3", user.City);
                     command.AddParamWithValue("@param4", user.ZipCode);
@@ -82,7 +82,7 @@ namespace GTL.Persistence.Repositories
             using (var command = _context.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM Users WHERE id = @param1;";
-                command.AddParamWithValue("@param1", user.Id);
+                //command.AddParamWithValue("@param1", user.Id);
 
                 using (var reader = command.ExecuteReader())
                     {
@@ -149,7 +149,7 @@ namespace GTL.Persistence.Repositories
         {
             User user = new User
             {
-                Id = Convert.ToInt32(reader["id"]),
+                //Id = Convert.ToInt32(reader["id"]),
                 City = reader["city"].ToString(),
                 ZipCode = reader["zipcode"].ToString(),
                 Name = reader["name"].ToString()

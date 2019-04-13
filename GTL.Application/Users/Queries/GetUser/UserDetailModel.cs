@@ -27,7 +27,7 @@ namespace GTL.Application.Users.Queries.GetUser
                 //skal nok bruge automapper her og resolve permissions
                 return user => new UserDetailModel
                 {
-                    Id = user.Id,
+                    //Id = user.Id,
                     City = user.City,
                     ZipCode = user.ZipCode,
                     Name = user.Name,

@@ -23,12 +23,12 @@ namespace GTL.Application.Users.Commands.DeleteUser
 
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var entity = _userRepo.GetUser(request.Id);
+            //var entity = _userRepo.GetUser(request.Id);
 
-            if (entity == null)
-            {
-                throw new NotFoundException(nameof(User), request.Id);
-            }
+            //if (entity == null)
+            //{
+            //    throw new NotFoundException(nameof(User), request.Id);
+            //}
 
             //var userBooks = await _bookRepo.GetBooksByUserId(request.Id);
             //if (userBooks.Count > 0)

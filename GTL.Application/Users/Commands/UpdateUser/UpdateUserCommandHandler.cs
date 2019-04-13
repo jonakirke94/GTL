@@ -23,10 +23,10 @@ namespace GTL.Application.Users.Commands.UpdateUser
         {
             var entity = _userRepo.GetUser(request.Id);
 
-            if (entity == null)
-            {
-                throw new NotFoundException(nameof(User), request.Id);
-            }
+            //if (entity == null)
+            //{
+            //    throw new NotFoundException(nameof(User), request.Id);
+            //}
 
             entity.Name = request.Name;
             entity.City = request.City;
