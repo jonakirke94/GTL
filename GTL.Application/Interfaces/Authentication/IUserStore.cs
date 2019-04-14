@@ -1,4 +1,5 @@
 ﻿using GTL.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,10 +10,12 @@ namespace GTL.Application.Interfaces.Authentication
 {
     public interface IUserStore
     {
-        Task CreateAsync(User user, CancellationToken cancellationToken);
+        Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken);
 
         Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
 
-        Task<User> GetUserByIdAsync(string id, CancellationToken cancellationToken);
+        Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken);
+
+        Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken);
     }
 }

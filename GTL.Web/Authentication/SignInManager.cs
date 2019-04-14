@@ -24,17 +24,19 @@ namespace GTL.Web.Authentication
             _userManager = userManager;
         }
 
-        public string GetCurrentUserId()
+        public int GetCurrentUserId()
         {
             if (!_context.User.Identity.IsAuthenticated)
-                return string.Empty;
+                return -1;
 
             Claim claim = _context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
             if (claim == null)
-                return string.Empty;
-    
-            return claim.Value;
+                return -1;
+       
+            int.TryParse(claim.Value, out int currentId);
+
+            return currentId;
         }
 
         public bool IsSignedIn(ClaimsPrincipal principal)
@@ -44,46 +46,52 @@ namespace GTL.Web.Authentication
 
         public async Task SignInAsync(string email, string password, bool isPersistent)
         {
+            await _context.SignOutAsync();
+
             // validate password
             var result = await _userManager.ValidatePasswordAsync(email, password);
 
             if (!result.Success)
             {
+                return;
                 // invalid login attempt
             }
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, result.User.Name),
-                new Claim(ClaimTypes.NameIdentifier, result.User.Id),
+                new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
                 new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),
             };
 
-            var userIdentity = new ClaimsIdentity(claims, "SecureLogin");
+            var userIdentity = new ClaimsIdentity(claims, "Basic");
             var userPrincipal = new ClaimsPrincipal(userIdentity);
 
-            await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+             await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             userPrincipal,
             new AuthenticationProperties
             {
                 ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
-                IsPersistent = false,
+                IsPersistent = isPersistent,
                 AllowRefresh = false
             });
+        }
+
+        public async Task<bool> ValidateLastChanged(int id, string lastChanged)
+        {
+            var user = await _userManager.GetUserByIdAsync(id, CancellationToken.None);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            return user.LastChanged > DateTime.Parse(lastChanged);        
         }
 
         public async Task SignOutAsync()
         {
             await _context.SignOutAsync();
-        }
-
-        public async Task<bool> ValidateLastChanged(string lastChanged)
-        {
-            var id = GetCurrentUserId();
-
-            var user = await _userManager.GetUserByIdAsync(id, CancellationToken.None);
-
-            return user.LastChanged > DateTime.Parse(lastChanged);        
         }
 
         public Task<bool> ValidateLoginAsync(ClaimsPrincipal principal)

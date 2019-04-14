@@ -44,9 +44,17 @@ namespace GTL.Web.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Login()
+
+        public IActionResult Login()
         {
-            await _signInManager.SignInAsync("Test", "FAKEHASH", true);
+            return View();        
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            await _signInManager.SignInAsync(model.Email, model.Password, model.isPersistent);
             return RedirectToAction(nameof(Index));
 
         }
@@ -59,13 +67,7 @@ namespace GTL.Web.Controllers
 
         public IActionResult Create()
         {
-            return View(new CreateUserCommand
-            {
-                City = "Aalborg",
-                Name = "Bøf",
-                ZipCode = "9000"          
-            }
-            );
+            return View();
         }
 
         public async Task<IActionResult> Edit(int? id)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GTL.Web.Authentication
@@ -23,13 +24,11 @@ namespace GTL.Web.Authentication
         public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
         {
             var userPrincipal = context.Principal;
-
-            // Look for the LastChanged claim.
-            var lastChangedClaim = userPrincipal.Claims.FirstOrDefault(x => x.Type == "Last Changed");
-
-            var id = _signInManager.GetCurrentUserId();
-
-            if (lastChangedClaim == null || !await _signInManager.ValidateLastChanged(lastChangedClaim.Value))
+                  
+            var changedClaim = userPrincipal.Claims.FirstOrDefault(x => x.Type == "Last Changed");
+            var idClaim = userPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+        
+            if (changedClaim == null || idClaim == null || !await _signInManager.ValidateLastChanged(Int32.Parse(idClaim.Value), changedClaim.Value))
             {
                 context.RejectPrincipal();
 

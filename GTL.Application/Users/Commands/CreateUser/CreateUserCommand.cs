@@ -11,11 +11,11 @@ namespace GTL.Application.Users.Commands.CreateUser
 {
     public class CreateUserCommand : IRequest
     {
-        public string City { get; set; }
+        public string Name { get; set; }
 
-        public string ZipCode { get; set; }
+        public string Email { get; set; }
 
-        public string Name { get; set; }        
+        public string Password { get; set; }        
     }
 }
 

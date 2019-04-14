@@ -14,6 +14,8 @@ namespace GTL.Application.Interfaces.Authentication
 
         Task<SignInResult> ValidatePasswordAsync(string email, string password);
 
-        Task<User> GetUserByIdAsync(string id, CancellationToken cancellationToken);
+        Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken);
+
+        Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken);
     }
 }

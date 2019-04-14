@@ -1,4 +1,6 @@
-﻿using GTL.Application.Interfaces.Repositories;
+﻿using GTL.Application.Helper;
+using GTL.Application.Interfaces.Authentication;
+using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 using MediatR;
 using System;
@@ -11,27 +13,34 @@ namespace GTL.Application.Users.Commands.CreateUser
 {
     public class Handler : IRequestHandler<CreateUserCommand, Unit>
     {
-        private readonly IUserRepository _userRepo;
+        private readonly IUserManager _userManager;
         private readonly IMediator _mediator;
 
-        public Handler(IUserRepository userRepo, IMediator mediator)
+        public Handler(IUserManager userManager, IMediator mediator)
         {
-            _userRepo = userRepo;
+            _userManager = userManager;
             _mediator = mediator;
         }
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            var salt = Hasher.CreateSalt();
+            var passwordHash = Hasher.Hash(request.Password, salt);
+
             var entity = new User
             {
-                City = request.City,
-                ZipCode = request.ZipCode,
-                Name = request.Name
+                Name = request.Name,
+                NormalizedName = request.Name.Normalize(),
+                Email = request.Email,
+                NormalizedEmail = request.Email.Normalize(),
+                PasswordHash = passwordHash,
+                PasswordSalt = salt,
+                LastChanged = DateTime.Now
             };
 
-            var userId =_userRepo.AddUser(entity);
+             await _userManager.CreateAsync(entity, cancellationToken);
 
-            await _mediator.Publish(new UserCreated { UserId = userId }, cancellationToken);
+            //await _mediator.Publish(new UserCreated { UserId = userId }, cancellationToken);
 
             return Unit.Value;
         }

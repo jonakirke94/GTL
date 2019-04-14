@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GTL.Application.Interfaces;
+using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 using MediatR;
@@ -14,12 +15,13 @@ namespace GTL.Application.Users.Queries.GetUserList
 {
     public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, UserListViewModel>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        //private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public GetUserListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetUserListQueryHandler(IUserManager userManager, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -27,7 +29,7 @@ namespace GTL.Application.Users.Queries.GetUserList
         {
             return new UserListViewModel
             {
-                Users = _mapper.Map<IEnumerable<UserDto>>(_unitOfWork._userRepo.GetUsers())
+                Users = _mapper.Map<IEnumerable<UserDto>>(await _userManager.GetUsersAsync(cancellationToken))
             };
         }
     }

@@ -20,14 +20,19 @@ namespace GTL.Web.Authentication
         }
 
 
-        public Task CreateAsync(User user, CancellationToken cancellationToken)
+        public async Task CreateAsync(User user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _userStore.CreateAsync(user, CancellationToken.None);
         }
 
-        public async Task<User> GetUserByIdAsync(string id, CancellationToken cancellationToken)
+        public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _userStore.GetUserByIdAsync(id, cancellationToken);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken)
+        {
+            return await _userStore.GetUsersAsync(cancellationToken);
         }
 
         public async Task<SignInResult> ValidatePasswordAsync(string email, string password)
@@ -44,12 +49,9 @@ namespace GTL.Web.Authentication
                 return result;
             }
 
-            //if (user.PasswordHash == Hasher.Hash(password)) {
-            //    result.Success = true;
-            //}
-
-            if (user.PasswordHash == "FAKEHASH") {
-               result.Success = true;
+            if (Hasher.Validate(password, user.PasswordSalt, user.PasswordHash))
+            {
+                result.Success = true;
             }
 
             result.User = user;

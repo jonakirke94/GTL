@@ -116,7 +116,6 @@ namespace GTL.Web
             app.UseAuthentication();
 
 
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -131,6 +130,7 @@ namespace GTL.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+           
 
             app.UseMvc(routes =>
             {

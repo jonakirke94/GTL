@@ -16,9 +16,9 @@ namespace GTL.Application.Interfaces.Authentication
 
         Task<bool> ValidateLoginAsync(ClaimsPrincipal principal);
 
-        Task<bool> ValidateLastChanged(string lastChanged);
+        Task<bool> ValidateLastChanged(int id, string lastChanged);
 
-        string GetCurrentUserId();
+        int GetCurrentUserId();
 
         bool IsSignedIn(ClaimsPrincipal principal);
     }

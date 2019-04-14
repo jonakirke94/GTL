@@ -1,7 +1,12 @@
-﻿using GTL.Application.Interfaces.Authentication;
+﻿using Dapper;
+using GTL.Application.Interfaces.Authentication;
 using GTL.Domain.Entities;
+using GTL.Persistence.Configurations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,35 +16,63 @@ namespace GTL.Persistence.Authentication
 {
     public class UserStore : IUserStore
     {
-        public Task CreateAsync(User user, CancellationToken cancellationToken)
+        private DataBaseSettings _options { get; }
+
+        public UserStore(IOptions<DataBaseSettings> optionsAccessor)
         {
-            throw new NotImplementedException();
+            _options = optionsAccessor.Value;
         }
 
-        public Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken)
         {
-            var user = new User
-            {
-                Id = "1234",
-                PasswordHash = "FAKEHASH",
-                Name = "FAKENAME",
-                LastChanged = DateTime.Now
-            };
+            cancellationToken.ThrowIfCancellationRequested();
 
-            return Task.Run(() => user);
+            using (var connection = new SqlConnection(_options.ConnectionString))
+            {
+                await connection.OpenAsync(cancellationToken);
+                user.Id = await connection.QuerySingleAsync<int>($@"INSERT INTO [User] ([Name], [NormalizedName], [Email],
+                [NormalizedEmail], [PasswordHash], [PasswordSalt],  [LastChanged])
+                VALUES (@{nameof(User.Name)}, @{nameof(User.NormalizedName)}, @{nameof(User.Email)},
+                @{nameof(User.NormalizedEmail)}, @{nameof(User.PasswordHash)}, @{nameof(User.PasswordSalt)}, @{nameof(User.LastChanged)});
+                SELECT CAST(SCOPE_IDENTITY() as int)", user);
+            }
+
+            return IdentityResult.Success;
         }
 
-        public Task<User> GetUserByIdAsync(string id, CancellationToken cancellationToken)
+        public async Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
         {
-            var user = new User
-            {
-                Id = "1234",
-                PasswordHash = "FAKEHASH",
-                Name = "FAKENAME",
-                LastChanged = DateTime.Now
-            };
+            cancellationToken.ThrowIfCancellationRequested();
 
-            return Task.Run(() => user);
+            using (var connection = new SqlConnection(_options.ConnectionString))
+            {
+                await connection.OpenAsync(cancellationToken);
+                return await connection.QuerySingleOrDefaultAsync<User>($@"SELECT * FROM [User]
+                    WHERE [Email] = @{nameof(email)}", new { email });
+            }
+        }
+
+        public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var connection = new SqlConnection(_options.ConnectionString))
+            {
+                await connection.OpenAsync(cancellationToken);
+                return await connection.QuerySingleOrDefaultAsync<User>($@"SELECT * FROM [User]
+                    WHERE [Id] = @{nameof(id)}", new { id });
+            }
+        }
+
+        public async Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var connection = new SqlConnection(_options.ConnectionString))
+            {
+                await connection.OpenAsync(cancellationToken);
+                return await connection.QueryAsync<User>($@"SELECT * FROM [User]");
+            }
         }
     }
 }
