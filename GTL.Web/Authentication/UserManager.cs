@@ -56,6 +56,6 @@ namespace GTL.Web.Authentication
 
             result.User = user;
             return result;
-        }
+          }
     }
 }

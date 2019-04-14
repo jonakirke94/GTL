@@ -45,27 +45,57 @@ namespace GTL.Persistence.Authentication
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            Dictionary<int, User> result = new Dictionary<int, User>();
+
+            string query = @"
+            SELECT u.*, r.Id as RoleId, r.Name, r.NormalizedName
+            FROM [User] u JOIN [UserRole] ur on u.Id = ur.UserId
+                          JOIN [Role] r on ur.RoleId = r.Id
+            WHERE u.Email = @email;";
             using (var connection = new SqlConnection(_options.ConnectionString))
             {
-                await connection.OpenAsync(cancellationToken);
-                var results = await connection.QueryMultipleAsync(@"SELECT * FROM [User] WHERE Email = @email; " +
-                "SELECT Id, Name, NormalizedName FROM [Role] JOIN [UserRole] ON [Role].Id = UserRole.RoleId" +
-                " WHERE [UserRole].UserId = 2", 
-                new
+                var users = await connection.QueryAsync<User, Role, User>(query, (u, r) =>
                 {
-                    email
-                });
+                    // this lambda is called for each record retrieved by Dapper
+                    // receiving a user and a role created by Dapper from the record
+                    // and it is expected to return a user.
+                    // We look if the user passed in is already in the dictionary 
+                    // and add the role received to the roles list of that user
+                    if (!result.ContainsKey(u.Id))
+                        result.Add(u.Id, u);
+                    User working = result[u.Id];
+                    working.Roles.Add(r);
+                    return u;
+                }, new { email }, splitOn: "RoleId");
 
-                var user = await results.ReadSingleAsync<User>();
-                var roles = await results.ReadAsync<Role>();
-
-                foreach (var role in roles)
-                {
-                    user.Roles.Add(role);
-                }
-
-                return user;
+                // Return the first element in the dictionary
+                if (result.Values.Count > 0)
+                    return result.Values.First();
+                else
+                    return null;
             }
+
+            //using (var connection = new SqlConnection(_options.ConnectionString))
+            //{
+            //    await connection.OpenAsync(cancellationToken);
+            //    var results = await connection.QueryMultipleAsync(@"SELECT * FROM [User] WHERE Email = @email; " +
+            //    "SELECT Id, Name, NormalizedName FROM [Role] JOIN [UserRole] ON [Role].Id = UserRole.RoleId" +
+            //    " WHERE [UserRole].UserId = 2",  // <-- NEED TO INSERT USER ID DYNAMICALLY HERE
+            //    new
+            //    {
+            //        email
+            //    });
+
+            //    var user = await results.ReadSingleAsync<User>();
+            //    var roles = await results.ReadAsync<Role>();
+
+            //    foreach (var role in roles)
+            //    {
+            //        user.Roles.Add(role);
+            //    }
+
+            //    return user;
+            //}
         }
 
         public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken)
