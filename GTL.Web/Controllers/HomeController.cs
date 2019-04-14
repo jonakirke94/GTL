@@ -12,6 +12,7 @@ using GTL.Application.Users.Commands.CreateUser;
 using GTL.Application.Users.Commands.UpdateUser;
 using GTL.Domain.Entities;
 using GTL.Application.Interfaces.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GTL.Web.Controllers
 {
@@ -33,6 +34,7 @@ namespace GTL.Web.Controllers
             return View(users);
         }
 
+        //[Authorize(Policy = "CanReadUsers")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -70,6 +72,8 @@ namespace GTL.Web.Controllers
             return View();
         }
 
+
+        [Authorize(Policy = "CanWriteUsers")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

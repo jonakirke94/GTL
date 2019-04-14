@@ -1,4 +1,5 @@
 ﻿using GTL.Application.Exceptions;
+using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 using MediatR;
@@ -12,24 +13,23 @@ namespace GTL.Application.Users.Queries.GetUser
 {
     public class GetUserDetailQueryHandler : IRequestHandler<GetUserDetailQuery, UserDetailModel>
     {
-        private readonly IUserRepository _userRepo;
+        private readonly IUserManager _userManager;
 
-        public GetUserDetailQueryHandler(IUserRepository userRepo)
+        public GetUserDetailQueryHandler(IUserManager userManager)
         {
-            _userRepo = userRepo;
+            _userManager = userManager;
         }
 
         public async Task<UserDetailModel> Handle(GetUserDetailQuery request, CancellationToken cancellationToken)
         {
-            //var entity = _userRepo.GetUser(request.Id);
+            var entity = await _userManager.GetUserByIdAsync(request.Id, cancellationToken);
 
-            //if (entity == null)
-            //{
-            //    throw new NotFoundException(nameof(User), request.Id);
-            //}
+            if (entity == null)
+            {
+                throw new NotFoundException(nameof(User), request.Id);
+            }
 
-            //return UserDetailModel.Create(entity);
-            return null;
+            return UserDetailModel.Create(entity);
         }
     }
 }

@@ -45,11 +45,6 @@ namespace GTL.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddIdentity<User, Role>()
-            //.AddDefaultTokenProviders();
-
-            //services.AddScoped<IUserStore<User>, UserStore>();
-
             services.AddScoped<IUserStore, UserStore>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<ISignInManager, SignInManager>();
@@ -107,6 +102,16 @@ namespace GTL.Web
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "CanReadUsers",
+                    policy => policy.RequireRole("Member"));
+                options.AddPolicy(
+               "CanWriteUsers",
+               policy => policy.RequireRole("Admin"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

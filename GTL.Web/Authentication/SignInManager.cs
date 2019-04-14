@@ -57,11 +57,14 @@ namespace GTL.Web.Authentication
                 // invalid login attempt
             }
 
+            // vores User skal have en liste af sine roller ogsåm så vi kan tilføje de rigtige claims
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, result.User.Name),
                 new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
                 new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Role, "Member"),
             };
 
             var userIdentity = new ClaimsIdentity(claims, "Basic");
