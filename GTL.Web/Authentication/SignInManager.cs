@@ -15,21 +15,21 @@ namespace GTL.Web.Authentication
 {
     public class SignInManager : ISignInManager
     {
-        private readonly HttpContext _context;
+        private readonly IHttpContextAccessor _context;
         private readonly IUserManager _userManager;
 
         public SignInManager(IHttpContextAccessor context, IUserManager userManager)
         {
-            _context = context.HttpContext;
+            _context = context;
             _userManager = userManager;
         }
 
         public int GetCurrentUserId()
         {
-            if (!_context.User.Identity.IsAuthenticated)
+            if (!_context.HttpContext.User.Identity.IsAuthenticated)
                 return -1;
 
-            Claim claim = _context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            Claim claim = _context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
             if (claim == null)
                 return -1;
@@ -41,14 +41,11 @@ namespace GTL.Web.Authentication
 
         public bool IsSignedIn(ClaimsPrincipal principal)
         {
-            return _context.User.Identity.IsAuthenticated;
+            return _context.HttpContext.User.Identity.IsAuthenticated;
         }
 
         public async Task SignInAsync(string email, string password, bool isPersistent)
         {
-            await _context.SignOutAsync();
-
-            // validate password
             var result = await _userManager.ValidatePasswordAsync(email, password);
 
             if (!result.Success)
@@ -57,20 +54,27 @@ namespace GTL.Web.Authentication
                 // invalid login attempt
             }
 
+            var roleClaims = new List<Claim>();
+
+            foreach (var role in result.User.Roles)
+            {
+                new Claim(ClaimTypes.Role, role.NormalizedName);
+            }
+
             // vores User skal have en liste af sine roller ogsåm så vi kan tilføje de rigtige claims
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, result.User.Name),
                 new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
-                new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.Role, "Member"),
+                new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),          
             };
+
+            claims.AddRange((roleClaims));
 
             var userIdentity = new ClaimsIdentity(claims, "Basic");
             var userPrincipal = new ClaimsPrincipal(userIdentity);
 
-             await _context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+             await _context.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             userPrincipal,
             new AuthenticationProperties
             {
@@ -94,7 +98,7 @@ namespace GTL.Web.Authentication
 
         public async Task SignOutAsync()
         {
-            await _context.SignOutAsync();
+            await _context.HttpContext.SignOutAsync();
         }
 
         public Task<bool> ValidateLoginAsync(ClaimsPrincipal principal)

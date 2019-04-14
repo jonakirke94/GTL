@@ -13,12 +13,10 @@ namespace GTL.Web.Authentication
     public class CustomCookieAuthenticationEvents : CookieAuthenticationEvents
     {
         private readonly ISignInManager _signInManager;
-        private readonly HttpContext _context;
 
-        public CustomCookieAuthenticationEvents(ISignInManager signInManager, IHttpContextAccessor context)
+        public CustomCookieAuthenticationEvents(ISignInManager signInManager)
         {
             _signInManager = signInManager;
-            _context = context.HttpContext;
         }
 
         public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
@@ -32,7 +30,8 @@ namespace GTL.Web.Authentication
             {
                 context.RejectPrincipal();
 
-                await _context.SignOutAsync(
+                
+                await context.HttpContext.SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
             }
         }

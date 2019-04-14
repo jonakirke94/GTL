@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GTL.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,12 @@ namespace GTL.Domain.Entities
     public class User
     {
         public int Id { get; set; }
-
+        
         // Always set collections setter to private and instantiate it in the constructor 
         public User()
         {
             Books = new List<Book>();
+            Roles = new List<Role>();
         }
 
         public string Name { get; set; }
@@ -36,5 +38,7 @@ namespace GTL.Domain.Entities
         public DateTime LastChanged { get; set; }
 
         public ICollection<Book> Books { get; private set; }
+
+        public ICollection<Role> Roles { get; private set; }
     }
 }

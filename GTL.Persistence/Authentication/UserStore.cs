@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Domain.Entities;
+using GTL.Domain.Entities.Identity;
 using GTL.Persistence.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -47,8 +48,23 @@ namespace GTL.Persistence.Authentication
             using (var connection = new SqlConnection(_options.ConnectionString))
             {
                 await connection.OpenAsync(cancellationToken);
-                return await connection.QuerySingleOrDefaultAsync<User>($@"SELECT * FROM [User]
-                    WHERE [Email] = @{nameof(email)}", new { email });
+                var results = await connection.QueryMultipleAsync(@"SELECT * FROM [User] WHERE Email = @email; " +
+                "SELECT Id, Name, NormalizedName FROM [Role] JOIN [UserRole] ON [Role].Id = UserRole.RoleId" +
+                " WHERE [UserRole].UserId = 2", 
+                new
+                {
+                    email
+                });
+
+                var user = await results.ReadSingleAsync<User>();
+                var roles = await results.ReadAsync<Role>();
+
+                foreach (var role in roles)
+                {
+                    user.Roles.Add(role);
+                }
+
+                return user;
             }
         }
 
