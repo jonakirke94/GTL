@@ -94,13 +94,10 @@ namespace GTL.Persistence.Repositories
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Dictionary<int, User> result = new Dictionary<int, User>();
-
             string query = @"SELECT * FROM [User]";
             using (var connection = new SqlConnection(_options.ConnectionString))
             {
-                var users = await connection.QueryAsync<User>(query);
-                return users;
+                return await connection.QueryAsync<User>(query);
             }
         }
 
