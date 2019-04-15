@@ -16,6 +16,7 @@ using GTL.Application.UseCases.Account.Commands.Login;
 using Microsoft.AspNetCore.Authorization;
 using GTL.Domain.Entities.Identity;
 using GTL.Application.Interfaces.Authentication.IdentityModels;
+using GTL.Application.Exceptions;
 
 namespace GTL.Web.Controllers
 {
@@ -26,7 +27,6 @@ namespace GTL.Web.Controllers
         public HomeController(ISignInManager signInManager)
         {
             _signInManager = signInManager;
-
         }
 
         public async Task<IActionResult> Index()
@@ -35,7 +35,7 @@ namespace GTL.Web.Controllers
             return View(users);
         }
 
-        //[Authorize(Policy = "CanReadUsers")]
+        [Authorize(Policy = "CanReadUsers")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,41 +45,6 @@ namespace GTL.Web.Controllers
 
             var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int) });
             return View(user);
-        }
-
-
-        public IActionResult Login()
-        {
-            return View();        
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var signInResult = await Mediator.Send(new LoginCommand { Email = model.Email, Password = model.Password, IsPersistent = model.IsPersistent});
-
-                if (signInResult.Success)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    TempData["LoginResult"] = "Invalid email or password";
-                    // may wanna log incorrect login attempt
-                }         
-            }
-
-            //log user logged in
-            return View();
-        }
-
-        public async Task<IActionResult> LogOut()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Create()
@@ -129,14 +94,19 @@ namespace GTL.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserCommand command)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var role = new Role()
-                {
-                    Name = Roles.Admin.ToString()
-                };
-                command.Roles.Add(role);
+                command.Roles.Add(new Role(Roles.Admin.ToString()));
                 await Mediator.Send(command);
+            }
+            catch (NoRoleException e)
+            {
+               // user has to be instantiated with at least 1 role!
+            }
+            catch (NoRoleMatchException e)
+            {
+                // this should probably not be a custom exception because the user has no control over the roles added
+                // attempted to add a role which does not exist!
             }
 
             return RedirectToAction(nameof(Index));

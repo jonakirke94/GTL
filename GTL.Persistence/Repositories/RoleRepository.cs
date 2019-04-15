@@ -33,7 +33,7 @@ namespace GTL.Persistence.Repositories
             }
         }
 
-        public async Task AddRoleToUser(List<UserRole> userRoles, CancellationToken cancellationToken)
+        public async Task AddRolesToUser(List<UserRole> userRoles, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -46,3 +46,4 @@ namespace GTL.Persistence.Repositories
         }
     }
 }
+

@@ -13,5 +13,16 @@ namespace GTL.Web.Controllers
         private IMediator _mediator;
 
         protected IMediator Mediator => _mediator ?? (_mediator = HttpContext.RequestServices.GetService<IMediator>());
+
+        protected IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+            
+        }
     }
 }
