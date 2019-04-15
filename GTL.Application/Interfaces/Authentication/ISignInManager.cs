@@ -10,11 +10,9 @@ namespace GTL.Application.Interfaces.Authentication
 {
     public interface ISignInManager
     {
-        Task SignInAsync(string email, string password, bool isPersistent);
+        Task SignInAsync(ClaimsPrincipal principal, bool isPersistent);
 
         Task SignOutAsync();
-
-        Task<bool> ValidateLoginAsync(ClaimsPrincipal principal);
 
         Task<bool> ValidateLastChanged(int id, string lastChanged);
 

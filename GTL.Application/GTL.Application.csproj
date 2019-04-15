@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Books\**" />
+    <EmbeddedResource Remove="Books\**" />
+    <None Remove="Books\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="FluentValidation" Version="8.2.0" />
     <PackageReference Include="MediatR" Version="6.0.0" />
@@ -12,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Books\" />
+    <Folder Include="UseCases\Account\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

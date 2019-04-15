@@ -1,24 +1,29 @@
-﻿using GTL.Application.Users.Queries.GetUserList;
+﻿using GTL.Application.Interfaces.Authentication.IdentityModels; 
+using GTL.Application.Users.Queries.GetUserList;
 using GTL.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GTL.Application.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers();
+        Task<int> CreateAsync(User user, CancellationToken cancellationToken);
 
-        User GetUser(int ind);
+        Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
 
-        int AddUser(User user);
+        Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken);
 
-        void DeleteUser(int id);
+        Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken);
 
-        void Update(User user);
+        Task UpdateUserAsync(User user, CancellationToken cancellationToken);
+
+        Task DeleteUserAsync(int id, CancellationToken cancellationToken);
     }
 }
 

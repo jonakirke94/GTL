@@ -1,27 +1,27 @@
 ﻿using GTL.Application.Interfaces.Authentication;
-using GTL.Domain.Entities;
+using GTL.Application.Interfaces.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using GTL.Application.Interfaces.Authentication.IdentityModels;
 
 namespace GTL.Web.Authentication
 {
     public class SignInManager : ISignInManager
     {
         private readonly IHttpContextAccessor _context;
-        private readonly IUserManager _userManager;
+        private readonly IUserRepository _userRepo;
 
-        public SignInManager(IHttpContextAccessor context, IUserManager userManager)
+        public SignInManager(IHttpContextAccessor context, IUserRepository userRepo, IAuthService authService)
         {
             _context = context;
-            _userManager = userManager;
+            _userRepo = userRepo;
         }
 
         public int GetCurrentUserId()
@@ -44,38 +44,10 @@ namespace GTL.Web.Authentication
             return _context.HttpContext.User.Identity.IsAuthenticated;
         }
 
-        public async Task SignInAsync(string email, string password, bool isPersistent)
-        {
-            var result = await _userManager.ValidatePasswordAsync(email, password);
-
-            if (!result.Success)
-            {
-                return;
-                // invalid login attempt
-            }
-
-            var roleClaims = new List<Claim>();
-
-            foreach (var role in result.User.Roles)
-            {
-                new Claim(ClaimTypes.Role, role.NormalizedName);
-            }
-
-            // vores User skal have en liste af sine roller ogsåm så vi kan tilføje de rigtige claims
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, result.User.Name),
-                new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
-                new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),          
-            };
-
-            claims.AddRange((roleClaims));
-
-            var userIdentity = new ClaimsIdentity(claims, "Basic");
-            var userPrincipal = new ClaimsPrincipal(userIdentity);
-
+        public async Task SignInAsync(ClaimsPrincipal principal, bool isPersistent)
+        {   
              await _context.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            userPrincipal,
+                 principal,
             new AuthenticationProperties
             {
                 ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
@@ -86,7 +58,7 @@ namespace GTL.Web.Authentication
 
         public async Task<bool> ValidateLastChanged(int id, string lastChanged)
         {
-            var user = await _userManager.GetUserByIdAsync(id, CancellationToken.None);
+            var user = await _userRepo.GetUserByIdAsync(id, CancellationToken.None);
 
             if (user == null)
             {
@@ -99,11 +71,6 @@ namespace GTL.Web.Authentication
         public async Task SignOutAsync()
         {
             await _context.HttpContext.SignOutAsync();
-        }
-
-        public Task<bool> ValidateLoginAsync(ClaimsPrincipal principal)
-        {
-            throw new NotImplementedException();
         }
     }
 }

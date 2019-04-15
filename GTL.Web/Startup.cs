@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using AutoMapper;
+using GTL.Application;
 using GTL.Application.Infrastructure;
 using GTL.Application.Infrastructure.AutoMapper;
 using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Users.Queries.GetUser;
-using GTL.Domain.Entities;
-using GTL.Domain.Entities.Identity;
 using GTL.Infrastructure;
 using GTL.Persistence;
-using GTL.Persistence.Authentication;
 using GTL.Persistence.Configurations;
 using GTL.Persistence.Repositories;
 using GTL.Web.Authentication;
@@ -23,13 +17,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GTL.Web
 {
@@ -45,9 +35,9 @@ namespace GTL.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUserStore, UserStore>();
-            services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISignInManager, SignInManager>();
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddHttpContextAccessor();
 

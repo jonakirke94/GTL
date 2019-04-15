@@ -21,19 +21,18 @@ namespace GTL.Application.Users.Commands.UpdateUser
 
         public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var entity = _userRepo.GetUser(request.Id);
+            var entity = await _userRepo.GetUserByIdAsync(request.Id, cancellationToken);
 
-            //if (entity == null)
-            //{
-            //    throw new NotFoundException(nameof(User), request.Id);
-            //}
+            if (entity == null)
+            {
+                throw new NotFoundException(nameof(User), request.Id);
+            }
 
             entity.Name = request.Name;
             entity.City = request.City;
             entity.ZipCode = request.ZipCode;
 
-            _userRepo.Update(entity);
-
+            await _userRepo.UpdateUserAsync(entity, cancellationToken);
 
             return Unit.Value;
         }

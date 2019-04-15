@@ -11,6 +11,6 @@ namespace GTL.Web.Models
 
         public string Password { get; set; }
 
-        public bool isPersistent { get; set; }
+        public bool IsPersistent { get; set; }
     }
 }

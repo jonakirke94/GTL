@@ -12,7 +12,10 @@ using GTL.Application.Users.Commands.CreateUser;
 using GTL.Application.Users.Commands.UpdateUser;
 using GTL.Domain.Entities;
 using GTL.Application.Interfaces.Authentication;
+using GTL.Application.UseCases.Account.Commands.Login;
 using Microsoft.AspNetCore.Authorization;
+using GTL.Domain.Entities.Identity;
+using GTL.Application.Interfaces.Authentication.IdentityModels;
 
 namespace GTL.Web.Controllers
 {
@@ -27,9 +30,7 @@ namespace GTL.Web.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-
-         
+        {         
             var users = await Mediator.Send(new GetUserListQuery());
             return View(users);
         }
@@ -56,9 +57,23 @@ namespace GTL.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            await _signInManager.SignInAsync(model.Email, model.Password, model.isPersistent);
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                var signInResult = await Mediator.Send(new LoginCommand { Email = model.Email, Password = model.Password, IsPersistent = model.IsPersistent});
 
+                if (signInResult.Success)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData["LoginResult"] = "Invalid email or password";
+                    // may wanna log incorrect login attempt
+                }         
+            }
+
+            //log user logged in
+            return View();
         }
 
         public async Task<IActionResult> LogOut()
@@ -116,6 +131,11 @@ namespace GTL.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var role = new Role()
+                {
+                    Name = Roles.Admin.ToString()
+                };
+                command.Roles.Add(role);
                 await Mediator.Send(command);
             }
 

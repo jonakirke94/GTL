@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using GTL.Application.Interfaces.Authentication.IdentityModels;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;

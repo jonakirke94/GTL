@@ -13,12 +13,12 @@ namespace GTL.Application.Users.Commands.CreateUser
 {
     public class Handler : IRequestHandler<CreateUserCommand, Unit>
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserRepository _userRepo;
         private readonly IMediator _mediator;
 
-        public Handler(IUserManager userManager, IMediator mediator)
+        public Handler(IUserRepository userRepo, IMediator mediator)
         {
-            _userManager = userManager;
+            _userRepo = userRepo;
             _mediator = mediator;
         }
 
@@ -38,7 +38,13 @@ namespace GTL.Application.Users.Commands.CreateUser
                 LastChanged = DateTime.Now
             };
 
-             await _userManager.CreateAsync(entity, cancellationToken);
+             var userId = await _userRepo.CreateAsync(entity, cancellationToken);
+
+             foreach (var role in request.Roles)
+             {
+                 // add role
+                 //await _roleRepo.AddRoleToUser(role);
+             }
 
             //await _mediator.Publish(new UserCreated { UserId = userId }, cancellationToken);
 

@@ -13,16 +13,16 @@ namespace GTL.Application.Users.Queries.GetUser
 {
     public class GetUserDetailQueryHandler : IRequestHandler<GetUserDetailQuery, UserDetailModel>
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserRepository _userRepo;
 
-        public GetUserDetailQueryHandler(IUserManager userManager)
+        public GetUserDetailQueryHandler(IUserRepository userRepo)
         {
-            _userManager = userManager;
+            _userRepo = userRepo;
         }
 
         public async Task<UserDetailModel> Handle(GetUserDetailQuery request, CancellationToken cancellationToken)
         {
-            var entity = await _userManager.GetUserByIdAsync(request.Id, cancellationToken);
+            var entity = await _userRepo.GetUserByIdAsync(request.Id, cancellationToken);
 
             if (entity == null)
             {

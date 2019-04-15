@@ -15,13 +15,12 @@ namespace GTL.Application.Users.Queries.GetUserList
 {
     public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, UserListViewModel>
     {
-        //private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserManager _userManager;
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
 
-        public GetUserListQueryHandler(IUserManager userManager, IMapper mapper)
+        public GetUserListQueryHandler(IUserRepository userRepo, IMapper mapper)
         {
-            _userManager = userManager;
+            _userRepo = userRepo;
             _mapper = mapper;
         }
 
@@ -29,7 +28,7 @@ namespace GTL.Application.Users.Queries.GetUserList
         {
             return new UserListViewModel
             {
-                Users = _mapper.Map<IEnumerable<UserDto>>(await _userManager.GetUsersAsync(cancellationToken))
+                Users = _mapper.Map<IEnumerable<UserDto>>(await _userRepo.GetUsersAsync(cancellationToken))
             };
         }
     }
