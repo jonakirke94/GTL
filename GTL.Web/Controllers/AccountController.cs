@@ -59,11 +59,9 @@ namespace GTL.Web.Controllers
                 else
                 {
                     TempData["LoginResult"] = "Invalid email or password";
-                    // may wanna log incorrect login attempt
                 }
             }
 
-            //log user logged in
             return View();
         }
 

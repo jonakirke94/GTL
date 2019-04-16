@@ -6,6 +6,11 @@
 
 <h4>Login</h4>
 <hr />
+
+@if (TempData["LoginResult"] != null)
+{
+<p style="color: red">@TempData["LoginResult"]</p>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">
