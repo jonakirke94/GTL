@@ -64,7 +64,7 @@ namespace GTL.Persistence.Repositories
                     if (!result.ContainsKey(u.Id))
                         result.Add(u.Id, u);
                     User working = result[u.Id];
-                    working.Roles.Add(r);
+                    working.Role = r;
                     return u;
                 }, new {email});
 

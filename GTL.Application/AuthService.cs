@@ -23,7 +23,7 @@ namespace GTL.Application
         {
             var result = new SignInResult
             {
-                Success = false
+                SuccessfulLogin = false
             };
 
             var user = await _userRepo.GetUserByEmailAsync(email, CancellationToken.None);
@@ -35,7 +35,7 @@ namespace GTL.Application
 
             if (Hasher.Validate(password, user.PasswordSalt, user.PasswordHash))
             {
-                result.Success = true;
+                result.SuccessfulLogin = true;
             }
 
             result.User = user;

@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using GTL.Application.Interfaces.Mapping;
 using GTL.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GTL.Application.Users.Queries.GetUserList
+namespace GTL.Application.UseCases.Users.Queries
 {
     public class UserDto : IHaveCustomMapping
     {

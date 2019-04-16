@@ -29,26 +29,18 @@ namespace GTL.Application.UseCases.Account.Commands.Login
         {
             var result = await _authService.ValidatePasswordAsync(request.Email, request.Password);
 
-            if (!result.Success)
+            if (!result.SuccessfulLogin)
             {
                 return result;
-            }
-
-            var roleClaims = new List<Claim>();
-
-            foreach (var role in result.User.Roles)
-            {
-                new Claim(ClaimTypes.Role, role.NormalizedName);
             }
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, result.User.Name),
                 new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
-                new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),
+                new Claim(ClaimTypes.Role, result.User.Role.Name),
+            new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),
             };
-
-            claims.AddRange((roleClaims));
 
             var userIdentity = new ClaimsIdentity(claims, "Basic");
             var userPrincipal = new ClaimsPrincipal(userIdentity);

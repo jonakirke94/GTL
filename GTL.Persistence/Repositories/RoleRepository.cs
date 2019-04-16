@@ -15,11 +15,11 @@ namespace GTL.Persistence.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
-        private DataBaseSettings _options { get; }
+        private DataBaseSettings Options { get; }
 
         public RoleRepository(IOptions<DataBaseSettings> optionsAccessor)
         {
-            _options = optionsAccessor.Value;
+            Options = optionsAccessor.Value;
         }
 
         public async Task<IEnumerable<Role>> GetAllRolesAsync(CancellationToken cancellationToken)
@@ -27,22 +27,15 @@ namespace GTL.Persistence.Repositories
             cancellationToken.ThrowIfCancellationRequested();
 
             string query = @"SELECT * FROM [Role]";
-            using (var connection = new SqlConnection(_options.ConnectionString))
+            using (var connection = new SqlConnection(Options.ConnectionString))
             {
                 return await connection.QueryAsync<Role>(query);
             }
         }
 
-        public async Task AddRolesToUser(List<UserRole> userRoles, CancellationToken cancellationToken)
+        public Task<Role> GetRoleByNameAsync(string name)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var query = $@"INSERT INTO [UserRole] ([UserId], [RoleId]) VALUES (@UserId, @RoleId);";
-            using (var connection = new SqlConnection(_options.ConnectionString))
-            {
-                await connection.OpenAsync(cancellationToken);
-                await connection.ExecuteAsync(query, userRoles);
-            }
+            throw new NotImplementedException();
         }
     }
 }

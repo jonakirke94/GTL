@@ -1,10 +1,6 @@
 ﻿using FluentValidation;
-using FluentValidation.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GTL.Application.Users.Commands.CreateUser
+namespace GTL.Application.UseCases.Users.Commands.CreateUser
 {
     public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {

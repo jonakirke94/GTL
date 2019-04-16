@@ -2,18 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GTL.Application.Authorization;
 
 namespace GTL.Application.Interfaces.Authentication.IdentityModels
 {
-    public class SignInResult
+    public class SignInResult : CommandResponse
     {
         public User User { get; set; }
-        public bool Success { get; set; }
-
-        public SignInResult(User user = null, bool success = false)
-        {
-            User = user;
-            Success = success;
-        }
+        public bool SuccessfulLogin { get; set; }
     }
 }

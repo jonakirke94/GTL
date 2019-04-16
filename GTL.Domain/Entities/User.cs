@@ -16,7 +16,6 @@ namespace GTL.Domain.Entities
         public User()
         {
             Books = new List<Book>();
-            Roles = new List<Role>();
         }
 
         public string Name { get; set; }
@@ -39,6 +38,8 @@ namespace GTL.Domain.Entities
 
         public ICollection<Book> Books { get; private set; }
 
-        public ICollection<Role> Roles { get; private set; }
+        public Role Role { get; set; }
+
+        public int RoleId { get; set; }
     }
 }

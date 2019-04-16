@@ -18,6 +18,6 @@ namespace GTL.Application.Interfaces.Authentication
 
         int GetCurrentUserId();
 
-        bool IsSignedIn(ClaimsPrincipal principal);
+        bool IsSignedIn();
     }
 }

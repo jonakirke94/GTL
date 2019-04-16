@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GTL.Web.Models;
-using GTL.Application.Users.Queries.GetUserList;
 using GTL.Application.Users.Commands.DeleteUser;
 using GTL.Application.Users.Queries.GetUser;
 using GTL.Application.Users.Commands.CreateUser;
@@ -17,6 +16,8 @@ using Microsoft.AspNetCore.Authorization;
 using GTL.Domain.Entities.Identity;
 using GTL.Application.Interfaces.Authentication.IdentityModels;
 using GTL.Application.Exceptions;
+using GTL.Application.UseCases.Users.Commands.CreateUser;
+using GTL.Application.UseCases.Users.Queries.GetUserList;
 
 namespace GTL.Web.Controllers
 {
@@ -96,7 +97,7 @@ namespace GTL.Web.Controllers
         {
             try
             {
-                command.Roles.Add(new Role(Roles.Admin.ToString()));
+                command.RoleName = Roles.Admin.ToString();
                 await Mediator.Send(command);
             }
             catch (NoRoleException e)

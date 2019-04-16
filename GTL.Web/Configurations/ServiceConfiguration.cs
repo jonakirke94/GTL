@@ -17,11 +17,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using GTL.Application.Authentication;
+using GTL.Application.UseCases.Users.Commands.CreateUser;
 
 namespace GTL.Web.Configurations
 {
@@ -33,6 +31,7 @@ namespace GTL.Web.Configurations
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICurrentUser, CurrentUser>();
 
             services.AddHttpContextAccessor();
 
@@ -55,6 +54,7 @@ namespace GTL.Web.Configurations
             services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthorization<,>));
 
             services.Configure<CookiePolicyOptions>(options =>
             {

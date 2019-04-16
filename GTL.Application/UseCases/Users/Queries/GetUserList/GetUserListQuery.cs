@@ -1,11 +1,10 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GTL.Application.Authorization;
+using GTL.Application.Authorization.Permissions;
+using MediatR;
 
-namespace GTL.Application.Users.Queries.GetUserList
+namespace GTL.Application.UseCases.Users.Queries.GetUserList
 {
-    public class GetUserListQuery : IRequest<UserListViewModel>
+    public class GetUserListQuery : IRequest<UserListDto>
     {
     }
 }

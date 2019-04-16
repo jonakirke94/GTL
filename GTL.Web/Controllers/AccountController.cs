@@ -52,16 +52,20 @@ namespace GTL.Web.Controllers
             {
                 var signInResult = await Mediator.Send(new LoginCommand { Email = model.Email, Password = model.Password, IsPersistent = model.IsPersistent });
 
-                if (signInResult.Success)
+                if (!signInResult.HasRequestError)
+                {
+                    TempData["LoginResult"] = signInResult.ErrorMessage;
+                    return View();
+                }
+
+                if (signInResult.SuccessfulLogin)
                 {
                     return RedirectToLocal(returnUrl);
                 }
-                else
-                {
-                    TempData["LoginResult"] = "Invalid email or password";
-                }
+
             }
 
+            TempData["LoginResult"] = "Invalid email or password";
             return View();
         }
 

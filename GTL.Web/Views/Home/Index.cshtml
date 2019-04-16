@@ -1,4 +1,4 @@
-﻿@model GTL.Application.Users.Queries.GetUserList.UserListViewModel
+﻿@model GTL.Application.UseCases.Users.Queries.GetUserList.UserListDto
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,7 +7,7 @@
 @using GTL.Application.Interfaces.Authentication;
 @inject ISignInManager SignInManager
 
-@if (SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn())
 {
 
     <h1 style="color:Red">LOGGED IN!!!!</h1>

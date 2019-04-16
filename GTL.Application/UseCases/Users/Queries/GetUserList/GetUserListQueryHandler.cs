@@ -1,19 +1,13 @@
-﻿using AutoMapper;
-using GTL.Application.Interfaces;
-using GTL.Application.Interfaces.Authentication;
-using GTL.Application.Interfaces.Repositories;
-using GTL.Domain.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using GTL.Application.Interfaces.Repositories;
+using MediatR;
 
-namespace GTL.Application.Users.Queries.GetUserList
+namespace GTL.Application.UseCases.Users.Queries.GetUserList
 {
-    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, UserListViewModel>
+    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, UserListDto>
     {
         private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
@@ -24,9 +18,9 @@ namespace GTL.Application.Users.Queries.GetUserList
             _mapper = mapper;
         }
 
-        public async Task<UserListViewModel> Handle(GetUserListQuery request, CancellationToken cancellationToken)
+        public async Task<UserListDto> Handle(GetUserListQuery request, CancellationToken cancellationToken)
         {
-            return new UserListViewModel
+            return new UserListDto
             {
                 Users = _mapper.Map<IEnumerable<UserDto>>(await _userRepo.GetUsersAsync(cancellationToken))
             };

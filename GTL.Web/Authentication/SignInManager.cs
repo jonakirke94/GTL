@@ -39,7 +39,7 @@ namespace GTL.Web.Authentication
             return currentId;
         }
 
-        public bool IsSignedIn(ClaimsPrincipal principal)
+        public bool IsSignedIn()
         {
             return _context.HttpContext.User.Identity.IsAuthenticated;
         }

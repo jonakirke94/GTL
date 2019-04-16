@@ -6,14 +6,8 @@ namespace GTL.Domain.Entities.Identity
 {
     public class Role
     {
-        public Role()
-        {
-            Users = new List<User>();
-        }
-
         public Role(string name)
         {
-            Users = new List<User>();
             Name = name;
         }
 
@@ -23,7 +17,6 @@ namespace GTL.Domain.Entities.Identity
 
         public string NormalizedName { get; set; }
 
-        public ICollection<User> Users { get; private set; }
-
+        public int PermissionLevel { get; set; }
     }
 }
