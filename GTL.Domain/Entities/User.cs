@@ -39,6 +39,6 @@ namespace GTL.Domain.Entities
 
         public ICollection<Book> Books { get; private set; }
 
-        public readonly PermissionLevel PermissionLevel;
+        public PermissionLevel PermissionLevel { get; set; }
     }
 }

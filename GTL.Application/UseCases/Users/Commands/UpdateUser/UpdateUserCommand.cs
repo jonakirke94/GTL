@@ -1,10 +1,6 @@
-﻿using GTL.Application.Interfaces.Authentication.IdentityModels;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
-namespace GTL.Application.Users.Commands.UpdateUser
+namespace GTL.Application.UseCases.Users.Commands.UpdateUser
 {
     public class UpdateUserCommand : IRequest
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GTL.Application.Authorization
+﻿namespace GTL.Domain.Entities
 {
     public enum PermissionLevel
     {

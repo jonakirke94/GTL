@@ -1,12 +1,16 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GTL.Application.Authorization;
+using GTL.Application.Infrastructure.RequestModels;
+using GTL.Domain.Entities;
+using MediatR;
 
-namespace GTL.Application.Users.Commands.DeleteUser
+namespace GTL.Application.UseCases.Users.Commands.DeleteUser
 {
-    public class DeleteUserCommand : IRequest
+    public class DeleteUserCommand : AuthCommand, IRequest
     {
+        public DeleteUserCommand() : base(PermissionLevel.CHIEFLIBRARIAN)
+        {
+        }
+        
         public int Id { get; set; }
     }
 }

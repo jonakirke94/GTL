@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using GTL.Application.Authentication;
 using GTL.Application.Authorization;
 using GTL.Application.Helper;
+using GTL.Application.Infrastructure.RequestModels;
 using GTL.Application.Interfaces.Authentication;
-using GTL.Application.Interfaces.Authentication.IdentityModels;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 
@@ -23,7 +24,7 @@ namespace GTL.Application
 
         public bool HasPermission(PermissionLevel permission, User user)
         {
-            return PermissionLevel.READUSERS == permission;
+            return permission == user.PermissionLevel;
         }
 
         public async Task<SignInResult> ValidatePasswordAsync(string email, string password)

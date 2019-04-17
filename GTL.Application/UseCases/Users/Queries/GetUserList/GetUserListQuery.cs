@@ -1,6 +1,4 @@
-﻿using GTL.Application.Authorization;
-using GTL.Application.Authorization.Permissions;
-using MediatR;
+﻿using MediatR;
 
 namespace GTL.Application.UseCases.Users.Queries.GetUserList
 {

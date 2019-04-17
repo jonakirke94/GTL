@@ -3,6 +3,7 @@ using FluentValidation.Validators;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GTL.Application.UseCases.Users.Commands.UpdateUser;
 
 namespace GTL.Application.Users.Commands.UpdateUser
 {

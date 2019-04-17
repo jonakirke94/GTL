@@ -1,5 +1,4 @@
-﻿using GTL.Application.Interfaces.Authentication.IdentityModels;
-using GTL.Domain.Entities;
+﻿using GTL.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

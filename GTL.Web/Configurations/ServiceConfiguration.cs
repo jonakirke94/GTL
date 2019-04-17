@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using GTL.Application.Authentication;
+using GTL.Application.Infrastructure.Pipeline;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 
 namespace GTL.Web.Configurations
@@ -27,7 +28,6 @@ namespace GTL.Web.Configurations
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<IAuthService, AuthService>();

@@ -1,12 +1,9 @@
-﻿using MediatR.Pipeline;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using MediatR.Pipeline;
+using Microsoft.Extensions.Logging;
 
-namespace GTL.Application.Infrastructure
+namespace GTL.Application.Infrastructure.Pipeline
 {
     public class RequestLogger<TRequest> : IRequestPreProcessor<TRequest>
     {

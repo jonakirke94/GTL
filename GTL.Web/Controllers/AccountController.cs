@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Application.UseCases.Account.Commands.Login;
+using GTL.Application.UseCases.Users.Commands.Login;
 using GTL.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;

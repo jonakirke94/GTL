@@ -1,4 +1,5 @@
-﻿using GTL.Domain.Entities.Identity;
+﻿using GTL.Domain.Entities;
+using GTL.Domain.Entities.Identity;
 using MediatR;
 
 namespace GTL.Application.UseCases.Users.Commands.CreateUser
@@ -11,7 +12,9 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
 
         public string Password { get; set; }   
         
-        public string RoleName { get; set; }
+        public PermissionLevel? PermissionLevel { get; set; }
+
+
     }
 }
 

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using GTL.Application.Interfaces.Authentication.IdentityModels;
+using GTL.Application.Authentication;
 
 namespace GTL.Web.Authentication
 {

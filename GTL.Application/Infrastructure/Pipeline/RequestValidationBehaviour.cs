@@ -1,14 +1,12 @@
-﻿using FluentValidation;
-using MediatR;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
 using ValidationException = GTL.Application.Exceptions.ValidationException;
 
-namespace GTL.Application.Infrastructure
+namespace GTL.Application.Infrastructure.Pipeline
 {
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

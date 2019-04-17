@@ -7,8 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Authentication;
-using GTL.Application.Interfaces.Authentication.IdentityModels;
 using System.Security.Claims;
+using GTL.Application.Authentication;
+using GTL.Application.Infrastructure.RequestModels;
+using GTL.Application.UseCases.Users.Commands.Login;
 
 namespace GTL.Application.UseCases.Account.Commands.Login
 {
@@ -38,7 +40,7 @@ namespace GTL.Application.UseCases.Account.Commands.Login
             {
                 new Claim(ClaimTypes.Name, result.User.Name),
                 new Claim(ClaimTypes.NameIdentifier, result.User.Id.ToString()),
-                new Claim(ClaimTypes.Role, result.User.Role.Name),
+                new Claim(ClaimTypes.Role, result.User.PermissionLevel.ToString()),
             new Claim("Last Changed", result.User.LastChanged.ToLongDateString()),
             };
 

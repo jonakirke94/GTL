@@ -14,28 +14,17 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
     public class Handler : IRequestHandler<CreateUserCommand, Unit>
     {
         private readonly IUserRepository _userRepo;
-        private readonly IRoleRepository _roleRepo;
-        private readonly IMediator _mediator;
 
-        public Handler(IUserRepository userRepo, IRoleRepository roleRepo, IMediator mediator)
+        public Handler(IUserRepository userRepo)
         {
             _userRepo = userRepo;
-            _roleRepo = roleRepo;
-            _mediator = mediator;
         }
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.RoleName))
+            if (request.PermissionLevel.HasValue)
             {
-                throw new NoRoleException(request.Name);
-            }
-
-            var role = await _roleRepo.GetRoleByNameAsync(request.RoleName);
-
-            if (role == null)
-            {
-                throw new NoRoleMatchException(request.RoleName);
+                throw new MissingPermissionException(request.Name);
             }
 
             var salt = Hasher.CreateSalt();
@@ -50,7 +39,7 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
                 PasswordHash = passwordHash,
                 PasswordSalt = salt,
                 LastChanged = DateTime.Now,
-                RoleId = role.Id,
+                PermissionLevel = request.PermissionLevel.Value
             };
 
             await _userRepo.CreateAsync(entity, cancellationToken);

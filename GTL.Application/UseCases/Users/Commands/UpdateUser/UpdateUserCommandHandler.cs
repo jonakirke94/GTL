@@ -1,14 +1,11 @@
-﻿using GTL.Application.Exceptions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace GTL.Application.Users.Commands.UpdateUser
+namespace GTL.Application.UseCases.Users.Commands.UpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
     {

@@ -14,9 +14,10 @@ using GTL.Application.Interfaces.Authentication;
 using GTL.Application.UseCases.Account.Commands.Login;
 using Microsoft.AspNetCore.Authorization;
 using GTL.Domain.Entities.Identity;
-using GTL.Application.Interfaces.Authentication.IdentityModels;
 using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
+using GTL.Application.UseCases.Users.Commands.DeleteUser;
+using GTL.Application.UseCases.Users.Commands.UpdateUser;
 using GTL.Application.UseCases.Users.Queries.GetUserList;
 
 namespace GTL.Web.Controllers
@@ -97,17 +98,12 @@ namespace GTL.Web.Controllers
         {
             try
             {
-                command.RoleName = Roles.Admin.ToString();
+                command.PermissionLevel = PermissionLevel.CHIEFLIBRARIAN;
                 await Mediator.Send(command);
             }
-            catch (NoRoleException e)
+            catch (Exception e)
             {
-               // user has to be instantiated with at least 1 role!
-            }
-            catch (NoRoleMatchException e)
-            {
-                // this should probably not be a custom exception because the user has no control over the roles added
-                // attempted to add a role which does not exist!
+                var exc = e;
             }
 
             return RedirectToAction(nameof(Index));
