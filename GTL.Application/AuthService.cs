@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using GTL.Application.Authorization;
 using GTL.Application.Helper;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Authentication.IdentityModels;
 using GTL.Application.Interfaces.Repositories;
+using GTL.Domain.Entities;
 
 namespace GTL.Application
 {
@@ -17,6 +19,11 @@ namespace GTL.Application
         public AuthService(IUserRepository userRepo)
         {
             _userRepo = userRepo;
+        }
+
+        public bool HasPermission(PermissionLevel permission, User user)
+        {
+            return PermissionLevel.READUSERS == permission;
         }
 
         public async Task<SignInResult> ValidatePasswordAsync(string email, string password)

@@ -1,4 +1,5 @@
 ﻿using GTL.Domain.Entities.Identity;
+using GTL.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,6 @@ namespace GTL.Domain.Entities
 
         public ICollection<Book> Books { get; private set; }
 
-        public Role Role { get; set; }
-
-        public int RoleId { get; set; }
+        public readonly PermissionLevel PermissionLevel;
     }
 }

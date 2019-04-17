@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Authorization;
+using GTL.Application.Interfaces.Authentication;
 
 namespace GTL.Application.Infrastructure
 {
@@ -15,12 +16,14 @@ namespace GTL.Application.Infrastructure
         private readonly ILogger<TRequest> _logger;
         private readonly IUserRepository _userRepo;
         private readonly ICurrentUser _currentUser;
+        private readonly IAuthService _authService;
 
-        public RequestAuthorization(ILogger<TRequest> logger, IUserRepository userRepo, ICurrentUser currentUser)
+        public RequestAuthorization(IAuthService authService, ILogger<TRequest> logger, IUserRepository userRepo, ICurrentUser currentUser)
         {        
             _logger = logger;
             _userRepo = userRepo;
             _currentUser = currentUser;
+            _authService = authService;
         }
 
 
@@ -43,7 +46,15 @@ namespace GTL.Application.Infrastructure
                     return await Error("User could not find user id");
                 }
 
+
                 var user = await _userRepo.GetUserByIdAsync(id, cancellationToken);
+
+                if (type == "AuthCommand")
+                {
+                    var auth = request as AuthCommand;
+                    var hasPermission = _authService.HasPermission(auth.PermissionLevel, user);
+
+                }
 
                 // may need to sanitize the name because the CLR appens a number to handle generic parameters
                 var sanitizedType = type.Substring(0, type.LastIndexOf("`"));
@@ -51,7 +62,7 @@ namespace GTL.Application.Infrastructure
                 switch (sanitizedType)
                 {
                     case "AssistantLibrarian":
-                        var auth = request as AssistantLibrarian<TResponse>;
+                        var auth = request as AssistantLibrarian;
                         isAuthorized = await auth.Evaluate(user, cancellationToken);
                         break;
                     default:

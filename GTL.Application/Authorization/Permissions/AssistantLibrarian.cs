@@ -7,7 +7,7 @@ using MediatR;
 
 namespace GTL.Application.Authorization.Permissions
 {
-    public class AssistantLibrarian<T> : IAuthorizer, IRequest<T>
+    public class AssistantLibrarian : IAuthorizer
     {
         public async Task<bool> Evaluate(User user, CancellationToken cancellationToken)
         {
