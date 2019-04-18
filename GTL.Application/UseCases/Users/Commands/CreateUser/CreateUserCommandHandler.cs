@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.Helper;
+using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 using MediatR;
@@ -14,18 +15,22 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
     public class Handler : IRequestHandler<CreateUserCommand, Unit>
     {
         private readonly IUserRepository _userRepo;
+        private readonly IAuthService _authService;
 
-        public Handler(IUserRepository userRepo)
+        public Handler(IUserRepository userRepo, IAuthService authService)
         {
             _userRepo = userRepo;
+            _authService = authService;
         }
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            if (request.PermissionLevel.HasValue)
-            {
-                throw new MissingPermissionException(request.Name);
-            }
+            //var authResult = await _authService.HasMinPermission(PermissionLevel.CHIEFLIBRARIAN, cancellationToken);
+            //if (!authResult.IsAuthorized || !authResult.IsAuthenticated)
+            //{
+            //    throw new AuthException(authResult.UserPermissionLevel, authResult.RequiredMinPermissionLevel,
+            //        authResult.ErrorMessage);
+            //}
 
             var salt = Hasher.CreateSalt();
             var passwordHash = Hasher.Hash(request.Password, salt);

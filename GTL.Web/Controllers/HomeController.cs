@@ -101,7 +101,7 @@ namespace GTL.Web.Controllers
                 command.PermissionLevel = PermissionLevel.CHIEFLIBRARIAN;
                 await Mediator.Send(command);
             }
-            catch (Exception e)
+            catch (AuthException e)
             {
                 var exc = e;
             }

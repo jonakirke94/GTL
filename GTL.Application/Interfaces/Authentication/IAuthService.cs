@@ -1,14 +1,16 @@
-﻿using System.Threading.Tasks;
-using GTL.Application.Authorization;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using GTL.Application.Infrastructure.RequestModels;
 using GTL.Domain.Entities;
 
-namespace GTL.Application.Authentication
+namespace GTL.Application.Interfaces.Authentication
 {
     public interface IAuthService
     {
         Task<SignInResult> ValidatePasswordAsync(string email, string password);
 
-        bool HasPermission(PermissionLevel permission, User user);
+        Task<AuthModel> HasMinPermission(PermissionLevel permission, CancellationToken cancellationToken);
     }
 }
+
+

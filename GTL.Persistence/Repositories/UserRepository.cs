@@ -35,9 +35,9 @@ namespace GTL.Persistence.Repositories
             {
                 await connection.OpenAsync(cancellationToken);
                 var id = await connection.QuerySingleAsync<int>($@"INSERT INTO [User] ([Name], [NormalizedName], [Email],
-                    [NormalizedEmail], [PasswordHash], [PasswordSalt],  [LastChanged])
+                    [NormalizedEmail], [PasswordHash], [PasswordSalt],  [LastChanged], [PermissionLevel])
                     VALUES (@{nameof(User.Name)}, @{nameof(User.NormalizedName)}, @{nameof(User.Email)},
-                    @{nameof(User.NormalizedEmail)}, @{nameof(User.PasswordHash)}, @{nameof(User.PasswordSalt)}, @{nameof(User.LastChanged)});
+                    @{nameof(User.NormalizedEmail)}, @{nameof(User.PasswordHash)}, @{nameof(User.PasswordSalt)}, @{nameof(User.LastChanged)}, @{nameof(User.PermissionLevel)});
                     SELECT CAST(SCOPE_IDENTITY() as int)", user);
 
                 return id;

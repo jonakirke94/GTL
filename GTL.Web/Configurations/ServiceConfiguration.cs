@@ -54,7 +54,7 @@ namespace GTL.Web.Configurations
             services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthorization<,>));
+            // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthorization<,>));
 
             services.Configure<CookiePolicyOptions>(options =>
             {

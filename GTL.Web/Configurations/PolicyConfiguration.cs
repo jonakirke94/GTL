@@ -14,11 +14,11 @@ namespace GTL.Web.Configurations
             {
                 options.AddPolicy(
                     "CanReadUsers",
-                    policy => policy.RequireRole("Member"));
+                    policy => policy.RequireRole("CHIEFLIBRARIAN"));
 
                 options.AddPolicy(
                     "CanWriteUsers",
-                    policy => policy.RequireRole("Admin"));
+                    policy => policy.RequireRole("CHIEFLIBRARIAN"));
             });
         }
     }

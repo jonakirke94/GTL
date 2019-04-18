@@ -13,8 +13,6 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
         public string Password { get; set; }   
         
         public PermissionLevel? PermissionLevel { get; set; }
-
-
     }
 }
 

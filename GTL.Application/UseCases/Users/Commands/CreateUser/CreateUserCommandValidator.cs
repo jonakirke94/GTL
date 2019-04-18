@@ -14,6 +14,8 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
             //    .Must(ValidDanishZip);
 
             RuleFor(x => x.Password).NotEmpty();
+
+            RuleFor(x => x.PermissionLevel).NotNull();
         }
 
         //private static bool ValidDanishZip(CreateUserCommand model, string zipCode, PropertyValidatorContext ctx)

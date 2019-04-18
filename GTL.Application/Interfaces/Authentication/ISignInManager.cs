@@ -15,8 +15,6 @@ namespace GTL.Application.Interfaces.Authentication
 
         Task<bool> ValidateLastChanged(int id, string lastChanged);
 
-        int GetCurrentUserId();
-
         bool IsSignedIn();
     }
 }
