@@ -14,6 +14,7 @@ using GTL.Application.UseCases.Account.Commands.Login;
 using Microsoft.AspNetCore.Authorization;
 using GTL.Domain.Entities.Identity;
 using GTL.Application.Exceptions;
+using GTL.Application.UseCases.Users;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 using GTL.Application.UseCases.Users.Commands.DeleteUser;
 using GTL.Application.UseCases.Users.Commands.UpdateUser;
@@ -68,9 +69,9 @@ namespace GTL.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, UserDetailModel user)
+        public async Task<IActionResult> Edit(int id, UserViewModel model)
         {
-            if (id != user.Id)
+            if (id != model.User.Id)
             {
                 return NotFound();
             }
@@ -79,16 +80,16 @@ namespace GTL.Web.Controllers
             {
                 var command = new UpdateUserCommand
                 {
-                    Id = user.Id,
-                    Name = user.Name,
-                    City = user.City,
-                    ZipCode = user.ZipCode,
+                    Id = model.User.Id,
+                    Name = model.User.Name,
+                    City = model.User.City,
+                    ZipCode = model.User.ZipCode,
 
                 };
                 await Mediator.Send(command);
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(model);
         }
 
         [HttpPost]
@@ -97,7 +98,6 @@ namespace GTL.Web.Controllers
         {
             try
             {
-                command.PermissionLevel = PermissionLevel.CHIEFLIBRARIAN;
                 await Mediator.Send(command);
             }
             catch (AuthException e)

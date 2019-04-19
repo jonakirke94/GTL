@@ -1,4 +1,5 @@
-﻿@model GTL.Application.UseCases.Users.Commands.CreateUser.CreateUserCommand
+﻿@using GTL.Domain.Entities
+@model GTL.Application.UseCases.Users.Commands.CreateUser.CreateUserCommand
 
 @{
     ViewData["Title"] = "Create";
@@ -27,6 +28,9 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+            <select asp-for="PermissionLevel" asp-items="Html.GetEnumSelectList<PermissionLevel>()">
+                <option selected="selected" value="">Please select</option>
+            </select>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
