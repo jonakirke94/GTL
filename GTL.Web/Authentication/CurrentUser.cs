@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using GTL.Application.Authentication;
+using GTL.Application.Interfaces.Authentication;
+using GTL.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace GTL.Web.Authentication
@@ -33,6 +34,18 @@ namespace GTL.Web.Authentication
             int.TryParse(claim.Value, out var currentId);
 
             return currentId;
+        }
+
+        public PermissionLevel GetCurrentPermission()
+        {
+            var claim = _context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+            if (claim == null)
+                return PermissionLevel.DEFAULT;
+
+            var perm = PermissionLevel.DEFAULT;
+            Enum.TryParse(claim.Value, out perm);
+            return perm;
         }
     }
 }

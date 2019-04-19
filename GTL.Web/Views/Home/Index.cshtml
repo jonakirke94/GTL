@@ -1,4 +1,4 @@
-﻿@model GTL.Application.UseCases.Users.Queries.GetUserList.UserListDto
+﻿@model GTL.Application.UseCases.Users.UserListViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -46,27 +46,37 @@ else
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => user.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => user.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => user.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => user.ZipCode)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@user.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@user.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@user.Id" method="post">Delete</a>
-                </td>
-            </tr>
-        }
+    @foreach (var user in Model.Users)
+     {
+         <tr>
+             <td>
+                 @Html.DisplayFor(modelItem => user.Id)
+             </td>
+             <td>
+                 @Html.DisplayFor(modelItem => user.Name)
+             </td>
+             <td>
+                 @Html.DisplayFor(modelItem => user.City)
+             </td>
+             <td>
+                 @Html.DisplayFor(modelItem => user.ZipCode)
+             </td>
+             <td>
+
+                 @if (Model.EditEnabled)
+                 {
+                     <a asp-action="Edit" asp-route-id="@user.Id">Edit |</a> 
+                 }
+                 <a asp-action="Details" asp-route-id="@user.Id">Details</a>
+                 
+                 @if (Model.DeleteEnabled)
+                 {
+                    <a asp-action="Delete" asp-route-id="@user.Id" method="post">| Delete</a>
+                 }
+
+             </td>
+         </tr>
+     }
+    
     </tbody>
 </table>

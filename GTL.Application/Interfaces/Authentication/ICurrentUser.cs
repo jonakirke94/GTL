@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GTL.Domain.Entities;
 
-namespace GTL.Application.Authentication
+namespace GTL.Application.Interfaces.Authentication
 {
     public interface ICurrentUser
     {
         bool IsAuthenticated();
 
         int GetUserId();
+
+        PermissionLevel GetCurrentPermission();
     }
 }

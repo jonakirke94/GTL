@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Authentication;
 using System.Security.Claims;
-using GTL.Application.Authentication;
 using GTL.Application.Infrastructure.RequestModels;
 using GTL.Application.UseCases.Users.Commands.Login;
 

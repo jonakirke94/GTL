@@ -2,7 +2,7 @@
 
 namespace GTL.Application.UseCases.Users.Queries.GetUserList
 {
-    public class GetUserListQuery : IRequest<UserListDto>
+    public class GetUserListQuery : IRequest<UserListViewModel>
     {
     }
 }

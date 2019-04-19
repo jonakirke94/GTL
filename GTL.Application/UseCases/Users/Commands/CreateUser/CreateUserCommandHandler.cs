@@ -25,13 +25,6 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            //var authResult = await _authService.HasMinPermission(PermissionLevel.CHIEFLIBRARIAN, cancellationToken);
-            //if (!authResult.IsAuthorized || !authResult.IsAuthenticated)
-            //{
-            //    throw new AuthException(authResult.UserPermissionLevel, authResult.RequiredMinPermissionLevel,
-            //        authResult.ErrorMessage);
-            //}
-
             var salt = Hasher.CreateSalt();
             var passwordHash = Hasher.Hash(request.Password, salt);
 

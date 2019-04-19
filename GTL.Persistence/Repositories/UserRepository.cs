@@ -103,7 +103,9 @@ namespace GTL.Persistence.Repositories
             const string query = @"SELECT * FROM [User]";
             using (var connection = new SqlConnection(Options.ConnectionString))
             {
-                return await connection.QueryAsync<User>(query);
+                var users = await connection.QueryAsync<User>(query);
+
+                return users.Any() ? users : new List<User>();
             }
         }
 

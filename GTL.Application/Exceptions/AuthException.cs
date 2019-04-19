@@ -7,8 +7,8 @@ namespace GTL.Application.Exceptions
 {
     public class AuthException : Exception
     {
-        public AuthException(PermissionLevel userLevel, PermissionLevel requiredLevel, string errorMessage)
-            : base($"User with permissionLevel \"{userLevel}\" did not have required permissionLevel \"{requiredLevel}\". - {errorMessage}")
+        public AuthException(PermissionLevel permissionLevel)
+            : base($"User did not have sufficient permissionLevel. Required: \"{permissionLevel}\"")
         {
         }
     }

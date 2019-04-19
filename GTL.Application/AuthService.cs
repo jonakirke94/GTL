@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using GTL.Application.Authentication;
 using GTL.Application.Authorization;
 using GTL.Application.Exceptions;
 using GTL.Application.Helper;
@@ -25,35 +24,23 @@ namespace GTL.Application
             _currentUser = currentUser;
         }
 
-        public async Task<AuthModel> HasMinPermission(PermissionLevel permission, CancellationToken cancellationToken)
+        public async Task<bool> HasMinPermission(PermissionLevel permission, CancellationToken cancellationToken)
         {
-
-            var authModel = new AuthModel
+            if (!_currentUser.IsAuthenticated())
             {
-                IsAuthenticated = _currentUser.IsAuthenticated()
-            };
+                return false;
+            }
 
             var id = _currentUser.GetUserId();
 
             if (id == -1)
             {
-                authModel.ErrorMessage = "Could not find any Id for currently logged in user";
-                authModel.IsAuthorized = false;
-                return authModel;
+                return false;
             }
 
             var user = await _userRepo.GetUserByIdAsync(id, cancellationToken);
 
-            authModel.RequiredMinPermissionLevel = permission;
-            authModel.UserPermissionLevel = user.PermissionLevel;
-            authModel.IsAuthorized = user.PermissionLevel >= permission;
-
-            if (!authModel.IsAuthorized)
-            {
-                authModel.ErrorMessage = "User not authorized for the request";
-            }
-
-            return authModel;
+            return user.PermissionLevel >= permission;
         }
 
         public async Task<SignInResult> ValidatePasswordAsync(string email, string password)

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using GTL.Web.Models;
 using GTL.Application.Users.Commands.DeleteUser;
 using GTL.Application.Users.Queries.GetUser;
-using GTL.Application.Users.Commands.CreateUser;
 using GTL.Application.Users.Commands.UpdateUser;
 using GTL.Domain.Entities;
 using GTL.Application.Interfaces.Authentication;

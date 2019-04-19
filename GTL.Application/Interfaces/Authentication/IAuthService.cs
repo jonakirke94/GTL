@@ -9,7 +9,7 @@ namespace GTL.Application.Interfaces.Authentication
     {
         Task<SignInResult> ValidatePasswordAsync(string email, string password);
 
-        Task<AuthModel> HasMinPermission(PermissionLevel permission, CancellationToken cancellationToken);
+        Task<bool> HasMinPermission(PermissionLevel permission, CancellationToken cancellationToken);
     }
 }
 

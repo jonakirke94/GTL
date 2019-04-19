@@ -8,19 +8,24 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using GTL.Application.UseCases.Users;
 
 namespace GTL.Application.Users.Queries.GetUser
 {
-    public class GetUserDetailQueryHandler : IRequestHandler<GetUserDetailQuery, UserDetailModel>
+    public class GetUserDetailQueryHandler : IRequestHandler<GetUserDetailQuery, UserViewModel>
     {
         private readonly IUserRepository _userRepo;
+        private readonly IMapper _mapper;
 
-        public GetUserDetailQueryHandler(IUserRepository userRepo)
+        public GetUserDetailQueryHandler(IUserRepository userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
+            _mapper = mapper;
+
         }
 
-        public async Task<UserDetailModel> Handle(GetUserDetailQuery request, CancellationToken cancellationToken)
+        public async Task<UserViewModel> Handle(GetUserDetailQuery request, CancellationToken cancellationToken)
         {
             var entity = await _userRepo.GetUserByIdAsync(request.Id, cancellationToken);
 
@@ -29,7 +34,7 @@ namespace GTL.Application.Users.Queries.GetUser
                 throw new NotFoundException(nameof(User), request.Id);
             }
 
-            return UserDetailModel.Create(entity);
+            return _mapper.Map<UserViewModel>(entity);
         }
     }
 }

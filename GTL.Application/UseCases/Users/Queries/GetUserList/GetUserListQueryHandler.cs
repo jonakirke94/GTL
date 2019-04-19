@@ -7,7 +7,7 @@ using MediatR;
 
 namespace GTL.Application.UseCases.Users.Queries.GetUserList
 {
-    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, UserListDto>
+    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, UserListViewModel>
     {
         private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
@@ -18,12 +18,9 @@ namespace GTL.Application.UseCases.Users.Queries.GetUserList
             _mapper = mapper;
         }
 
-        public async Task<UserListDto> Handle(GetUserListQuery request, CancellationToken cancellationToken)
+        public async Task<UserListViewModel> Handle(GetUserListQuery request, CancellationToken cancellationToken)
         {
-            return new UserListDto
-            {
-                Users = _mapper.Map<IEnumerable<UserDto>>(await _userRepo.GetUsersAsync(cancellationToken))
-            };
+            return _mapper.Map<UserListViewModel>(await _userRepo.GetUsersAsync(cancellationToken));
         }
     }
 }
