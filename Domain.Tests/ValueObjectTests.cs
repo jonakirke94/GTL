@@ -1,6 +1,6 @@
-using GTL.Domain.Exceptions;
-using System;
 using GTL.Domain.ValueObjects;
+using System;
+using GTL.Domain.Exceptions;
 using Xunit;
 
 namespace Domain.Tests

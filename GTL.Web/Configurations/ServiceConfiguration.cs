@@ -17,6 +17,7 @@ using GTL.Application.Interfaces.Authentication;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 using GTL.Application.Users.Queries.GetUser;
 using GTL.Infrastructure;
+using GTL.Persistence.Repositories;
 
 namespace GTL.Web.Configurations
 {
