@@ -1,14 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation.AspNetCore;
-using GTL.Application;
-using GTL.Application.Infrastructure;
-using GTL.Application.Infrastructure.AutoMapper;
-using GTL.Application.Interfaces;
-using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Repositories;
-using GTL.Application.Users.Queries.GetUser;
-using GTL.Infrastructure;
-using GTL.Persistence.Repositories;
 using GTL.Web.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,8 +9,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using GTL.Application;
+using GTL.Application.Infrastructure.AutoMapper;
 using GTL.Application.Infrastructure.Pipeline;
+using GTL.Application.Interfaces;
+using GTL.Application.Interfaces.Authentication;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
+using GTL.Application.Users.Queries.GetUser;
+using GTL.Infrastructure;
 
 namespace GTL.Web.Configurations
 {

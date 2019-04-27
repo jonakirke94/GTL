@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GTL.Application\GTL.Application.csproj" />
+    <ProjectReference Include="..\GTL.Domain\GTL.Domain.csproj" />
   </ItemGroup>
 
 </Project>

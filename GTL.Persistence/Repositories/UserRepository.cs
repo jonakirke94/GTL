@@ -5,7 +5,6 @@ using GTL.Domain.Entities;
 using GTL.Domain.Entities.Identity;
 using GTL.Persistence.Configurations;
 using GTL.Persistence.Helpers;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
