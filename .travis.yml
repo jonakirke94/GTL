@@ -5,5 +5,3 @@ dist: trusty
 script:
  - cd Application.Tests
  - dotnet test
- - cd Domain.Tests
- - dotnet test
