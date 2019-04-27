@@ -1,8 +1,15 @@
 language: csharp
 solution: GTL.sln
+
+matrix:
+  include:
+    - dotnet: 2.1.502
+      mono: none
+      env: DOTNETCORE=2  # optional, can be used to take different code paths in your script
+    - mono: latest
+
 install:
   - nuget restore GTL.sln
-  - dotnet restore
   - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 script:
   - msbuild /p:Configuration=Release GTL.sln
