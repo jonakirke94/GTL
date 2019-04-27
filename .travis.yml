@@ -1,1 +1,9 @@
-language: C#
+language: csharp
+mono: none
+dotnet: 2.0.0
+dist: trusty
+script:
+ - cd Application.Tests
+ - dotnet test
+ - cd Domain.Tests
+ - dotnet test
