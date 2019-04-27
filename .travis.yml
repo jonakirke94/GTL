@@ -2,6 +2,7 @@ language: csharp
 solution: GTL.sln
 install:
   - nuget restore GTL.sln
+  - dotnet restore
   - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 script:
   - msbuild /p:Configuration=Release GTL.sln
