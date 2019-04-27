@@ -1,6 +1,8 @@
 language: csharp
-dist: trusty
-mono: none
-dotnet: 2.0.0
+solution: GTL.sln
+install:
+  - nuget restore GTL.sln
+  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 script:
-- dotnet test Domain.Tests.csproj
+  - msbuild /p:Configuration=Release GTL.sln
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./Domain.Tests/bin/Release/Domain.Tests.dll
