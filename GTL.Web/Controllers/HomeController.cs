@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GTL.Web.Models;
-using GTL.Application.Users.Commands.DeleteUser;
 using GTL.Application.Users.Queries.GetUser;
-using GTL.Application.Users.Commands.UpdateUser;
-using GTL.Domain.Entities;
 using GTL.Application.Interfaces.Authentication;
-using GTL.Application.UseCases.Account.Commands.Login;
 using Microsoft.AspNetCore.Authorization;
-using GTL.Domain.Entities.Identity;
 using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Users;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
@@ -99,7 +91,7 @@ namespace GTL.Web.Controllers
             {
                 await Mediator.Send(command);
             }
-            catch (AuthException e)
+            catch (AuthException)
             {
             }
 

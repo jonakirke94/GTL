@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation.TestHelper;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 using GTL.Domain.Entities;
 using MediatR;
 using Moq;
 using Xunit;
-using FluentValidation;
-using FluentValidation.TestHelper;
 
 namespace Application.Tests
 {
@@ -43,10 +39,10 @@ namespace Application.Tests
             var handler = new CreateUserCommandHandler(userRepo.Object);
 
             // Act
-            var res = await handler.Handle(_command.Object, CancellationToken.None);           
+            var res = await handler.Handle(_command.Object, CancellationToken.None);
 
             // Assert
-            Assert.IsType<Unit>(res);        
+            Assert.IsType<Unit>(res);
         }
 
         [Theory]
@@ -105,4 +101,3 @@ namespace Application.Tests
         }
     }
 }
-

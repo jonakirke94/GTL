@@ -1,9 +1,8 @@
-using GTL.Domain.Exceptions;
-using System;
+﻿using GTL.Domain.Exceptions;
 using GTL.Domain.ValueObjects;
 using Xunit;
 
-namespace Domain.Tests
+namespace GTL.Domain.Tests
 {
     public class ValueObjectTests
     {

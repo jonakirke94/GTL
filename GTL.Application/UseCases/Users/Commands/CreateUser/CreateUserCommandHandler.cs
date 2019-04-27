@@ -24,7 +24,16 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var salt = Hasher.CreateSalt();
-            var passwordHash = Hasher.Hash(request.Password, salt);
+
+            try
+            {
+                var passwordHash = Hasher.Hash(request.Password, salt);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
 
             var entity = new User
             {
@@ -32,7 +41,7 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
                 NormalizedName = request.Name.Normalize(),
                 Email = request.Email,
                 NormalizedEmail = request.Email.Normalize(),
-                PasswordHash = passwordHash,
+                PasswordHash = "1",
                 PasswordSalt = salt,
                 LastChanged = DateTime.Now,
                 PermissionLevel = request.PermissionLevel
