@@ -35,7 +35,7 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
                 PasswordHash = passwordHash,
                 PasswordSalt = salt,
                 LastChanged = DateTime.Now,
-                PermissionLevel = request.PermissionLevel.Value
+                PermissionLevel = request.PermissionLevel
             };
 
             await _userRepo.CreateAsync(entity, cancellationToken);

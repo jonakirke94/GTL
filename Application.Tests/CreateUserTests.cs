@@ -43,11 +43,9 @@ namespace Application.Tests
             var handler = new CreateUserCommandHandler(userRepo.Object);
 
             // Act
-            var validation = _validator.Validate(_command.Object);
             var res = await handler.Handle(_command.Object, CancellationToken.None);           
 
             // Assert
-            Assert.True(validation.IsValid);
             Assert.IsType<Unit>(res);        
         }
 
@@ -74,9 +72,37 @@ namespace Application.Tests
             _validator.ShouldHaveValidationErrorFor(user => user.Email, _command.Object);
         }
 
+        [Theory]
+        [InlineData("1234567")]
+        [InlineData(null)]
+        public void ShouldHavePasswordValidation(string password)
+        {
+            _command.Object.Password = password;
+            _validator.ShouldHaveValidationErrorFor(user => user.Password, _command.Object);
+        }
+
+        [Theory]
+        [InlineData("12345678", "123")]
+        [InlineData("12345678", null)]
+        [InlineData("12345678", "")]
+        [InlineData("abcdefgh", "abcdefghi")]
+        public void ShouldHaveConfirmPasswordValidation(string password, string confirmPassword)
+        {
+            _command.Object.Password = password;
+            _command.Object.ConfirmPassword = confirmPassword;
+            _validator.ShouldHaveValidationErrorFor(user => user.ConfirmPassword, _command.Object);
+        }
+
+        [Fact]
+        public void ShouldHavePermissionValidation()
+        {
+            _validator.ShouldHaveValidationErrorFor(user => user.PermissionLevel, _command.Object);
+        }
+
         public void Dispose()
         {
             // teardown is xUnit
         }
     }
 }
+

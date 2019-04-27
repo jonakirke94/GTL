@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Validators;
 
 namespace GTL.Application.UseCases.Users.Commands.CreateUser
 {
@@ -9,18 +10,11 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.Name).NotEmpty().MinimumLength(2);
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
-            RuleFor(x => x.PermissionLevel).NotNull();
-
-            // example of more complex validation with regex
-            //RuleFor(x => x.ZipCode).Matches(@"^\d{4}$")
-            //    .Must(ValidDanishZip);
-
+            RuleFor(x => x.PermissionLevel).NotEmpty().IsInEnum();
+            RuleFor(x => x.ConfirmPassword).NotEmpty().Equal(x => x.Password);
         }
 
-        //private static bool ValidDanishZip(CreateUserCommand model, string zipCode, PropertyValidatorContext ctx)
-        //{
-        //    return !model.ZipCode.StartsWith("0");
-        //}
+      
     }
  
 }
