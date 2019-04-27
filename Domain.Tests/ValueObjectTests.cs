@@ -43,5 +43,11 @@ namespace Domain.Tests
         {
             Assert.Throws<ISBNInvalidException>(() => ISBN.For(isbn));
         }
+
+        [Fact]
+        public void TestFail()
+        {
+            Assert.True(false);
+        }
     }
 }
