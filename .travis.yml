@@ -1,5 +1,6 @@
 language: csharp
 solution: GTL.sln
+dist: bionic
 
 matrix:
   include:
