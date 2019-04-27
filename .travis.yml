@@ -4,4 +4,4 @@ mono: none
 dotnet: 2.2.103
 script:
  - dotnet restore
- - dotnet test Domain.Tests.csproj
+ - dotnet test find . -maxdepth 2 -name “*Test.csproj” -type f | xargs dotnet test
