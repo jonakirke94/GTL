@@ -8,6 +8,7 @@ namespace GTL.Application.Helper
 {
     public static class Hasher
     {
+        //https://www.c-sharpcorner.com/article/hashing-in-asp-net-core-2-0/
         public static string Hash(string password, string salt)
         {
             var valueBytes = KeyDerivation.Pbkdf2(

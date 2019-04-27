@@ -12,15 +12,13 @@ using MediatR;
 
 namespace GTL.Application.UseCases.Users.Commands.CreateUser
 {
-    public class Handler : IRequestHandler<CreateUserCommand, Unit>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Unit>
     {
         private readonly IUserRepository _userRepo;
-        private readonly IAuthService _authService;
 
-        public Handler(IUserRepository userRepo, IAuthService authService)
+        public CreateUserCommandHandler(IUserRepository userRepo)
         {
             _userRepo = userRepo;
-            _authService = authService;
         }
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)

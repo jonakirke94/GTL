@@ -22,6 +22,8 @@ namespace GTL.Application.Interfaces.Repositories
         Task UpdateUserAsync(User user, CancellationToken cancellationToken);
 
         Task DeleteUserAsync(int id, CancellationToken cancellationToken);
+
+        Task<int> Test();
     }
 }
 

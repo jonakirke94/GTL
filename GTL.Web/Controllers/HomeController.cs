@@ -54,7 +54,6 @@ namespace GTL.Web.Controllers
             return View();
         }
 
-
         [Authorize(Policy = "CanWriteUsers")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -102,7 +101,6 @@ namespace GTL.Web.Controllers
             }
             catch (AuthException e)
             {
-                var exc = e;
             }
 
             return RedirectToAction(nameof(Index));
