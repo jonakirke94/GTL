@@ -95,12 +95,6 @@ namespace Application.Tests
             _validator.ShouldHaveValidationErrorFor(user => user.PermissionLevel, _command.Object);
         }
 
-        [Fact]
-        public void TestFail()
-        {
-            Assert.True(false);
-        }
-
         public void Dispose()
         {
             // teardown is xUnit
