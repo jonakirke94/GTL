@@ -3,11 +3,11 @@ language: csharp
 mono: none
 dotnet: 2.2.103
 after_success:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/verbose/send.sh
   - chmod +x send.sh
   - ./send.sh success https://discordapp.com/api/webhooks/571992506112147457/9jSLxduEiSmedu_Wt2TWq-H-O9WKLCDHT0uMOhCj7YtjEQZ_IcfwMgjA-IHQF_JbdNSA
 after_failure:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/verbose/send.sh
   - chmod +x send.sh
   - ./send.sh failure https://discordapp.com/api/webhooks/571992506112147457/9jSLxduEiSmedu_Wt2TWq-H-O9WKLCDHT0uMOhCj7YtjEQZ_IcfwMgjA-IHQF_JbdNSA
 script:
