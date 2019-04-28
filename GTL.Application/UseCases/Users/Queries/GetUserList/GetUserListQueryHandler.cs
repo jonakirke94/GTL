@@ -20,7 +20,9 @@ namespace GTL.Application.UseCases.Users.Queries.GetUserList
 
         public async Task<UserListViewModel> Handle(GetUserListQuery request, CancellationToken cancellationToken)
         {
-            return _mapper.Map<UserListViewModel>(await _userRepo.GetUsersAsync(cancellationToken));
+            var users = await _userRepo.GetUsersAsync(cancellationToken);
+            var viewModel = _mapper.Map<UserListViewModel>(users);
+            return viewModel;
         }
     }
 }
