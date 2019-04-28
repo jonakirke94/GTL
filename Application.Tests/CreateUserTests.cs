@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Application.Tests
 {
-    // for TASK objects .Returns(Task.FromResult(default(object)))
     public class CreateUserTests : IDisposable
     {
         private readonly CreateUserCommandValidator _validator;
