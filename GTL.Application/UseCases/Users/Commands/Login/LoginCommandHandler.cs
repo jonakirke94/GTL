@@ -8,22 +8,25 @@ using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Authentication;
 using System.Security.Claims;
+using GTL.Application.Helper;
 using GTL.Application.Infrastructure.RequestModels;
 using GTL.Application.UseCases.Users.Commands.Login;
+using GTL.Domain.Entities;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace GTL.Application.UseCases.Account.Commands.Login
 {
     public class Handler : IRequestHandler<LoginCommand, SignInResult>
     {
-        private readonly IUserRepository _userRepo;
         private readonly ISignInManager _signInManager;
         private readonly IAuthService _authService;
+        private readonly IMemoryCache _cache;
 
-        public Handler(IUserRepository userRepo, ISignInManager signInManager, IAuthService authService)
+        public Handler(ISignInManager signInManager, IAuthService authService, IMemoryCache cache)
         {
-            _userRepo = userRepo;
             _signInManager = signInManager;
             _authService = authService;
+            _cache = cache;
         }
 
         public async Task<SignInResult> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -47,6 +50,9 @@ namespace GTL.Application.UseCases.Account.Commands.Login
             var userPrincipal = new ClaimsPrincipal(userIdentity);
 
             await _signInManager.SignInAsync(userPrincipal, request.IsPersistent);
+
+            // add user permission to memory cache              
+            _cache.Set(result.User.Id.ToString(), result.User.PermissionLevel, CacheHelper.CacheOptions());
 
             return result;
         }

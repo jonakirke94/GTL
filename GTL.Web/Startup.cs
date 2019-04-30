@@ -25,6 +25,8 @@ namespace GTL.Web
                 mySettings.OwnConnection = true;
             });
 
+            services.AddMemoryCache();
+
             ServiceConfiguration.ConfigureServices(services);
 
             PolicyConfiguration.ConfigurePolicies(services);
