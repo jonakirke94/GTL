@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GTL.Domain.Enums;
 
 namespace GTL.Domain.Entities
 {

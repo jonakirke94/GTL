@@ -1,4 +1,5 @@
 ﻿using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 
 namespace GTL.Application.Interfaces.Authentication
 {

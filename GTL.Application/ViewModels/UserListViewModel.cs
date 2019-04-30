@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Mapping;
 using GTL.Application.UseCases.Users.Queries;
 using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 
-namespace GTL.Application.UseCases.Users
+namespace GTL.Application.ViewModels
 {
     public class UserListViewModel : IHaveCustomMapping
     {

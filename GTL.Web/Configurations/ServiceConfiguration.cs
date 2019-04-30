@@ -25,11 +25,14 @@ namespace GTL.Web.Configurations
     {
         public static void ConfigureServices(IServiceCollection services)
         {
+            // repos
             services.AddScoped<IUserRepository, UserRepository>();
+
+            // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICurrentUser, CurrentUser>();
-
+            services.AddScoped<IPermissionFactory, PermissionFactory>();        
             services.AddHttpContextAccessor();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
@@ -39,8 +42,7 @@ namespace GTL.Web.Configurations
             });
 
             services.AddScoped<CustomCookieAuthenticationEvents>();
-
-
+        
             // Add AutoMapper
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
@@ -51,7 +53,7 @@ namespace GTL.Web.Configurations
             services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-            // services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthorization<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthBehaviour<,>));
 
             services.Configure<CookiePolicyOptions>(options =>
             {

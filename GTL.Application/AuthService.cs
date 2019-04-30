@@ -24,25 +24,6 @@ namespace GTL.Application
             _currentUser = currentUser;
         }
 
-        public async Task<bool> HasMinPermission(PermissionLevel permission, CancellationToken cancellationToken)
-        {
-            if (!_currentUser.IsAuthenticated())
-            {
-                return false;
-            }
-
-            var id = _currentUser.GetUserId();
-
-            if (id == -1)
-            {
-                return false;
-            }
-
-            var user = await _userRepo.GetUserByIdAsync(id, cancellationToken);
-
-            return user.PermissionLevel >= permission;
-        }
-
         public async Task<SignInResult> ValidatePasswordAsync(string email, string password)
         {
             var result = new SignInResult

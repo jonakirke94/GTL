@@ -1,5 +1,6 @@
 ﻿using GTL.Domain.Entities;
 using GTL.Domain.Entities.Identity;
+using GTL.Domain.Enums;
 using MediatR;
 
 namespace GTL.Application.UseCases.Users.Commands.CreateUser

@@ -10,7 +10,9 @@ using GTL.Application.UseCases.Users;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 using GTL.Application.UseCases.Users.Commands.DeleteUser;
 using GTL.Application.UseCases.Users.Commands.UpdateUser;
+using GTL.Application.UseCases.Users.Queries.GetUser;
 using GTL.Application.UseCases.Users.Queries.GetUserList;
+using GTL.Application.ViewModels;
 
 namespace GTL.Web.Controllers
 {

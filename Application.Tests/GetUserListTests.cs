@@ -9,6 +9,7 @@ using GTL.Application.Interfaces.Repositories;
 using GTL.Application.UseCases.Users;
 using GTL.Application.UseCases.Users.Queries;
 using GTL.Application.UseCases.Users.Queries.GetUserList;
+using GTL.Application.ViewModels;
 using GTL.Domain.Entities;
 using Moq;
 using Xunit;

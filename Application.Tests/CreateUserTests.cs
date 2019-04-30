@@ -5,6 +5,7 @@ using FluentValidation.TestHelper;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 using MediatR;
 using Moq;
 using Xunit;

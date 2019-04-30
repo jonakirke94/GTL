@@ -1,9 +1,7 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using GTL.Application.Users.Queries.GetUser;
 
-namespace GTL.Application.Users.Queries.GetUser
+namespace GTL.Application.UseCases.Users.Queries.GetUser
 {
     public class GetUserDetailQueryValidator : AbstractValidator<GetUserDetailQuery>
     {

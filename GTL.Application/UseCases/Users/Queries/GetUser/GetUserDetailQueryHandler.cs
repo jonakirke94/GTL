@@ -10,6 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GTL.Application.UseCases.Users;
+using GTL.Application.UseCases.Users.Queries.GetUser;
+using GTL.Application.ViewModels;
 
 namespace GTL.Application.Users.Queries.GetUser
 {

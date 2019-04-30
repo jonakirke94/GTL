@@ -1,4 +1,4 @@
-﻿@model GTL.Application.UseCases.Users.UserListViewModel
+﻿@model GTL.Application.ViewModels.UserListViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -10,7 +10,7 @@
 @if (SignInManager.IsSignedIn())
 {
 
-    <h1 style="color:Red">LOGGED IN!!!!</h1>
+    <h1 style="color:Red">LOGGED IN!!!! Hi @User.Identity.Name</h1>
 }
 else
 {

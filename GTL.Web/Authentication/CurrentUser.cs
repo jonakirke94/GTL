@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace GTL.Web.Authentication

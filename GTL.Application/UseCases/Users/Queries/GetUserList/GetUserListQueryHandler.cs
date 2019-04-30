@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using GTL.Application.Interfaces.Repositories;
+using GTL.Application.ViewModels;
 using MediatR;
 
 namespace GTL.Application.UseCases.Users.Queries.GetUserList

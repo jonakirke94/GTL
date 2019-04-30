@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 
 namespace GTL.Application.Exceptions
 {

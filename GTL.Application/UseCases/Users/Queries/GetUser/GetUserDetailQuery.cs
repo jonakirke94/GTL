@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GTL.Application.UseCases.Users;
+using GTL.Application.ViewModels;
 
 namespace GTL.Application.Users.Queries.GetUser
 {

@@ -5,12 +5,18 @@ using MediatR;
 
 namespace GTL.Application.UseCases.Users.Commands.DeleteUser
 {
-    public class DeleteUserCommand : AuthCommand, IRequest
-    {
-        public DeleteUserCommand() : base(PermissionLevel.CHIEFLIBRARIAN)
-        {
-        }
-        
+    public class DeleteUserCommand : IAdminRequest
+    { 
         public int Id { get; set; }
+    }
+
+    public interface IAdminRequest : IRequest
+    {
+
+    }
+
+    public interface IMemberRequest : IRequest
+    {
+
     }
 }

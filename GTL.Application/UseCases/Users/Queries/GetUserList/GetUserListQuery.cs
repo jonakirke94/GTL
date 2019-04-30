@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using GTL.Application.ViewModels;
+using MediatR;
 
 namespace GTL.Application.UseCases.Users.Queries.GetUserList
 {

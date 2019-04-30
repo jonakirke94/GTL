@@ -8,8 +8,6 @@ namespace GTL.Application.Interfaces.Authentication
     public interface IAuthService
     {
         Task<SignInResult> ValidatePasswordAsync(string email, string password);
-
-        Task<bool> HasMinPermission(PermissionLevel permission, CancellationToken cancellationToken);
     }
 }
 

@@ -23,10 +23,6 @@ namespace GTL.Application.UseCases.Users.Commands.DeleteUser
 
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var isAuthorized = await _authService.HasMinPermission(PermissionLevel.CHIEFLIBRARIAN, cancellationToken);
-            if (!isAuthorized)
-                throw new AuthException(PermissionLevel.CHIEFLIBRARIAN);
-
             var entity = await _userRepo.GetUserByIdAsync(request.Id, cancellationToken);
 
             if (entity == null)

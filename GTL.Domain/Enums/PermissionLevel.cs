@@ -8,6 +8,7 @@ namespace GTL.Domain.Enums
     {
         CHIEFLIBRARIAN = 100,
         REFERENCELIBRARIAN = 80,
+        DEFAULT = 0,
     }
 }
 
