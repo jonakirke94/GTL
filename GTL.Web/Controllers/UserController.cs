@@ -27,21 +27,24 @@ namespace GTL.Web.Controllers
                 var command = new CreateLoanerCardCommand {Ssn = ssn};
                 await Mediator.Send(command);
             }
-            catch (AuthException) 
+            catch (AuthException)
             {
-                // redirect to access denied
-                //return ();
+                return AccessDenied();
             }
-            catch (ValidationException)
+            catch (ValidationException e)
             {
-                // return bad request
-            }catch(Exception e)
+                ModelState.AddModelError("Validation Exception", e.Message);
+                return BadRequest(ModelState);
+            }
+            catch (Exception e)
             {
-                //return something unexpected happended
+                ModelState.AddModelError("Unexpected Error", e.Message);
+                // redirect to edit view
+                return View();
             }
 
-
-
+            // redirect to edit view
+            TempData["Message"] = "Loaner card was successfully created";
             return View();
         }
     }

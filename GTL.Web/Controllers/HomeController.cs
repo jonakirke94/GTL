@@ -59,7 +59,7 @@ namespace GTL.Web.Controllers
             return View();
         }
 
-        [Authorize(Policy = "CanWriteUsers")]
+        //[Authorize(Policy = "CanWriteUsers")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -121,6 +121,12 @@ namespace GTL.Web.Controllers
 
             var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int)});
             return View(user);
+        }
+
+        public IActionResult AccessDenied(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
         }
 
         [HttpPost, ActionName("Delete")]

@@ -29,11 +29,7 @@ namespace GTL.Web.Controllers
             return View();
         }
 
-        public IActionResult AccessDenied(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
+
 
         public async Task<IActionResult> Login(string returnUrl = null)
         {

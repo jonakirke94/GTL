@@ -24,5 +24,10 @@ namespace GTL.Web.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
             
         }
+
+        protected IActionResult AccessDenied()
+        {
+            return RedirectToAction(nameof(HomeController.AccessDenied), "Home");
+        }
     }
 }
