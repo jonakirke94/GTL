@@ -23,7 +23,7 @@ namespace Application.Tests
             _command = new Mock<CreateUserCommand>();
         }
 
-        //send mail to jonathan
+        //send mail to jonatha
         [Theory]
         [InlineData("Thanos", "Thanos@gmail.com", "securepassword", PermissionLevel.CHIEFLIBRARIAN)]
         public async Task CreateUserSuccessfully(string name, string email, string password, PermissionLevel level)
