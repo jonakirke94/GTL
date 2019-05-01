@@ -24,7 +24,6 @@ namespace GTL.Application.Users.Queries.GetUser
         {
             _userRepo = userRepo;
             _mapper = mapper;
-
         }
 
         public async Task<UserViewModel> Handle(GetUserDetailQuery request, CancellationToken cancellationToken)
