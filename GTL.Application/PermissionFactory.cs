@@ -19,7 +19,7 @@ namespace GTL.Application
             {
                 case "IAdminRequest":
                     return PermissionLevel.CHIEFLIBRARIAN;
-                case "IMemberRequest":
+                case "IChiefLibrarianRequest":
                     return PermissionLevel.REFERENCELIBRARIAN;
                 default:
                     return PermissionLevel.DEFAULT;

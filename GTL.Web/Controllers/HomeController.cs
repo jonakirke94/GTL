@@ -13,6 +13,8 @@ using GTL.Application.UseCases.Users.Commands.UpdateUser;
 using GTL.Application.UseCases.Users.Queries.GetUser;
 using GTL.Application.UseCases.Users.Queries.GetUserList;
 using GTL.Application.ViewModels;
+using GTL.Application.UseCases.Users.Queries;
+using System.Collections.Generic;
 
 namespace GTL.Web.Controllers
 {
@@ -26,9 +28,18 @@ namespace GTL.Web.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {         
-            var users = await Mediator.Send(new GetUserListQuery());
-            return View(users);
+        {
+            // var users = await Mediator.Send(new GetUserListQuery());
+            // return View(users);
+
+            var vm = new UserListViewModel
+            {
+                DeleteEnabled = true,
+                EditEnabled = true,
+                Users = new List<UserDto>()
+            };
+
+            return View(vm);
         }
 
         [Authorize(Policy = "CanReadUsers")]
@@ -77,7 +88,6 @@ namespace GTL.Web.Controllers
                     Name = model.User.Name,
                     City = model.User.City,
                     ZipCode = model.User.ZipCode,
-
                 };
                 await Mediator.Send(command);
                 return RedirectToAction(nameof(Index));

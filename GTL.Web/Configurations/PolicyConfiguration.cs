@@ -19,6 +19,10 @@ namespace GTL.Web.Configurations
                 options.AddPolicy(
                     "CanWriteUsers",
                     policy => policy.RequireRole("CHIEFLIBRARIAN"));
+
+                options.AddPolicy(
+                    "CanCreateLoanerCard",
+                    policy => policy.RequireRole("CHIEFLIBRARIAN", "REFERENCELIBRARIAN"));
             });
         }
     }

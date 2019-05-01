@@ -61,7 +61,7 @@ namespace GTL.Application.Infrastructure.Pipeline
                 else
                 {
                     var user = _userRepo.GetUserByIdAsync(id, cancellationToken);
-                    _cache.Set(user.Result.Id.ToString(), user.Result.Id, CacheHelper.CacheOptions());
+                    _cache.Set(user.Result.Id.ToString(), user.Result.PermissionLevel, CacheHelper.CacheOptions());
                 }
             }
             catch (Exception e)

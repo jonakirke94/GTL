@@ -13,8 +13,6 @@ namespace GTL.Application.UseCases.Users.Commands.CreateUser
             RuleFor(x => x.PermissionLevel).NotEmpty().IsInEnum();
             RuleFor(x => x.ConfirmPassword).NotEmpty().Equal(x => x.Password);
         }
-
-      
     }
  
 }
