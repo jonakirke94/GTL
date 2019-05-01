@@ -1,16 +1,14 @@
-﻿using FluentValidation.TestHelper;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentValidation.TestHelper;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.UseCases.LoanerCard.Commands.CreateLoanerCard;
 using GTL.Domain.Entities;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace Application.Tests.US_14
+namespace Application.Tests
 {
     public class CreateLoanerCardTests
     {
