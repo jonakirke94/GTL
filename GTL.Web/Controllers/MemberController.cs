@@ -34,9 +34,8 @@ namespace GTL.Web.Controllers
                 await Mediator.Send(command);
             }
             catch (GTL.Application.Exceptions.ValidationException e)
-            {
-                
-                ModelState.AddModelError("", e.Message);
+            {                
+                ModelState.AddModelError("", e.Failures.FirstOrDefault().Value[0]);
                 return View();
             }
             catch (Exception e)
@@ -44,7 +43,6 @@ namespace GTL.Web.Controllers
                 TempData["Status"] = "Something unexpected happened";
                 return View();
             }
-
 
             TempData["Status"] = "Succesfully created member";
             return View();
