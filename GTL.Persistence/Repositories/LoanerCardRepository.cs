@@ -21,19 +21,14 @@ namespace GTL.Persistence.Repositories
         }
      
         public void CreateLoanerCard(LoanerCard loanerCard)
-        {
-            
+        {            
                 using (var connection = new SqlConnection(Options.ConnectionString))
                 {
                     connection.Open();
                     connection.Execute($@"INSERT INTO [LoanerCard] ([IssueDate], [IsActive], [MemberSsn])
                     VALUES (@{nameof(loanerCard.IssueDate)}, @{nameof(loanerCard.IsActive)}, @{nameof(loanerCard.MemberSsn)});",
                         loanerCard);
-                }
-            
-           
-
-
+                }          
         }
 
         public void DeactiveLoanerCard(string barcode)
@@ -47,7 +42,7 @@ namespace GTL.Persistence.Repositories
 
         public IEnumerable<LoanerCard> GetLoanerCardsBySsn(string ssn)
         {
-            var query = $@"SELECT * FROM LOANERCARD WHERE MemberSsn = @ssn";
+            const string query = @"SELECT * FROM LOANERCARD WHERE MemberSsn = @ssn";
             using (var connection = new SqlConnection(Options.ConnectionString))
             {
                 connection.Open();
