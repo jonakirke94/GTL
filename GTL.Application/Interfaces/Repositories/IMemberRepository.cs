@@ -7,7 +7,7 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface IMemberRepository
     {
-        Member GetMemberWithLoanerCards(string ssn);
+        Member GetMemberBySsn(string ssn);
     }
 }
 
