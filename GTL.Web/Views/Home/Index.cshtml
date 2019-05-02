@@ -29,10 +29,16 @@ else
 </p>
 
 <div>
+    <form asp-action="Index" asp-controller="Loan">
+        <button class="btn btn-info"> Create Loan</button>
+    </form>
+</div>
+<div>
     <form asp-action="CreateLoanerCard" asp-controller="User" method="post">
         <input type="text" name="ssn" value="123" hidden />
         <button class="btn btn-info"> Create Loanercard</button>
     </form>
+
 </div>
 
 <table class="table">
