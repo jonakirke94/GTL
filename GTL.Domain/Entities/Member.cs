@@ -23,6 +23,7 @@ namespace GTL.Domain.Entities
 
         public IEnumerable<LoanerCard> LoanerCards { get; private set; }
 
-        public IEnumerable<Address> Addresses { get; private set; }
+        public List<Address> Addresses { get; set; }
+
     }
 }

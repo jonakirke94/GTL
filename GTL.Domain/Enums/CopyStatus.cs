@@ -4,9 +4,10 @@ using System.Text;
 
 namespace GTL.Domain.Enums
 {
-    public enum MemberType
+    public enum CopyStatus
     {
-        Professor = 0,
-        Member = 1, 
+        AvailableForLoan = 0,
+        IsOnLoan = 1,
+        Broken = 2,
     }
 }

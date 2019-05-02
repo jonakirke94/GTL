@@ -29,7 +29,10 @@ namespace GTL.Web.Configurations
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<ILoanRepository, LoanRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<ICopyRepository, CopyRepository>();
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
 
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
