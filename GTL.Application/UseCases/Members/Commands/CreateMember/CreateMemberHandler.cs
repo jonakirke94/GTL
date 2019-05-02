@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Repositories;
+using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Application.UseCases.LoanerCard.Commands.CreateLoanerCard;
 using GTL.Domain.Entities;
 using GTL.Domain.Enums;
@@ -16,24 +17,32 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
     public class CreateMemberHandler : IRequestHandler<CreateMemberCommand, Unit>
     {
         private readonly IMemberRepository _memberRepo;
-        private readonly ILoanerCardRepository _loanerCardRepo;
-        private readonly IAddressRepository _addressRepo;
+        //private readonly ILoanerCardRepository _loanerCardRepo;
+        //private readonly IAddressRepository _addressRepo;
 
-        public CreateMemberHandler(IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo, IAddressRepository addressRepo)
+        //public CreateMemberHandler(IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo, IAddressRepository addressRepo)
+        //{
+        //    _memberRepo = memberRepo;
+        //    _loanerCardRepo = loanerCardRepo;
+        //    _addressRepo = addressRepo;
+        //}
+
+        private readonly IGTLContext _context;
+
+        public CreateMemberHandler(IGTLContext context, IMemberRepository memberRepo)
         {
+            _context = context;
             _memberRepo = memberRepo;
-            _loanerCardRepo = loanerCardRepo;
-            _addressRepo = addressRepo;
         }
 
         public Task<Unit> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {
-            var existingMember = _memberRepo.GetMemberBySsn(request.Ssn);
+            //var existingMember = _memberRepo.GetMemberBySsn(request.Ssn);
 
-            if (existingMember != null)
-            {
-                throw new NotUniqueSsnException(request.Ssn);
-            }
+            //if (existingMember != null)
+            //{
+            //    throw new NotUniqueSsnException(request.Ssn);
+            //}
        
             var member = new Member
             {
@@ -52,12 +61,20 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
 
             request.Address.MemberSsn = request.Ssn;
 
-            //TODO should be put inside a transaction when we have set up IUnitOfWork
-            _addressRepo.AddAddress(request.Address);
-            _memberRepo.CreateMember(member);
-            _loanerCardRepo.CreateLoanerCard(loanerCard);
+            
+            using(var uow = _context.CreateUnitOfWork())
+            {
+                _memberRepo.CreateMember(member);
+                uow.SaveChanges();
+            }
 
-            return Task.Run(() => Unit.Value, cancellationToken);
+
+                //TODO should be put inside a transaction when we have set up IUnitOfWork
+                //_addressRepo.AddAddress(request.Address);
+                //_memberRepo.CreateMember(member);
+                //_loanerCardRepo.CreateLoanerCard(loanerCard);
+
+                return Task.Run(() => Unit.Value, cancellationToken);
         }
     }
 }

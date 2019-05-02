@@ -27,8 +27,6 @@ namespace GTL.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateMemberCommand command)
         {
-            command.Ssn = null;
-
             try
             {
                 await Mediator.Send(command);
