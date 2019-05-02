@@ -11,7 +11,7 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
     {
         public CreateMemberCommand()
         {
-            Addresses = new List<Address>();
+            Address = new Address();
         }
 
         public string Ssn { get; set; }
@@ -20,6 +20,6 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
 
         public string Email { get; set; }
 
-        public IList<Address> Addresses { get; }
+        public Address Address { get; set; }
     }
 }

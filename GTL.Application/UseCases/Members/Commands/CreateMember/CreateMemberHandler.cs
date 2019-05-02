@@ -28,7 +28,6 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
 
         public Task<Unit> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {
-            // check if ssn is unique
             var existingMember = _memberRepo.GetMemberBySsn(request.Ssn);
 
             if (existingMember != null)
@@ -51,17 +50,14 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
                 MemberSsn = request.Ssn
             };
 
-            foreach (var address in request.Addresses)
-            {
-                address.MemberSsn = request.Ssn;
-                _addressRepo.AddAddress(address);
-            }
+            request.Address.MemberSsn = request.Ssn;
 
-
+            //TODO should be put inside a transaction when we have set up IUnitOfWork
+            _addressRepo.AddAddress(request.Address);
             _memberRepo.CreateMember(member);
             _loanerCardRepo.CreateLoanerCard(loanerCard);
 
-            return Task.Run(() => Unit.Value);
+            return Task.Run(() => Unit.Value, cancellationToken);
         }
     }
 }

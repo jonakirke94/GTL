@@ -33,7 +33,6 @@ namespace Application.Tests
             _address = new Mock<Address>().Object;
         }
 
-
         [Fact]
         public async Task MemberWasCreated()
         {
@@ -84,6 +83,10 @@ namespace Application.Tests
         [InlineData("0123456789", "TestName", "testest", "FakeStreet", "12a", "Paris", "5550")] // invalid email
         [InlineData("0123456789", "TestName", "@test.dk", "FakeStreet", "12a", "Paris", "5550")]  // invalid email
         [InlineData("0123456789", "TestName", "test@test.123", "FakeStreet", "12a", "Paris", "5550")] // invalid email
+        [InlineData("0123456789", "TestName", "test@test.dk", "FakerStreetFakerStreetFakerStreetFakerStreetbvcfg4d", "12a", "Paris", "5550")] // too long streetname (51)
+        [InlineData("0123456789", "TestName", "test@test.dk", "FakeStreet", "12a", "ParisParisParisParisParisParisx", "5550")] // too long city (31)
+        [InlineData("0123456789", "TestName", "test@test.dk", "FakeStreet", "12a", "Paris", "555055501")] // too long zip (9)
+        [InlineData("0123456789", "TestName", "test@test.dk", "FakeStreet", "12345678911", "Paris", "5550")] // too long housenumber (10)
         public void ShouldThrowValidationError(string ssn, string name, string email, string streetName, string houseNumber, string city, string zipCode)
         {
             // Arrange
@@ -97,8 +100,8 @@ namespace Application.Tests
             _address.City = city;
             _address.ZipCode = zipCode;
             _address.AddressType = AddressType.HOME;
-            
-            _command.Addresses.Add(_address);
+
+            _command.Address = _address;
 
             // Act
             var validationRes = sut.Validate(_command);
@@ -108,52 +111,16 @@ namespace Application.Tests
         }
 
         [Fact]
-        public void ShouldHaveAtleastOneAddress()
-        {
-            // Arrange
-            var sut = new CreateMemberCommandValidator();
-
-            _command.Ssn = "0123456789";
-            _command.Name = "Fake Name";
-            _command.Email = "test@test.dk";
-
-            // Act
-            var validationRes = sut.Validate(_command);
-
-            // Assert
-            Assert.Equal("A new member must have at least one address", validationRes.Errors.First().ErrorMessage);
-        }
-
-        [Fact]
-        public async Task CanAddTwoAddresses()
+        public async Task AddAddressWasCalled()
         {
             // Arrange
             var sut = new CreateMemberHandler(_memberRepo.Object, _loanerCardRepo.Object, _addressRepo.Object);
-
-            var address2 = new Mock<Address>().Object;
-
-            _command.Ssn = "0123456789";
-            _command.Name = "Fake Name";
-            _command.Email = "test@test.dk";
-            _address.StreetName = "test street";
-            _address.HouseNumber = "12a";
-            _address.City = "Aalborg";
-            _address.ZipCode = "5550";
-            _address.AddressType = AddressType.HOME;
-            address2.StreetName = "fake street";
-            address2.HouseNumber = "127";
-            address2.City = "Aarhus";
-            address2.ZipCode = "7000";
-            address2.AddressType = AddressType.CAMPUS;
-
-            _command.Addresses.Add(_address);
-            _command.Addresses.Add(address2);
 
             // Act
             await sut.Handle(_command, CancellationToken.None);
 
             // Assert
-            _addressRepo.Verify(x => x.AddAddress(It.IsAny<Address>()), Times.Exactly(2));
+            _addressRepo.Verify(x => x.AddAddress(It.IsAny<Address>()), Times.Once());
         }
     }
 }
