@@ -33,7 +33,7 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
 
             var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
 
-            if (copy.Status != null || (copy.Status == CopyStatus.IsOnLoan || copy.Status == CopyStatus.Broken) || member is null )
+            if (copy.Status != null || (copy.Status == CopyStatus.IsOnLoan || copy.Status == CopyStatus.Broken) || member is null)
             {
                 //TODO cast exception
             }
@@ -44,13 +44,13 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
             int gracePeriod;
             int maxBooksOnLoan = 0;
 
-            if (member.type == MemberType.Professor)
+            if (member.Type == MemberType.Professor)
             {
                 loanDuration = library.ProfessorLoanDuration;
                 gracePeriod = library.ProfessorGracePeriod;
                 maxBooksOnLoan = library.ProfessorMaxBooksOnLoan;
             }
-            else if (member.type == MemberType.Member)
+            else if (member.Type == MemberType.Member)
             {
                 loanDuration = library.MemberLoanDuration;
                 gracePeriod = library.MemberGracePeriod;
@@ -74,7 +74,7 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
                 //TODO Throw exception "too many books on loan"
             }
 
-           
+
 
             return Task.Run(() => Unit.Value);
 

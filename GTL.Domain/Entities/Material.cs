@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GTL.Domain.Enums;
 
 namespace GTL.Domain.Entities
 {
-    public class Book
-    { 
+    public class Material
+    {
         public int Id { get; set; }
 
         public ISBN ISBN { get; set; }
@@ -17,9 +18,17 @@ namespace GTL.Domain.Entities
 
         public string Description { get; set; }
 
-        public string Author { get; set; }
+        public int Edition { get; set; }
 
-        public int UserId { get; set; }
+        public MaterialType Type { get; set; }
+
+        public DateTime DeletedAt { get; set; }
+
+        public List<Author> Authors { get; set; }
+
+        public List<Subject> Subjects { get; set; }
+
+        public Publisher Publisher { get; set; }
     }
 }
 

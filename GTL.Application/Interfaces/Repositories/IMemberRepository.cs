@@ -9,6 +9,7 @@ namespace GTL.Application.Interfaces.Repositories
     public interface IMemberRepository
     {
         Member GetMemberBySsn(string ssn);
+        void CreateMember(Member member);
     }
 }
 

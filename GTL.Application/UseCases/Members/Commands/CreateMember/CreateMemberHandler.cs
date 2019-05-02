@@ -34,13 +34,13 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
             {
                 throw new NotUniqueSsnException(request.Ssn);
             }
-       
+
             var member = new Member
             {
                 Ssn = request.Ssn,
                 Email = request.Email,
                 Name = request.Name,
-                Type = MemberType.MEMBER,
+                Type = MemberType.Member,
             };
 
             var loanerCard = new Domain.Entities.LoanerCard

@@ -15,12 +15,12 @@ namespace GTL.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Book>> GetBooksAsync()
+        public Task<ICollection<Material>> GetBooksAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Book>> GetBooksByUserId(int userId)
+        public Task<ICollection<Material>> GetBooksByUserId(int userId)
         {
             throw new NotImplementedException();
         }
