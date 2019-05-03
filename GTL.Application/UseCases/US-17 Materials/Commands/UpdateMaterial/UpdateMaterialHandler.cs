@@ -4,6 +4,7 @@ using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Application.UseCases.Commands.CreateMaterial;
 using GTL.Domain.Entities;
+using GTL.Domain.ValueObjects;
 using MediatR;
 
 namespace GTL.Application.UseCases.Commands.WriteMaterial
@@ -21,22 +22,28 @@ namespace GTL.Application.UseCases.Commands.WriteMaterial
 
         public Task<Unit> Handle(UpdateMaterialCommand request, CancellationToken cancellationToken)
         {
+            //var isbn = new Domain.ValueObjects.ISBN
+            //{
+            //    Number = request.Isbn
+            //};
+
+            var material = new Material
+            {
+                Id = request.Id,
+                Isbn = ISBN.For(request.Material.Isbn),
+                Title = request.Material.Title,
+                Description = request.Material.Description,
+                Edition = request.Material.Edition
+            };
+
             using (var db = _context.CreateUnitOfWork())
             {
-                var isbn = new Domain.ValueObjects.ISBN
-                {
-                    Number = request.Isbn
-                };
 
-                Material material = new Material
-                {
-                    Id = request.Id,
-                    ISBN = isbn,
-                    Title = request.Title,
-                    Description = request.Description,
-                    Edition = request.Edition
-                };
-                _materialRepository.Update(request.Isbn, request.Title, request.Description, request.Edition);
+                // hvorfor passer du ikke objeket du lige har lavet i stedet?
+                //_materialRepository.Update(material);
+
+
+                //_materialRepository.Update(request.Isbn, request.Title, request.Description, request.Edition);
 
                 db.SaveChanges();
             }

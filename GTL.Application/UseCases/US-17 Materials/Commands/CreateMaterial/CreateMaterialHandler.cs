@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
+using GTL.Application.UseCases.US_17_Materials.Commands;
 using GTL.Domain.Entities;
 using MediatR;
 
@@ -18,7 +19,7 @@ namespace GTL.Application.UseCases.Commands.CreateMaterial
             _materialRepository = materialRepository;
         }
 
-        public Task<Unit> Handle(UpdateMaterialCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(MaterialBaseCommand request, CancellationToken cancellationToken)
         {
             using (var db = _context.CreateUnitOfWork())
             {
