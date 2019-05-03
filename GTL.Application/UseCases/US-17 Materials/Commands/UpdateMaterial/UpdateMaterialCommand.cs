@@ -2,8 +2,9 @@
 
 namespace GTL.Application.UseCases.Commands.CreateMaterial
 {
-    public class CreateMaterialCommand : IRequest
+    public class UpdateMaterialCommand : IRequest
     {
+        public int Id { get; set; }
         public string Isbn { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

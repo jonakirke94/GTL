@@ -4,8 +4,8 @@ using GTL.Application.Interfaces.Repositories;
 using Moq;
 using System.Threading.Tasks;
 using Application.Tests.US_17;
+using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Application.UseCases.Commands.CreateMaterial;
-using GTL.Application.UseCases.Materials.Commands.CreateMaterial;
 using Xunit;
 
 namespace Application.Tests
@@ -17,20 +17,21 @@ namespace Application.Tests
         public async Task MaterialWasCreatedTest(string isbn, string title, string description, int edition)
         {
             // Arrange
+            Mock<IGTLContext> context = new Mock<IGTLContext>();
             Mock<IMaterialRepository> materialRepository = new Mock<IMaterialRepository>();
-            Mock<CreateMaterialCommand> command = new Mock<CreateMaterialCommand>();
+            Mock<UpdateMaterialCommand> command = new Mock<UpdateMaterialCommand>();
             command.Object.Isbn = isbn;
             command.Object.Title = title;
             command.Object.Description = description;
             command.Object.Edition = edition;
-            var sut = new CreateMaterialHandler(materialRepository.Object);
+            var sut = new CreateMaterialHandler(context.Object, materialRepository.Object);
 
             // Act
             await sut.Handle(command.Object, CancellationToken.None);
 
             // Assert
             materialRepository.Verify(
-                x => x.CreateMaterial(isbn, title, description, edition), Times.Once);
+                x => x.Add(isbn, title, description, edition), Times.Exactly(1));
         }
 
         [Theory]
@@ -38,9 +39,9 @@ namespace Application.Tests
         public void MaterialHasInvalidAttributesTest(string isbn, string title, string description, int edition)
         {
             // Arrange
-            var sut = new CreateMaterialCommandValidator();
+            var sut = new UpdateMaterialCommandValidator();
 
-            Mock<CreateMaterialCommand> command = new Mock<CreateMaterialCommand>();
+            Mock<UpdateMaterialCommand> command = new Mock<UpdateMaterialCommand>();
             command.Object.Isbn = isbn;
             command.Object.Title = title;
             command.Object.Description = description;
@@ -52,30 +53,6 @@ namespace Application.Tests
             // Assert
             Assert.False(validationRes.IsValid);
         }
-
-
-        //public void ShouldThrowValidationError(string ssn, string name, string email, string streetName, string houseNumber, string city, string zipCode)
-        //{
-        //    // Arrange
-        //    var sut = new CreateMemberCommandValidator();
-
-        //    _command.Ssn = ssn;
-        //    _command.Name = name;
-        //    _command.Email = email;
-        //    _address.StreetName = streetName;
-        //    _address.HouseNumber = houseNumber;
-        //    _address.City = city;
-        //    _address.ZipCode = zipCode;
-        //    _address.AddressType = AddressType.HOME;
-
-        //    _command.Address = _address;
-
-        //    // Act
-        //    var validationRes = sut.Validate(_command);
-
-        //    // Assert
-        //    Assert.False(validationRes.IsValid);
-        //}
 
     }
 }

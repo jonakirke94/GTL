@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="UseCases\US-17 Materials\Queries\" />
+    <Folder Include="Validators\" />
   </ItemGroup>
 
 </Project>

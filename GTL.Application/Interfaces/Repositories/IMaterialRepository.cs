@@ -4,7 +4,9 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface IMaterialRepository
     {
-        void CreateMaterial(string isbn, string title, string description, int edition);
-        Material GetMaterialByIsbn(string isbn);
+        void Add(string isbn, string title, string description, int edition);
+        void Update(string isbn, string title, string description, int edition);
+        Material GetByIsbn(string isbn);
+        Material GetById(int id);
     }
 }

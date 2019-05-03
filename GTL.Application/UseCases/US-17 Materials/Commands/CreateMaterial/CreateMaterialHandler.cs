@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Interfaces.Repositories;
-using GTL.Application.UseCases.Materials.Commands.CreateMaterial;
+using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
 using MediatR;
 
@@ -9,24 +9,22 @@ namespace GTL.Application.UseCases.Commands.CreateMaterial
 {
     public class CreateMaterialHandler
     {
+        private readonly IGTLContext _context;
         private readonly IMaterialRepository _materialRepository;
 
-        public CreateMaterialHandler(IMaterialRepository materialRepository)
+        public CreateMaterialHandler(IGTLContext context, IMaterialRepository materialRepository)
         {
+            _context = context;
             _materialRepository = materialRepository;
         }
 
-        public Task<Unit> Handle(CreateMaterialCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(UpdateMaterialCommand request, CancellationToken cancellationToken)
         {
-            Material existingMaterial = null;
-            if (!string.IsNullOrWhiteSpace(request.Isbn))
+            using (var db = _context.CreateUnitOfWork())
             {
-                existingMaterial = _materialRepository.GetMaterialByIsbn(request.Isbn);
-            }
+                _materialRepository.Add(request.Isbn, request.Title, request.Description, request.Edition);
 
-            if (existingMaterial == null)
-            {
-                _materialRepository.CreateMaterial(request.Isbn, request.Title, request.Description, request.Edition);
+                db.SaveChanges();
             }
 
             return Task.Run(() => Unit.Value, cancellationToken);
