@@ -51,7 +51,7 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
                 Ssn = request.Ssn,
                 Email = request.Email,
                 Name = request.Name,
-                Type = MemberType.MEMBER,
+                Type = MemberType.STUDENT,
             };
 
             var loanerCard = new Domain.Entities.LoanerCard
