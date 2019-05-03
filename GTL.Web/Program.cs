@@ -28,6 +28,7 @@ namespace GTL.Web
                         .AddJsonFile($"appsettings.Local.json", optional: true, reloadOnChange: true)
                         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
                   config.AddEnvironmentVariables();
+                  config.AddUserSecrets<Startup>();
               })
               .ConfigureLogging((hostingContext, logging) =>
               {
