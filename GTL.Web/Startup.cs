@@ -1,4 +1,6 @@
-﻿using GTL.Persistence.Configurations;
+﻿using GTL.Application.Interfaces.UnitOfWork;
+using GTL.Persistence;
+using GTL.Persistence.Configurations;
 using GTL.Web.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,12 +24,14 @@ namespace GTL.Web
             services.Configure<DataBaseSettings>(mySettings =>
             {
                 mySettings.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
-                mySettings.OwnConnection = true;
             });
 
             services.AddMemoryCache();
 
             ServiceConfiguration.ConfigureServices(services);
+
+            services.AddScoped<IGTLContext, GTLContext>();
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
             PolicyConfiguration.ConfigurePolicies(services);
         }
@@ -48,7 +52,6 @@ namespace GTL.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

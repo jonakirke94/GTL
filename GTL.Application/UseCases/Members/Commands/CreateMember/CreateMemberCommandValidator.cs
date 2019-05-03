@@ -13,19 +13,11 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
             RuleFor(x => x.Ssn).NotEmpty().Length(10);
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Address).SetValidator(new AddressValidator());
-        }
-
-        public class AddressValidator : AbstractValidator<Address>
-        {
-            public AddressValidator()
-            {
-                RuleFor(x => x.StreetName).NotEmpty().MaximumLength(50);
-                RuleFor(x => x.City).NotEmpty().MaximumLength(30);
-                RuleFor(x => x.ZipCode).NotEmpty().MaximumLength(8);
-                RuleFor(x => x.HouseNumber).NotEmpty().MaximumLength(10);
-                RuleFor(x => x.AddressType).IsInEnum(); 
-            }
+            RuleFor(x => x.StreetName).NotEmpty().MaximumLength(50);
+            RuleFor(x => x.City).NotEmpty().MaximumLength(30);
+            RuleFor(x => x.ZipCode).NotEmpty().MaximumLength(8);
+            RuleFor(x => x.HouseNumber).NotEmpty().MaximumLength(10);
+            RuleFor(x => x.AddressType).IsInEnum();
         }
     }
 }

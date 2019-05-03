@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Members.Commands.CreateMember;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,12 +13,6 @@ namespace GTL.Web.Controllers
 {
     public class MemberController : BaseController
     {
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Create()
         {
             return View();
@@ -31,18 +26,23 @@ namespace GTL.Web.Controllers
             {
                 await Mediator.Send(command);
             }
-            catch (GTL.Application.Exceptions.ValidationException e)
-            {                
+            catch (Application.Exceptions.ValidationException e)
+            {
                 ModelState.AddModelError("", e.Failures.FirstOrDefault().Value[0]);
+                return View();
+            }
+            catch (NotUniqueSsnException e)
+            {
+                ModelState.AddModelError("", e.Message);
                 return View();
             }
             catch (Exception e)
             {
-                TempData["Status"] = "Something unexpected happened";
+                ModelState.AddModelError("", "Something unexpected happened. Please try again");
                 return View();
             }
 
-            TempData["Status"] = "Succesfully created member";
+            TempData["Status"] = "Successfully created member";
             return View();
         }
     }
