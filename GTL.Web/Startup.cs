@@ -1,6 +1,7 @@
 ﻿using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Persistence;
 using GTL.Persistence.Configurations;
+using GTL.Persistence.UnitOfWork;
 using GTL.Web.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

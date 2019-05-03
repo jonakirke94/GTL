@@ -11,7 +11,7 @@ using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Persistence.Configurations;
 using Microsoft.Extensions.Options;
 
-namespace GTL.Persistence
+namespace GTL.Persistence.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -27,15 +27,8 @@ namespace GTL.Persistence
             _committed = committed;
         }
 
-        /// <summary>
-        /// Gets transaction which is being wrapped by this UoW implementation.
-        /// </summary>
         public IDbTransaction Transaction { get; private set; }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             if (_transaction == null)
@@ -47,9 +40,6 @@ namespace GTL.Persistence
             _transaction = null;
         }
 
-        /// <summary>
-        /// Save changes into the data source.
-        /// </summary>
         public void SaveChanges()
         {
             if (_transaction == null)

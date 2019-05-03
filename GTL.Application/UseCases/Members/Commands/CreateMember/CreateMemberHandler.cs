@@ -20,13 +20,6 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
         private readonly ILoanerCardRepository _loanerCardRepo;
         private readonly IAddressRepository _addressRepo;
 
-        //public CreateMemberHandler(IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo, IAddressRepository addressRepo)
-        //{
-        //    _memberRepo = memberRepo;
-        //    _loanerCardRepo = loanerCardRepo;
-        //    _addressRepo = addressRepo;
-        //}
-
         private readonly IGTLContext _context;
 
         public CreateMemberHandler(IGTLContext context, IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo, IAddressRepository addressRepo)
