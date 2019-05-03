@@ -10,8 +10,6 @@
 *.cache
 *.suo
 
-appsettings.json
-appsettings.Development.json
 appsettings.Production.json
 
 # Include dlls if they�re in the NuGet packages directory

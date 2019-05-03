@@ -4,8 +4,8 @@ using System.Text;
 
 namespace GTL.Domain.Enums
 {
-    public enum MemberType
+    public enum AddressType
     {
-        MEMBER, PROFESSOR
+        HOME, CAMPUS
     }
 }

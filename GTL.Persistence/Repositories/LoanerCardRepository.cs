@@ -8,52 +8,48 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading;
+using GTL.Application.Interfaces.UnitOfWork;
 
 namespace GTL.Persistence.Repositories
 {
     public class LoanerCardRepository : ILoanerCardRepository
     {
-        private DataBaseSettings Options { get; }
+        private readonly IGTLContext _context;
 
-        public LoanerCardRepository(IOptions<DataBaseSettings> optionsAccessor)
+        public LoanerCardRepository(IGTLContext context)
         {
-            Options = optionsAccessor.Value;
+            _context = context;
         }
      
         public void CreateLoanerCard(LoanerCard loanerCard)
         {
-            
-                using (var connection = new SqlConnection(Options.ConnectionString))
-                {
-                    connection.Open();
-                    connection.Execute($@"INSERT INTO [LoanerCard] ([IssueDate], [IsActive], [MemberSsn])
+            using (var cmd = _context.CreateCommand())
+            {
+                cmd.Connection.Execute($@"INSERT INTO [LoanerCard] ([IssueDate], [IsActive], [MemberSsn])
                     VALUES (@{nameof(loanerCard.IssueDate)}, @{nameof(loanerCard.IsActive)}, @{nameof(loanerCard.MemberSsn)});",
-                        loanerCard);
-                }
-            
-           
-
-
+                        loanerCard, transaction: cmd.Transaction);
+            }
         }
 
         public void DeactiveLoanerCard(string barcode)
         {
-            using (var connection = new SqlConnection(Options.ConnectionString))
-            {
-                connection.Open();
-                connection.Execute($@"Update LoanerCard set IsActive = false WHERE barcode = @barcode", new { barcode });
-            }
+            //using (var connection = new SqlConnection(Options.ConnectionString))
+            //{
+            //    connection.Open();
+            //    connection.Execute($@"Update LoanerCard set IsActive = false WHERE barcode = @barcode", new { barcode });
+            //}
         }
 
         public IEnumerable<LoanerCard> GetLoanerCardsBySsn(string ssn)
         {
-            var query = $@"SELECT * FROM LOANERCARD WHERE MemberSsn = @ssn";
-            using (var connection = new SqlConnection(Options.ConnectionString))
-            {
-                connection.Open();
-                var loanerCards = connection.Query<LoanerCard>(query, new { ssn });
-                return loanerCards;
-            }
+            //const string query = @"SELECT * FROM LOANERCARD WHERE MemberSsn = @ssn";
+            //using (var connection = new SqlConnection(Options.ConnectionString))
+            //{
+            //    connection.Open();
+            //    var loanerCards = connection.Query<LoanerCard>(query, new { ssn });
+            //    return loanerCards;
+            //}
+            return null;
         }
     }
 }
