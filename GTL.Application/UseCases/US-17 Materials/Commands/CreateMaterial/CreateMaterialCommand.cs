@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 
 namespace GTL.Application.UseCases.Materials.Commands.CreateMaterial
 {

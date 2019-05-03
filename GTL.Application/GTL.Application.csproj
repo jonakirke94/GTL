@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\Materials\Queries\" />
+    <Folder Include="UseCases\US-17 Materials\Queries\" />
   </ItemGroup>
 
 </Project>
