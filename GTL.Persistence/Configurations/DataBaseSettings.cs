@@ -8,6 +8,5 @@ namespace GTL.Persistence.Configurations
     public class DataBaseSettings
     {
         public string ConnectionString { get; set; }
-        public bool OwnConnection { get; set; }
     }
 }
