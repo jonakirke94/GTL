@@ -32,12 +32,12 @@ namespace GTL.Web.Configurations
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<IStaffRepository, StaffRepository>();
 
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddScoped<IPermissionFactory, PermissionFactory>();        
             services.AddHttpContextAccessor();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
@@ -57,8 +57,8 @@ namespace GTL.Web.Configurations
             // Add MediatR
             services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.Configure<CookiePolicyOptions>(options =>
             {

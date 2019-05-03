@@ -34,7 +34,8 @@ namespace GTL.Application.ViewModels
 
             public bool Resolve(User source, UserViewModel dest, bool destMember, ResolutionContext context)
             {
-                return _currentUser.GetCurrentPermission() >= PermissionLevel.CHIEFLIBRARIAN;
+                //return _currentUser.GetCurrentPermission() >= PermissionLevel.CHIEFLIBRARIAN;
+                return true;
             }
         }
     }
