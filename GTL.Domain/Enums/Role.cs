@@ -6,10 +6,10 @@ namespace GTL.Domain.Enums
 {
     public enum Role
     {
-        CHIEFLIBRARIAN,
-        CHECKOUTSTAFF,
-        LIBRARYASSISTANT,
-        REFERENCELIBRARIAN,
-        ASSOCIATELIBRARIAN
+        LIBRARYASSISTANT = 10,
+        CHECKOUTSTAFF = 20,
+        REFERENCELIBRARIAN = 30,
+        ASSOCIATELIBRARIAN = 40,
+        CHIEFLIBRARIAN = 50,
     }
 }
