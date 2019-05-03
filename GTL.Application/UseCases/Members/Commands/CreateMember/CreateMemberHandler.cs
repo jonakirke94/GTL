@@ -17,7 +17,7 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
     public class CreateMemberHandler : IRequestHandler<CreateMemberCommand, Unit>
     {
         private readonly IMemberRepository _memberRepo;
-        //private readonly ILoanerCardRepository _loanerCardRepo;
+        private readonly ILoanerCardRepository _loanerCardRepo;
         //private readonly IAddressRepository _addressRepo;
 
         //public CreateMemberHandler(IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo, IAddressRepository addressRepo)
@@ -29,10 +29,11 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
 
         private readonly IGTLContext _context;
 
-        public CreateMemberHandler(IGTLContext context, IMemberRepository memberRepo)
+        public CreateMemberHandler(IGTLContext context, IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo)
         {
             _context = context;
             _memberRepo = memberRepo;
+            _loanerCardRepo = loanerCardRepo;
         }
 
         public Task<Unit> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
@@ -62,17 +63,19 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
             request.Address.MemberSsn = request.Ssn;
 
             
-            using(var uow = _context.CreateUnitOfWork())
+            using(var db = _context.CreateUnitOfWork())
             {
                 _memberRepo.CreateMember(member);
-                uow.SaveChanges();
+                _loanerCardRepo.CreateLoanerCard(loanerCard);
+                //_memberRepo.CreateMember(member);
+                db.SaveChanges();
             }
 
 
                 //TODO should be put inside a transaction when we have set up IUnitOfWork
                 //_addressRepo.AddAddress(request.Address);
                 //_memberRepo.CreateMember(member);
-                //_loanerCardRepo.CreateLoanerCard(loanerCard);
+                
 
                 return Task.Run(() => Unit.Value, cancellationToken);
         }

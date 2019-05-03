@@ -17,12 +17,11 @@ namespace GTL.Persistence
 {
     public class GTLContext : IGTLContext
     {
-
         private readonly IDbConnection _connection;
         private readonly IConnectionFactory _connectionFactory;
         private readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
         private readonly LinkedList<UnitOfWork> _uows = new LinkedList<UnitOfWork>();
-
+        
         private IUnitOfWork _unitOfWork;
 
         public GTLContext(IConnectionFactory connectionFactory)

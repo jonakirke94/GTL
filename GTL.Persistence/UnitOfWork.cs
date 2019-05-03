@@ -30,7 +30,6 @@ namespace GTL.Persistence
         }
 
 
-
         /// <summary>
         /// Gets transaction which is being wrapped by this UoW implementation.
         /// </summary>
