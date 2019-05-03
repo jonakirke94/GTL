@@ -19,8 +19,6 @@ namespace GTL.Persistence
         private readonly Action<UnitOfWork> _rolledBack;
         private readonly Action<UnitOfWork> _committed;
 
-        private DataBaseSettings Options { get; }
-
         public UnitOfWork(IDbTransaction transaction, Action<UnitOfWork> rolledBack, Action<UnitOfWork> committed)
         {
             Transaction = transaction;
@@ -28,7 +26,6 @@ namespace GTL.Persistence
             _rolledBack = rolledBack;
             _committed = committed;
         }
-
 
         /// <summary>
         /// Gets transaction which is being wrapped by this UoW implementation.

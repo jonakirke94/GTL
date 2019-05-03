@@ -71,11 +71,8 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
                 db.SaveChanges();
             }
 
+            //_addressRepo.AddAddress(request.Address);
 
-                //TODO should be put inside a transaction when we have set up IUnitOfWork
-                //_addressRepo.AddAddress(request.Address);
-                //_memberRepo.CreateMember(member);
-                
 
                 return Task.Run(() => Unit.Value, cancellationToken);
         }
