@@ -13,9 +13,9 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
         public Loan Loan { get; set; } = new Loan();
     }
 
-    public class CreateLoanerCardCommandValidator : AbstractValidator<CreateLoanCommand>
+    public class CreateLoanCommandValidator : AbstractValidator<CreateLoanCommand>
     {
-        public CreateLoanerCardCommandValidator()
+        public CreateLoanCommandValidator()
         {
             RuleFor(x => x.Loan.MemberSsn).NotEmpty();
             RuleFor(x => x.Loan.MemberSsn).MinimumLength(10);

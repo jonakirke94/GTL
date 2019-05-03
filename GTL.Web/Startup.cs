@@ -22,7 +22,7 @@ namespace GTL.Web
             services.Configure<DataBaseSettings>(mySettings =>
             {
                 mySettings.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
-                mySettings.OwnConnection = true;
+               
             });
 
             services.AddMemoryCache();

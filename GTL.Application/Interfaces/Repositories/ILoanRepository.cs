@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Application.UseCases.LoanerCard.Commands.CreateLoanerCard;
 using GTL.Domain.Entities;
 
