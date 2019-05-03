@@ -39,13 +39,13 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
 
         public Task<Unit> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {
-            //var existingMember = _memberRepo.GetMemberBySsn(request.Ssn);
+            var existingMember = _memberRepo.GetBySsn(request.Ssn);
 
-            //if (existingMember != null)
-            //{
-            //    throw new NotUniqueSsnException(request.Ssn);
-            //}
-       
+            if (existingMember != null)
+            {
+                throw new NotUniqueSsnException(request.Ssn);
+            }
+
             var member = new Member
             {
                 Ssn = request.Ssn,

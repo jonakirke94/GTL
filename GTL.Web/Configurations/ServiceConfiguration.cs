@@ -27,9 +27,6 @@ namespace GTL.Web.Configurations
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, IUnitOfWork>();
-            services.AddScoped<IGTLContext, GTLContext>();
-
             // repos
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();

@@ -24,23 +24,29 @@ namespace GTL.Persistence.Repositories
 
         public void Add(Member member)
         {
+            const string query = @"INSERT INTO [Member] ([Ssn], [Name], [Email], [Type]) VALUES(@ssn, @name, @email, @type)";
             using(var cmd = Context.CreateCommand())
             {
-                cmd.Connection.Execute($@"INSERT INTO [Member] ([Ssn], [Name], [Email], [Type])
-                VALUES (@{nameof(member.Ssn)}, @{nameof(member.Name)}, @{nameof(member.Email)}, @{nameof(member.Type)});", member, transaction: cmd.Transaction);
+                var para = new DynamicParameters();
+                para.Add("@ssn", member.Ssn);
+                para.Add("@name", member.Name);
+                para.Add("@email", member.Email);
+                para.Add("@type", member.Type.ToString());
+
+                cmd.Connection.Execute(query, para, cmd.Transaction);
             }
         }
 
-        public Member GetMemberBySsn(string ssn)
+        public Member GetBySsn(string ssn)
         {
-            //var query = $@"SELECT * FROM Member WHERE ssn = @ssn";
-            //using (var connection = new SqlConnection(Options.ConnectionString))
-            //{
-            //    connection.Open();
-            //    var user = connection.Query<Member>(query, new { ssn });
-            //    return user.FirstOrDefault();
-            //}
-            return null;
+            const string query = @"SELECT * FROM Member WHERE ssn = @ssn";
+            using (var cmd = Context.CreateCommand())
+            {
+                var para = new DynamicParameters();
+                para.Add("@ssn", ssn);
+                var results = cmd.Connection.Query<Member>(query, para, cmd.Transaction);
+                return results.FirstOrDefault();
+            }
         }
     }
 }
