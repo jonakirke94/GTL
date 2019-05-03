@@ -22,15 +22,10 @@ namespace GTL.Application.UseCases.Commands.WriteMaterial
 
         public Task<Unit> Handle(UpdateMaterialCommand request, CancellationToken cancellationToken)
         {
-            //var isbn = new Domain.ValueObjects.ISBN
-            //{
-            //    Number = request.Isbn
-            //};
-
             var material = new Material
             {
                 Id = request.Id,
-                Isbn = ISBN.For(request.Material.Isbn),
+                ISBN = ISBN.For(request.Material.Isbn),
                 Title = request.Material.Title,
                 Description = request.Material.Description,
                 Edition = request.Material.Edition
