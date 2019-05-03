@@ -71,7 +71,7 @@ namespace GTL.Application.Infrastructure.Pipeline
 
             if (currentUserPermission < required)
             {
-                throw new AuthException(required);
+                throw new AuthorizeException();
             }
 
 

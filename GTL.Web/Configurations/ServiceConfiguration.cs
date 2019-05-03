@@ -40,8 +40,6 @@ namespace GTL.Web.Configurations
             services.AddScoped<IPermissionFactory, PermissionFactory>();        
             services.AddHttpContextAccessor();
 
-
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
             AddCookie((options) =>
             {
@@ -71,7 +69,9 @@ namespace GTL.Web.Configurations
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services
-              .AddMvc()
+              .AddMvc(config => {
+                  config.Filters.Add(new AuthExceptionFilter());
+              })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
         }

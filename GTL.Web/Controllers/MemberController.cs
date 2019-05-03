@@ -6,17 +6,21 @@ using FluentValidation;
 using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Members.Commands.CreateMember;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ValidationException = GTL.Application.Exceptions.ValidationException;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GTL.Web.Controllers
 {
+    [ServiceFilter(typeof(AuthExceptionFilter))]
     public class MemberController : BaseController
     {
         public IActionResult Create()
         {
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -25,24 +29,17 @@ namespace GTL.Web.Controllers
             try
             {
                 await Mediator.Send(command);
+                TempData["Status"] = "Successfully created member";
             }
-            catch (Application.Exceptions.ValidationException e)
+            catch (NotUniqueSsnException)
             {
-                ModelState.AddModelError("", e.Failures.FirstOrDefault().Value[0]);
-                return View();
+                ModelState.AddModelError("Ssn", "A member with this ssn already exists");
             }
-            catch (NotUniqueSsnException e)
+            catch (ValidationException e)
             {
-                ModelState.AddModelError("", e.Message);
-                return View();
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("", "Something unexpected happened. Please try again");
-                return View();
+                ModelState.AddValidationErrors(e);
             }
 
-            TempData["Status"] = "Successfully created member";
             return View();
         }
     }

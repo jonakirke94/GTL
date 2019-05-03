@@ -30,6 +30,9 @@ namespace GTL.Web
 
             ServiceConfiguration.ConfigureServices(services);
 
+            services.AddScoped<AuthExceptionFilter>();
+
+
             services.AddScoped<IGTLContext, GTLContext>();
             services.AddScoped<IConnectionFactory, ConnectionFactory>();
 

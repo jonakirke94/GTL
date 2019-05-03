@@ -99,13 +99,13 @@ namespace GTL.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserCommand command)
         {
-            try
-            {
-                await Mediator.Send(command);
-            }
-            catch (AuthException)
-            {
-            }
+            //try
+            //{
+            //    await Mediator.Send(command);
+            //}
+            //catch (AuthException)
+            //{
+            //}
 
             return RedirectToAction(nameof(Index));
         }
