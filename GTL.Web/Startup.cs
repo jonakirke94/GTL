@@ -1,4 +1,6 @@
-﻿using GTL.Persistence.Configurations;
+﻿using GTL.Application.Interfaces.UnitOfWork;
+using GTL.Persistence;
+using GTL.Persistence.Configurations;
 using GTL.Web.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +24,6 @@ namespace GTL.Web
             services.Configure<DataBaseSettings>(mySettings =>
             {
                 mySettings.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
-                mySettings.OwnConnection = true;
             });
 
             services.AddMemoryCache();

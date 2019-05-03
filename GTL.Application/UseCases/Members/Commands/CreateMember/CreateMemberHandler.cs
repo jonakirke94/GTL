@@ -18,7 +18,7 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
     {
         private readonly IMemberRepository _memberRepo;
         private readonly ILoanerCardRepository _loanerCardRepo;
-        //private readonly IAddressRepository _addressRepo;
+        private readonly IAddressRepository _addressRepo;
 
         //public CreateMemberHandler(IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo, IAddressRepository addressRepo)
         //{
@@ -29,11 +29,12 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
 
         private readonly IGTLContext _context;
 
-        public CreateMemberHandler(IGTLContext context, IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo)
+        public CreateMemberHandler(IGTLContext context, IMemberRepository memberRepo, ILoanerCardRepository loanerCardRepo, IAddressRepository addressRepo)
         {
             _context = context;
             _memberRepo = memberRepo;
             _loanerCardRepo = loanerCardRepo;
+            _addressRepo = addressRepo;
         }
 
         public Task<Unit> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
@@ -60,21 +61,25 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
                 MemberSsn = request.Ssn
             };
 
-            request.Address.MemberSsn = request.Ssn;
+            var address = new Address()
+            {
+                HouseNumber = request.HouseNumber,
+                City = request.City,
+                StreetName = request.City,
+                ZipCode = request.ZipCode,
+                AddressType = request.AddressType,
+                MemberSsn = request.Ssn
+            };
 
-            
             using(var db = _context.CreateUnitOfWork())
             {
-                _memberRepo.CreateMember(member);
-                _loanerCardRepo.CreateLoanerCard(loanerCard);
-                //_memberRepo.CreateMember(member);
+                _memberRepo.Add(member);
+                _loanerCardRepo.Add(loanerCard);
+                _addressRepo.Add(address);
                 db.SaveChanges();
             }
 
-            //_addressRepo.AddAddress(request.Address);
-
-
-                return Task.Run(() => Unit.Value, cancellationToken);
+            return Task.Run(() => Unit.Value, cancellationToken);
         }
     }
 }

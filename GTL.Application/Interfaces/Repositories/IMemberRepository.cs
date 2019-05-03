@@ -11,7 +11,7 @@ namespace GTL.Application.Interfaces.Repositories
     {
         Member GetMemberBySsn(string ssn);
 
-        void CreateMember(Member member);
+        void Add(Member member);
     }
 }
 

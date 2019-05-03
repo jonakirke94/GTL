@@ -15,16 +15,16 @@ namespace GTL.Persistence.Repositories
 {
     public class MemberRepository : IMemberRepository
     {
-        protected readonly IGTLContext _context;
+        protected readonly IGTLContext Context;
 
         public MemberRepository(IGTLContext context)
         {
-            _context = context;
+            Context = context;
         }
 
-        public void CreateMember(Member member)
+        public void Add(Member member)
         {
-            using(var cmd = _context.CreateCommand())
+            using(var cmd = Context.CreateCommand())
             {
                 cmd.Connection.Execute($@"INSERT INTO [Member] ([Ssn], [Name], [Email], [Type])
                 VALUES (@{nameof(member.Ssn)}, @{nameof(member.Name)}, @{nameof(member.Email)}, @{nameof(member.Type)});", member, transaction: cmd.Transaction);
