@@ -23,21 +23,6 @@ namespace GTL.Web.Authentication
             _userRepo = userRepo;
         }
 
-        public int GetCurrentUserId()
-        {
-            if (!_context.HttpContext.User.Identity.IsAuthenticated)
-                return -1;
-
-            Claim claim = _context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-            if (claim == null)
-                return -1;
-       
-            int.TryParse(claim.Value, out int currentId);
-
-            return currentId;
-        }
-
         public bool IsSignedIn()
         {
             return _context.HttpContext.User.Identity.IsAuthenticated;

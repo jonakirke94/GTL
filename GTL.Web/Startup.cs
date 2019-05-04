@@ -27,14 +27,7 @@ namespace GTL.Web
                 mySettings.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
             });
 
-            services.AddMemoryCache();
-
             ServiceConfiguration.ConfigureServices(services);
-
-            services.AddScoped<AuthExceptionFilter>();
-
-            services.AddScoped<IGTLContext, GTLContext>();
-            services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
             PolicyConfiguration.ConfigurePolicies(services);
         }

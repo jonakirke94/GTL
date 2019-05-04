@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
+using GTL.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
+using Role = GTL.Domain.Enums.Role;
 
 namespace GTL.Web
 {
@@ -32,6 +34,8 @@ namespace GTL.Web
                 context.ExceptionHandled = true;
                 context.Result = new RedirectToActionResult("AccessDenied", "Home", null);
             }
+
+
 
         }
     }

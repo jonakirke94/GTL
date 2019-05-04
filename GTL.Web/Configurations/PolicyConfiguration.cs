@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GTL.Domain.Enums;
+using GTL.Web.Helpers;
 
 namespace GTL.Web.Configurations
 {
@@ -13,17 +15,22 @@ namespace GTL.Web.Configurations
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(
-                    "CanReadUsers",
-                    policy => policy.RequireRole("CHIEFLIBRARIAN"));
+                    PolicyNames.CanReadUsers,
+                    policy => policy.RequireRole(MinRole(Role.CHIEFLIBRARIAN)));
 
                 options.AddPolicy(
-                    "CanWriteUsers",
-                    policy => policy.RequireRole("CHIEFLIBRARIAN"));
+                    PolicyNames.CanWriteUsers,
+                    policy => policy.RequireRole(MinRole(Role.CHECKOUTSTAFF)));
 
                 options.AddPolicy(
-                    "CanCreateLoanerCard",
-                    policy => policy.RequireRole("CHIEFLIBRARIAN", "REFERENCELIBRARIAN"));
+                    PolicyNames.CanCreateLoanerCard,
+                    policy => policy.RequireRole(MinRole(Role.ASSOCIATELIBRARIAN)));
             });
+        }
+
+        public static string[] MinRole(Role role)
+        {
+            return Enum.GetValues(typeof(Role)).Cast<Role>().Where(r => role >= r).Select(x => x.ToString()).ToArray();
         }
     }
 }
