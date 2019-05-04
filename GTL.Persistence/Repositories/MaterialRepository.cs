@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dapper;
 using GTL.Application.Interfaces.Repositories;
+using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
 
 namespace GTL.Persistence.Repositories
 {
     public class MaterialRepository : IMaterialRepository
     {
-        public void Add(Material material)
+        private readonly IGTLContext _context;
+        public MaterialRepository(IGTLContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public void Add(string isbn, string title, string description, int edition)
+        public void Add(Material material)
         {
-            throw new NotImplementedException();
+            using (var cmd = _context.CreateCommand())
+            {
+                cmd.Connection.Execute($@"INSERT INTO [Material] ([ISBN], [Title], [Description], [Edition], [Type])
+                 VALUES (@{nameof(material.ISBN)}, @{nameof(material.Title)}, @{nameof(material.Description)}, 
+                 @{nameof(material.Edition)}, @{nameof(material.Type)})", material, transaction: cmd.Transaction);
+            }
         }
 
         public Material GetByTitle(string title)
