@@ -27,9 +27,6 @@ namespace GTL.Web.Controllers
         {
             try
             {
-                command.Title = "Test";
-                command.Description = "Test description";
-                command.Edition = 1;
                 await Mediator.Send(command);
             }
             catch (GTL.Application.Exceptions.ValidationException e)

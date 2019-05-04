@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using GTL.Domain.Enums;
+using MediatR;
 
 namespace GTL.Application.UseCases.Commands
 {
@@ -8,5 +9,6 @@ namespace GTL.Application.UseCases.Commands
         public string Title { get; set; }
         public string Description { get; set; }
         public int Edition { get; set; }
+        public MaterialType Type { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 using GTL.Domain.ValueObjects;
 using MediatR;
 
@@ -34,7 +35,8 @@ namespace GTL.Application.UseCases.Commands.CreateMaterial
                     ISBN = ISBN,
                     Title = request.Title,
                     Description = request.Description,
-                    Edition = request.Edition
+                    Edition = request.Edition,
+                    Type = request.Type,
                 };
 
                 _materialRepository.Add(material);
