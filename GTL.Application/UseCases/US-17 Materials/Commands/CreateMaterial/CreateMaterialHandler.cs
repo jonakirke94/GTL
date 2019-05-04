@@ -8,7 +8,7 @@ using MediatR;
 
 namespace GTL.Application.UseCases.Commands.CreateMaterial
 {
-    public class CreateMaterialHandler
+    public class CreateMaterialHandler : IRequestHandler<MaterialBaseCommand, Unit>
     {
         private readonly IGTLContext _context;
         private readonly IMaterialRepository _materialRepository;

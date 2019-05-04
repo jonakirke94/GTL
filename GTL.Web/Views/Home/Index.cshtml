@@ -33,15 +33,21 @@ else
         <button class="btn btn-info"> Create Loan</button>
     </form>
 </div>
+
 <div>
     <form asp-action="CreateLoanerCard" asp-controller="User" method="post">
         <input type="text" name="ssn" value="123" hidden />
         <button class="btn btn-info"> Create Loanercard</button>
     </form>
-
 </div>
 
-<a asp-action="Create" asp-controller="Member">Create new member!"</a>
+<a asp-action="Create" asp-controller="Member">Create new member</a>
+
+<div>
+    <form asp-action="CreateMaterial" asp-controller="Material" method="post">
+        <button class="btn btn-info">Create Material</button>
+    </form>
+</div>
 
 <table class="table">
     <thead>
@@ -62,37 +68,37 @@ else
         </tr>
     </thead>
     <tbody>
-    @foreach (var user in Model.Users)
-     {
-         <tr>
-             <td>
-                 @Html.DisplayFor(modelItem => user.Id)
-             </td>
-             <td>
-                 @Html.DisplayFor(modelItem => user.Name)
-             </td>
-             <td>
-                 @Html.DisplayFor(modelItem => user.City)
-             </td>
-             <td>
-                 @Html.DisplayFor(modelItem => user.ZipCode)
-             </td>
-             <td>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.ZipCode)
+                </td>
+                <td>
 
-                 @if (Model.EditEnabled)
-                 {
-                     <a asp-action="Edit" asp-route-id="@user.Id">Edit |</a> 
-                 }
-                 <a asp-action="Details" asp-route-id="@user.Id">Details</a>
-                 
-                 @if (Model.DeleteEnabled)
-                 {
-                    <a asp-action="Delete" asp-route-id="@user.Id" method="post">| Delete</a>
-                 }
+                    @if (Model.EditEnabled)
+                    {
+                        <a asp-action="Edit" asp-route-id="@user.Id">Edit |</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@user.Id">Details</a>
 
-             </td>
-         </tr>
-     }
-    
+                    @if (Model.DeleteEnabled)
+                    {
+                        <a asp-action="Delete" asp-route-id="@user.Id" method="post">| Delete</a>
+                    }
+
+                </td>
+            </tr>
+        }
+
     </tbody>
 </table>

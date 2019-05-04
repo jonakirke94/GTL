@@ -30,6 +30,7 @@ namespace GTL.Web.Configurations
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
+            services.AddScoped<IMaterialRepository, MaterialRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ICopyRepository, CopyRepository>();
             services.AddScoped<ILibraryRepository, LibraryRepository>();
@@ -38,7 +39,7 @@ namespace GTL.Web.Configurations
             services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddScoped<IPermissionFactory, PermissionFactory>();        
+            services.AddScoped<IPermissionFactory, PermissionFactory>();
             services.AddHttpContextAccessor();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
@@ -48,7 +49,7 @@ namespace GTL.Web.Configurations
             });
 
             services.AddScoped<CustomCookieAuthenticationEvents>();
-        
+
             // Add AutoMapper
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
