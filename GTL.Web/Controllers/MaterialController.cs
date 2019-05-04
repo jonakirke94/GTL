@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GTL.Web.Controllers
 {
-    public class MaterialController : Controller
+    public class MaterialController : BaseController
     {
         public IActionResult Index()
         {
