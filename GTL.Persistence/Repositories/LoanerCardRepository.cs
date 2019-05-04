@@ -31,7 +31,7 @@ namespace GTL.Persistence.Repositories
             }
         }
 
-        public void DeactiveLoanerCard(string barcode)
+        public void DeactivateLoanerCard(string barcode)
         {
             //using (var connection = new SqlConnection(Options.ConnectionString))
             //{

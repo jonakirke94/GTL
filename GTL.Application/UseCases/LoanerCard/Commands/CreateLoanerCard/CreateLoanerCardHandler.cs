@@ -27,7 +27,7 @@ namespace GTL.Application.UseCases.LoanerCard.Commands.CreateLoanerCard
 
             if (activeCard != null)
             {
-                _loanerCardRepo.DeactiveLoanerCard(activeCard.Barcode);
+                _loanerCardRepo.DeactivateLoanerCard(activeCard.Barcode);
             }
 
             Domain.Entities.LoanerCard newLoanerCard = new Domain.Entities.LoanerCard
