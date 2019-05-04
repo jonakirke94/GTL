@@ -14,10 +14,10 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
 {
     public class CreateLoanHandler : IRequestHandler<CreateLoanCommand, Unit>
     {
-        private ILoanRepository _loanRepo;
-        private IMemberRepository _memberRepo;
-        private ICopyRepository _copyRepo;
-        private ILibraryRepository _libraryRepo;
+        private readonly ILoanRepository _loanRepo;
+        private readonly IMemberRepository _memberRepo;
+        private readonly ICopyRepository _copyRepo;
+        private readonly ILibraryRepository _libraryRepo;
 
         public CreateLoanHandler(ILoanRepository loanRepo, IMemberRepository memberRepo, ICopyRepository copyRepo, ILibraryRepository libraryRepo)
         {

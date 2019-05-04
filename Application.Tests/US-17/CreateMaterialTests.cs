@@ -5,9 +5,9 @@ using Moq;
 using System.Threading.Tasks;
 using Application.Tests.US_17;
 using GTL.Application.Interfaces.UnitOfWork;
+using GTL.Application.UseCases.Commands;
 using GTL.Application.UseCases.Commands.CreateMaterial;
-using GTL.Application.UseCases.US_17_Materials.Commands;
-using GTL.Application.Validators;
+using GTL.Domain.Entities;
 using GTL.Domain.ValueObjects;
 using Xunit;
 
@@ -36,7 +36,7 @@ namespace Application.Tests
 
             // Assert
             materialRepository.Verify(
-                x => x.Add(isbn, title, description, edition), Times.Exactly(1));
+                x => x.Add(It.IsAny<Material>()), Times.Exactly(1));
         }
 
         [Theory]

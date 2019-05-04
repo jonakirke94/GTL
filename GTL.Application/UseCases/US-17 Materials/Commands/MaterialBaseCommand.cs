@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediatR;
+﻿using MediatR;
 
-namespace GTL.Application.UseCases.US_17_Materials.Commands
+namespace GTL.Application.UseCases.Commands
 {
     public class MaterialBaseCommand : IRequest
     {

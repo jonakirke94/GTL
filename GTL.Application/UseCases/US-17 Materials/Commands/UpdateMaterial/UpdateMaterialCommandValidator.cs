@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using FluentValidation;
-using FluentValidation.Validators;
-using GTL.Application.Validators;
+﻿using FluentValidation;
 
-namespace GTL.Application.UseCases.Commands.CreateMaterial
+namespace GTL.Application.UseCases.Commands.UpdateMaterial
 {
     public class UpdateMaterialCommandValidator : AbstractValidator<UpdateMaterialCommand>
     {

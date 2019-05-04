@@ -8,12 +8,17 @@ namespace GTL.Persistence.Repositories
 {
     public class MaterialRepository : IMaterialRepository
     {
+        public void Add(Material material)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add(string isbn, string title, string description, int edition)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(string isbn, string title, string description, int edition)
+        public Material GetByTitle(string title)
         {
             throw new NotImplementedException();
         }
@@ -24,6 +29,11 @@ namespace GTL.Persistence.Repositories
         }
 
         public Material GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Material material)
         {
             throw new NotImplementedException();
         }

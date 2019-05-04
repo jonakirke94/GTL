@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Validators;
-using GTL.Application.UseCases.US_17_Materials.Commands;
-using GTL.Domain.Entities;
 using GTL.Domain.Exceptions;
 using GTL.Domain.ValueObjects;
 
-namespace GTL.Application.Validators
+namespace GTL.Application.UseCases.Commands
 {
     public class MaterialBaseValidator : AbstractValidator<MaterialBaseCommand>
     {
@@ -24,7 +19,10 @@ namespace GTL.Application.Validators
         {
             try
             {
-                ISBN.For(model.Isbn);
+                if (!string.IsNullOrWhiteSpace(model.Isbn))
+                {
+                    ISBN.For(model.Isbn);
+                }
             }
             catch (ISBNInvalidException)
             {

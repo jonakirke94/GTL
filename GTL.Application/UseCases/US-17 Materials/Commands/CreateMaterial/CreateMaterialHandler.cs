@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
-using GTL.Application.UseCases.US_17_Materials.Commands;
 using GTL.Domain.Entities;
+using GTL.Domain.ValueObjects;
 using MediatR;
 
 namespace GTL.Application.UseCases.Commands.CreateMaterial
@@ -23,7 +23,21 @@ namespace GTL.Application.UseCases.Commands.CreateMaterial
         {
             using (var db = _context.CreateUnitOfWork())
             {
-                _materialRepository.Add(request.Isbn, request.Title, request.Description, request.Edition);
+                ISBN ISBN = null;
+                if (!string.IsNullOrWhiteSpace(request.Isbn))
+                {
+                    ISBN = ISBN.For(request.Isbn);
+                }
+
+                Material material = new Material
+                {
+                    ISBN = ISBN,
+                    Title = request.Title,
+                    Description = request.Description,
+                    Edition = request.Edition
+                };
+
+                _materialRepository.Add(material);
 
                 db.SaveChanges();
             }

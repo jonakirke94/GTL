@@ -1,7 +1,6 @@
-﻿using GTL.Application.UseCases.US_17_Materials.Commands;
-using MediatR;
+﻿using MediatR;
 
-namespace GTL.Application.UseCases.Commands.CreateMaterial
+namespace GTL.Application.UseCases.Commands.UpdateMaterial
 {
     public class UpdateMaterialCommand : IRequest
     {

@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
-using GTL.Application.UseCases.Commands.CreateMaterial;
 using GTL.Domain.Entities;
 using GTL.Domain.ValueObjects;
 using MediatR;
 
-namespace GTL.Application.UseCases.Commands.WriteMaterial
+namespace GTL.Application.UseCases.Commands.UpdateMaterial
 {
     public class UpdateMaterialHandler
     {
@@ -33,18 +32,12 @@ namespace GTL.Application.UseCases.Commands.WriteMaterial
 
             using (var db = _context.CreateUnitOfWork())
             {
-
-                // hvorfor passer du ikke objeket du lige har lavet i stedet?
-                //_materialRepository.Update(material);
-
-
-                //_materialRepository.Update(request.Isbn, request.Title, request.Description, request.Edition);
+                _materialRepository.Update(material);
 
                 db.SaveChanges();
             }
 
             return Task.Run(() => Unit.Value, cancellationToken);
-            // TODO: Implement this
         }
     }
 }
