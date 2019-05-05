@@ -29,7 +29,7 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
 
         public Task<Unit> Handle(CreateLoanCommand request, CancellationToken cancellationToken)
         {
-            var member = _memberRepo.GetMemberBySsn(request.Loan.MemberSsn);
+            var member = _memberRepo.GetBySsn(request.Loan.MemberSsn);
 
             var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
 
@@ -44,13 +44,13 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
             int gracePeriod;
             int maxBooksOnLoan = 0;
 
-            if (member.Type == MemberType.Professor)
+            if (member.Type == MemberType.PROFESSOR)
             {
                 loanDuration = library.ProfessorLoanDuration;
                 gracePeriod = library.ProfessorGracePeriod;
                 maxBooksOnLoan = library.ProfessorMaxBooksOnLoan;
             }
-            else if (member.Type == MemberType.Member)
+            else if (member.Type == MemberType.STUDENT)
             {
                 loanDuration = library.MemberLoanDuration;
                 gracePeriod = library.MemberGracePeriod;

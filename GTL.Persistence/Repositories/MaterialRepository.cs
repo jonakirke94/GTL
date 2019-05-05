@@ -20,9 +20,17 @@ namespace GTL.Persistence.Repositories
         {
             using (var cmd = _context.CreateCommand())
             {
-                cmd.Connection.Execute($@"INSERT INTO [Material] ([ISBN], [Title], [Description], [Edition], [Type])
-                 VALUES (@{nameof(material.ISBN)}, @{nameof(material.Title)}, @{nameof(material.Description)}, 
-                 @{nameof(material.Edition)}, @{nameof(material.Type)})", material, transaction: cmd.Transaction);
+                const string query = @"INSERT INTO [Material] ([ISBN], [Title], [Description], [Edition], [Type])
+                 VALUES (@isbn, @title, @description, @edition, @type)";
+
+                var para = new DynamicParameters();
+                para.Add("@isbn", material.ISBN.Number != null || !string.IsNullOrWhiteSpace(material.ISBN.Number) ? material.ISBN.Number : null);
+                para.Add("@title", material.Title);
+                para.Add("@description", material.Description);
+                para.Add("@edition", material.Edition);
+                para.Add("@type", material.Type.ToString());
+
+                cmd.Connection.Execute(query, para, cmd.Transaction);
             }
         }
 
