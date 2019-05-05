@@ -15,4 +15,8 @@
     <ProjectReference Include="..\GTL.Domain\GTL.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Users\Commands\Login\" />
+  </ItemGroup>
+
 </Project>

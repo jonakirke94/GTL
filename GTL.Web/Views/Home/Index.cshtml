@@ -4,26 +4,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-@using GTL.Application.Interfaces.Authentication;
-@inject ISignInManager SignInManager
-
-@if (SignInManager.IsSignedIn())
-{
-
-    <h1 style="color:Red">LOGGED IN!!!! Hi @User.Identity.Name</h1>
-}
-else
-{
-
-    <h1 style="color:Red">NOT LOGGED IN!!!!</h1>
-}
-<p>
-    <a asp-controller="Account" asp-action="Login">Login</a>
-</p>
-<p>
-    <a asp-controller="Account" asp-action="Logout">Logout</a>
-</p>
-
 <p>
     <a asp-controller="Home" asp-action="Create">Create New</a>
 </p>

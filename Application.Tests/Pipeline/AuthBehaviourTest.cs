@@ -63,12 +63,12 @@ namespace Application.Tests.Pipeline
         }
 
         [Fact]
-        public void ThrowsIfHasAttributeAndNoSsnFound()
+        public void ThrowsIfHasAttributeAndNoIdFound()
         {
             // Arrange
             var request = new Mock<DummyRequestWithAttribute>();
             _currentUser.Setup(x => x.IsAuthenticated()).Returns(true);
-            _currentUser.Setup(x => x.GetSsn()).Returns(string.Empty);
+            _currentUser.Setup(x => x.GetId()).Returns(-1);
 
             var sut =
                 new RequestAuthBehaviour<DummyRequestWithAttribute, DummyResponse>(_currentUser.Object, _staffRepo.Object,
@@ -86,7 +86,7 @@ namespace Application.Tests.Pipeline
             // Arrange
             var request = new Mock<DummyRequestWithAttribute>();
             _currentUser.Setup(x => x.IsAuthenticated()).Returns(true);
-            _currentUser.Setup(x => x.GetSsn()).Returns("123");
+            _currentUser.Setup(x => x.GetId()).Returns(123);
 
             object fakeRole = null;
             _memoryCache.Setup(x => x.TryGetValue(It.IsAny<object>(), out fakeRole)).Returns(false);
@@ -100,7 +100,7 @@ namespace Application.Tests.Pipeline
             var fakeStaff = new Mock<Staff>().Object;
             fakeStaff.Role = staffRole;
 
-            _staffRepo.Setup(x => x.GetBySsn(It.IsAny<string>())).Returns(fakeStaff);
+            _staffRepo.Setup(x => x.GetById(It.IsAny<int>())).Returns(fakeStaff);
 
             var sut =
                 new RequestAuthBehaviour<DummyRequestWithAttribute, DummyResponse>(_currentUser.Object, _staffRepo.Object,
@@ -119,7 +119,7 @@ namespace Application.Tests.Pipeline
             // Arrange
             var request = new Mock<DummyRequestWithAttribute>();
             _currentUser.Setup(x => x.IsAuthenticated()).Returns(true);
-            _currentUser.Setup(x => x.GetSsn()).Returns("123");
+            _currentUser.Setup(x => x.GetId()).Returns(123);
 
             object fakeRole = null;
             _memoryCache.Setup(x => x.TryGetValue(It.IsAny<object>(), out fakeRole)).Returns(false);
@@ -133,7 +133,7 @@ namespace Application.Tests.Pipeline
             var fakeStaff = new Mock<Staff>().Object;
             fakeStaff.Role = Role.CHECKOUTSTAFF;
 
-            _staffRepo.Setup(x => x.GetBySsn(It.IsAny<string>())).Returns(fakeStaff);
+            _staffRepo.Setup(x => x.GetById(It.IsAny<int>())).Returns(fakeStaff);
 
             var sut =
                 new RequestAuthBehaviour<DummyRequestWithAttribute, DummyResponse>(_currentUser.Object, _staffRepo.Object,

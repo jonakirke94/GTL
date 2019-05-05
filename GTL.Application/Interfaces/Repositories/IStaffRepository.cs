@@ -7,6 +7,8 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface IStaffRepository
     {
-        Staff GetBySsn(string ssn);
+        Staff GetById(int id);
+
+        Staff GetByEmail(string email);
     }
 }

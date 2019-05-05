@@ -21,19 +21,20 @@ namespace GTL.Web.Authentication
 
         public override async Task ValidatePrincipal(CookieValidatePrincipalContext context)
         {
-            var userPrincipal = context.Principal;
-                  
-            var changedClaim = userPrincipal.Claims.FirstOrDefault(x => x.Type == "Last Changed");
-            var idClaim = userPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-        
-            if (changedClaim == null || idClaim == null || !await _signInManager.ValidateLastChanged(Int32.Parse(idClaim.Value), changedClaim.Value))
-            {
-                context.RejectPrincipal();
+            await Task.Delay(1);
+            //var userPrincipal = context.Principal;
 
-                
-                await context.HttpContext.SignOutAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme);
-            }
+            //var changedClaim = userPrincipal.Claims.FirstOrDefault(x => x.Type == "Last Changed");
+            //var idClaim = userPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+            //if (changedClaim == null || idClaim == null || !await _signInManager.ValidateLastChanged(Int32.Parse(idClaim.Value), changedClaim.Value))
+            //{
+            //    context.RejectPrincipal();
+
+
+            //    await context.HttpContext.SignOutAsync(
+            //        CookieAuthenticationDefaults.AuthenticationScheme);
+            //}
         }
     }
 }

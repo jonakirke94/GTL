@@ -18,13 +18,25 @@ namespace GTL.Persistence.Repositories
             Context = context;
         }
 
-        public Staff GetBySsn(string ssn)
+        public Staff GetById(int id)
         {
-            const string query = @"SELECT * FROM Staff WHERE ssn = @ssn";
+            const string query = @"SELECT * FROM Staff WHERE id = @id";
             using (var cmd = Context.CreateCommand())
             {
                 var para = new DynamicParameters();
-                para.Add("@ssn", ssn);
+                para.Add("@id", id);
+                var results = cmd.Connection.Query<Staff>(query, para, cmd.Transaction);
+                return results.FirstOrDefault();
+            }
+        }
+
+        public Staff GetByEmail(string email)
+        {
+            const string query = @"SELECT * FROM Staff WHERE email = @email";
+            using (var cmd = Context.CreateCommand())
+            {
+                var para = new DynamicParameters();
+                para.Add("@email", email);
                 var results = cmd.Connection.Query<Staff>(query, para, cmd.Transaction);
                 return results.FirstOrDefault();
             }

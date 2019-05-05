@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
+using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.Mapping;
 using GTL.Application.UseCases.Users.Queries;
@@ -35,7 +37,14 @@ namespace GTL.Application.ViewModels
 
             public bool Resolve(IEnumerable<User> source, UserListViewModel dest, bool destMember, ResolutionContext context)
             {
-                return _currentUser.GetCurrentPermission() >= PermissionLevel.CHIEFLIBRARIAN;
+                try
+                {
+                    return _currentUser.GetCurrentRole() >= Role.ASSOCIATELIBRARIAN;
+                }
+                catch (NotInRoleException)
+                {
+                    return false;
+                }
             }
         }
     }

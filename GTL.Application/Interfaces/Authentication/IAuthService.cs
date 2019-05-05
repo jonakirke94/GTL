@@ -5,9 +5,9 @@ using GTL.Domain.Entities;
 
 namespace GTL.Application.Interfaces.Authentication
 {
-    public interface IAuthService
+    public interface IPasswordHelper
     {
-        Task<SignInResult> ValidatePasswordAsync(string email, string password);
+        bool ValidatePassword(string password, string passwordSalt, string passwordHash);
     }
 }
 

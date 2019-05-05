@@ -7,9 +7,11 @@ namespace GTL.Application.Interfaces.Authentication
     {
         bool IsAuthenticated();
 
-        string GetSsn();
+        int GetId();
 
-        PermissionLevel GetCurrentPermission();
+        Role GetCurrentRole();
     }
 }
+
+
 

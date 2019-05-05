@@ -39,19 +39,19 @@ namespace GTL.Application.Infrastructure.Pipeline
                     throw new AuthenticationException();
                 }
 
-                var ssn = _currentUser.GetSsn();
-                if (string.IsNullOrEmpty(ssn))
+                var id = _currentUser.GetId();
+                if (id <= 0)
                 {
                     throw new AuthenticationException();
                 }
 
-                var foundInCache = _cache.TryGetValue(ssn, out Role staffRole);
+                var foundInCache = _cache.TryGetValue(id, out Role staffRole);
 
                 if (!foundInCache)
                 {
-                    var staff = _staffRepo.GetBySsn(ssn);
+                    var staff = _staffRepo.GetById(id);
                     staffRole = staff.Role;
-                    _cache.Set(ssn, staffRole, CacheHelper.CacheOptions());
+                    _cache.Set(id, staffRole, CacheHelper.CacheOptions());
                 }
 
                 if (staffRole < requiredMinimumRole)

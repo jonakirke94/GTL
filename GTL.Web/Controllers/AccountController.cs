@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Authentication;
-using GTL.Application.UseCases.Account.Commands.Login;
-using GTL.Application.UseCases.Users.Commands.Login;
+using GTL.Application.UseCases.Login.Commands;
 using GTL.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -42,27 +42,27 @@ namespace GTL.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginCommand command, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+
+            try
             {
-                var signInResult = await Mediator.Send(new LoginCommand { Email = model.Email, Password = model.Password, IsPersistent = model.IsPersistent });
+                var isSuccess = await Mediator.Send(command);
 
-                if (!signInResult.HasRequestError)
-                {
-                    TempData["LoginResult"] = signInResult.ErrorMessage;
-                    return View();
-                }
-
-                if (signInResult.SuccessfulLogin)
+                if (isSuccess)
                 {
                     return RedirectToLocal(returnUrl);
                 }
 
+                ModelState.AddModelError("Password", "Invalid email or password");
+            }
+            catch (ValidationException e)
+            {
+                ModelState.AddValidationErrors(e);
             }
 
-            TempData["LoginResult"] = "Invalid email or password";
+
             return View();
         }
 

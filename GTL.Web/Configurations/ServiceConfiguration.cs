@@ -41,15 +41,11 @@ namespace GTL.Web.Configurations
 
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IPasswordHelper, PasswordHelper>();
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddHttpContextAccessor();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
-            AddCookie((options) =>
-            {
-                options.EventsType = typeof(CustomCookieAuthenticationEvents);
-            });
+
 
             services.AddScoped<CustomCookieAuthenticationEvents>();
         
@@ -77,7 +73,14 @@ namespace GTL.Web.Configurations
             services.AddScoped<IGTLContext, GTLContext>();
             services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+                AddCookie((options) =>
+                {
+                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
+                });
+
             services.AddRouting(options => options.LowercaseUrls = true);
+            
             services
               .AddMvc(config => {
                   config.Filters.Add(new AuthExceptionFilter());
