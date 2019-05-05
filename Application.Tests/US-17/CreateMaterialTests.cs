@@ -3,11 +3,11 @@ using System.Threading;
 using GTL.Application.Interfaces.Repositories;
 using Moq;
 using System.Threading.Tasks;
-using Application.Tests.US_17;
 using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Application.UseCases.Commands;
 using GTL.Application.UseCases.Commands.CreateMaterial;
 using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 using GTL.Domain.ValueObjects;
 using Xunit;
 
@@ -73,7 +73,8 @@ namespace Application.Tests
             command.Object.Isbn = isbn;
             command.Object.Title = "FakeTitle";
             command.Object.Description = "FakeDescription";
-            command.Object.Edition = 0;
+            command.Object.Edition = 1;
+            command.Object.Type = MaterialType.Book;
 
             // Act
             var validationRes = sut.Validate(command.Object);

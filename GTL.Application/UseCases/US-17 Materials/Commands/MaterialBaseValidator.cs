@@ -9,10 +9,10 @@ namespace GTL.Application.UseCases.Commands
     {
         public MaterialBaseValidator()
         {
-            RuleFor(x => x.Isbn).Must(ValidIsbn).WithMessage("The ISBN is not a valid ISBN number");
+            RuleFor(x => x.Isbn).NotEmpty().Must(ValidIsbn).WithMessage("The ISBN is not a valid ISBN number");
             RuleFor(x => x.Title).NotEmpty().MaximumLength(60);
             RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.Edition).GreaterThanOrEqualTo(int.MinValue).LessThanOrEqualTo(int.MaxValue);
+            RuleFor(x => x.Edition).GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
             RuleFor(x => x.Type).IsInEnum();
         }
 
@@ -20,10 +20,7 @@ namespace GTL.Application.UseCases.Commands
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(model.Isbn))
-                {
-                    ISBN.For(model.Isbn);
-                }
+                ISBN.For(model.Isbn);
             }
             catch (ISBNInvalidException)
             {

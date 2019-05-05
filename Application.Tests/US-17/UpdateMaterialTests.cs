@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Application.Tests.US_17
+﻿namespace Application.Tests
 {
     public class UpdateMaterialTests
     {
