@@ -2,6 +2,6 @@
 {
     public enum MaterialType
     {
-        Book, Map
+        Book, Map, ReferenceBook, RareBook, OutOfPrintBook 
     }
 }
