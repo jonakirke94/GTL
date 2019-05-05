@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MediatR;
-
-namespace GTL.Application.Authorization
+﻿namespace GTL.Application.Infrastructure.RequestModels
 {
     public class CommandResponse 
     {

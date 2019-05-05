@@ -7,7 +7,7 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface ILoanerCardRepository
     {
-        void CreateLoanerCard(LoanerCard loanercard);
+        void Add(LoanerCard loanerCard);
         IEnumerable<LoanerCard> GetLoanerCardsBySsn(string ssn);
 
         void DeactiveLoanerCard(string barcode);

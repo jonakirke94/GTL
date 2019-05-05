@@ -14,10 +14,13 @@ using GTL.Application.Infrastructure.AutoMapper;
 using GTL.Application.Infrastructure.Pipeline;
 using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Authentication;
+using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 using GTL.Application.Users.Queries.GetUser;
 using GTL.Infrastructure;
+using GTL.Persistence;
 using GTL.Persistence.Repositories;
+using GTL.Persistence.UnitOfWork;
 
 namespace GTL.Web.Configurations
 {
@@ -25,25 +28,25 @@ namespace GTL.Web.Configurations
     {
         public static void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+
+
             // repos
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<IStaffRepository, StaffRepository>();
+
 
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IPasswordHelper, PasswordHelper>();
             services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddScoped<IPermissionFactory, PermissionFactory>();        
             services.AddHttpContextAccessor();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
-            AddCookie((options) =>
-            {
-                options.EventsType = typeof(CustomCookieAuthenticationEvents);
-            });
+
 
             services.AddScoped<CustomCookieAuthenticationEvents>();
         
@@ -56,8 +59,8 @@ namespace GTL.Web.Configurations
             // Add MediatR
             services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -66,9 +69,23 @@ namespace GTL.Web.Configurations
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddScoped<AuthExceptionFilter>();
+
+            services.AddScoped<IGTLContext, GTLContext>();
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+                AddCookie((options) =>
+                {
+                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
+                });
+
             services.AddRouting(options => options.LowercaseUrls = true);
+            
             services
-              .AddMvc()
+              .AddMvc(config => {
+                  config.Filters.Add(new AuthExceptionFilter());
+              })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
         }

@@ -13,7 +13,7 @@ namespace Application.Tests
         public void Untampered_hash_matches_the_text()
         {
             // Arrange  
-            const string message = "passw0rd";
+            const string message = "12345678";
             var salt = Hasher.CreateSalt();
             var hash = Hasher.Hash(message, salt);
 

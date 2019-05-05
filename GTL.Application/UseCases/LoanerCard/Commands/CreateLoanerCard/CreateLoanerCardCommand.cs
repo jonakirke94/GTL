@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using GTL.Application.Interfaces.Authorization;
 using MediatR;
 using System;
 using System.Collections.Generic;

@@ -18,7 +18,6 @@ namespace GTL.Web.Controllers
 
 
         [HttpPost]
-        //[Authorize(Policy = "CanCreateLoanerCard")]
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> CreateLoanerCard(string ssn)
         {
@@ -26,10 +25,6 @@ namespace GTL.Web.Controllers
             {
                 var command = new CreateLoanerCardCommand {Ssn = ssn};
                 await Mediator.Send(command);
-            }
-            catch (AuthException)
-            {
-                return AccessDenied();
             }
             catch (ValidationException e)
             {
