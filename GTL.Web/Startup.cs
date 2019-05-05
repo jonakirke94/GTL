@@ -28,8 +28,6 @@ namespace GTL.Web
             });
 
             ServiceConfiguration.ConfigureServices(services);
-
-            PolicyConfiguration.ConfigurePolicies(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

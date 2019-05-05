@@ -27,7 +27,7 @@ namespace GTL.Web.Controllers
 
 
         [HttpPost]
-        [Authorize(Policy = PolicyNames.CanWriteUsers)]
+        [Authorize(Roles = RoleHierarchy.CHECKOUTSTAFF)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateMemberCommand command)
         {

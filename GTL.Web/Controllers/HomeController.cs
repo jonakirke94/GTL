@@ -43,7 +43,7 @@ namespace GTL.Web.Controllers
             return View(vm);
         }
 
-        [Authorize(Policy = PolicyNames.CanReadUsers)]
+        [Authorize(Roles = RoleHierarchy.CHECKOUTSTAFF)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
