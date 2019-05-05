@@ -8,7 +8,6 @@ namespace GTL.Application.UseCases.Loans.Commands.ReturnLoan
 {
     public class ReturnLoanCommand : IRequest
     {
-        public DateTime ReturnDate { get; set; }
         public string CopyBarcode { get; set; }
     }
 
@@ -16,7 +15,6 @@ namespace GTL.Application.UseCases.Loans.Commands.ReturnLoan
     {
         public ReturnLoanCommandValidator()
         {
-            RuleFor(x => x.ReturnDate).NotEmpty();
             RuleFor(x => x.CopyBarcode).NotEmpty();
         }
     }

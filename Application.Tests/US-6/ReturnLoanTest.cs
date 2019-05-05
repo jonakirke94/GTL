@@ -47,6 +47,19 @@ namespace Application.Tests.US_6
             _loanRepo.Verify(x => x.Return(It.IsAny<string>()), Times.Once);
         }
 
+        [Fact]
+        public async Task ReturnOfLoanThatDoesnExist()
+        {
+            //Arrange
+            _command.CopyBarcode = "48784894652";
 
+            var sut = new ReturnLoanHandler(_context.Object, _loanRepo.Object);
+
+            //Act
+            await sut.Handle(_command, CancellationToken.None);
+
+            //Assert
+            _loanRepo.Verify(x => x.Return(It.IsNotIn<string>()), Times.Once);
+        }
     }
 }
