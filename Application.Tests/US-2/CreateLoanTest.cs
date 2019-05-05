@@ -60,7 +60,7 @@ namespace Application.Tests.US_2
             _memberRepo.Setup(x => x.GetBySsn(fakeMember.Ssn)).Returns(fakeMember);
             _libraryRepo.Setup(x => x.GetLibraryByName(fakeLibrary.Name)).Returns(fakeLibrary);
             _copyRepo.Setup(x => x.GetCopyByBarcode(fakeCopy.Barcode)).Returns(fakeCopy);
-            _loanRepo.Setup(x => x.GetAllActiveLoans(memberSsn)).Returns(numberOfBooksLended);
+            _loanRepo.Setup(x => x.GetAllActive(memberSsn)).Returns(numberOfBooksLended);
             _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
             
 
