@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GTL.Domain.Enums;
 
 namespace Application.Tests
 {
@@ -11,9 +12,9 @@ namespace Application.Tests
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "0805000763", "Titel", "Beskrivelse", 1 };
-            yield return new object[] { "9780261102385", "Titel", "Beskrivelse", int.MinValue };
-            yield return new object[] { "9788740046526", "Titel", "Beskrivelse", int.MaxValue };
+            yield return new object[] { "0805000763", "Titel", "Beskrivelse", 1, MaterialType.Book };
+            yield return new object[] { "9780261102385", "Titel", "Beskrivelse", 5, MaterialType.Map };
+            yield return new object[] { "9788740046526", "Titel", "Beskrivelse", int.MaxValue, MaterialType.ReferenceBook };
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

@@ -17,7 +17,7 @@ namespace Application.Tests
     {
         [Theory]
         [ClassData(typeof(TDS5_EC1))]
-        public async Task MaterialWasCreatedTest(string isbn, string title, string description, int edition)
+        public async Task MaterialWasCreatedTest(string isbn, string title, string description, int edition, MaterialType type)
         {
             // Arrange
             Mock<IGTLContext> context = new Mock<IGTLContext>();
@@ -29,6 +29,7 @@ namespace Application.Tests
             command.Object.Title = title;
             command.Object.Description = description;
             command.Object.Edition = edition;
+            command.Object.Type = type;
             var sut = new CreateMaterialHandler(context.Object, materialRepository.Object);
 
             //// Act
@@ -39,20 +40,9 @@ namespace Application.Tests
                 x => x.Add(It.IsAny<Material>()), Times.Exactly(1));
         }
 
-        [Fact]
-        public void MaterialWithSameIsbnAsExistingWasNotCreatedTest()
-        {
-            Mock<IGTLContext> context = new Mock<IGTLContext>();
-            var uow = new Mock<IUnitOfWork>();
-            context.Setup(x => x.CreateUnitOfWork()).Returns(uow.Object);
-            Mock<IMaterialRepository> materialRepository = new Mock<IMaterialRepository>();
-            Mock<MaterialBaseCommand> command = new Mock<MaterialBaseCommand>();
-
-        }
-
         [Theory]
         [ClassData(typeof(TDS5_EC2))]
-        public void MaterialHasInvalidAttributesTest(string isbn, string title, string description, int edition)
+        public void MaterialHasInvalidAttributesTest(string isbn, string title, string description, int edition, MaterialType type)
         {
             // Arrange
             var sut = new MaterialBaseValidator();
@@ -62,6 +52,7 @@ namespace Application.Tests
             command.Object.Title = title;
             command.Object.Description = description;
             command.Object.Edition = edition;
+            command.Object.Type = type;
 
             // Act
             var validationRes = sut.Validate(command.Object);
@@ -70,28 +61,5 @@ namespace Application.Tests
             Assert.False(validationRes.IsValid);
         }
 
-        [Theory]
-        [InlineData("80-902734-1-6")]
-        [InlineData("1-84356-028-3")]
-        [InlineData("9780545935173")]
-        [InlineData("9780395489321")]
-        public void CanValidateCorrectIsbn(string isbn)
-        {
-            // Arrange
-            var sut = new MaterialBaseValidator();
-
-            var command = new Mock<MaterialBaseCommand>();
-            command.Object.Isbn = isbn;
-            command.Object.Title = "FakeTitle";
-            command.Object.Description = "FakeDescription";
-            command.Object.Edition = 1;
-            command.Object.Type = MaterialType.Book;
-
-            // Act
-            var validationRes = sut.Validate(command.Object);
-
-            // Assert
-            Assert.True(validationRes.IsValid);
-        }
     }
 }
