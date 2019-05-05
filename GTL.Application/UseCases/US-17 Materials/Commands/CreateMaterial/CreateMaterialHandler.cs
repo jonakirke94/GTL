@@ -24,15 +24,9 @@ namespace GTL.Application.UseCases.Commands.CreateMaterial
         {
             using (var db = _context.CreateUnitOfWork())
             {
-                ISBN ISBN = null;
-                if (!string.IsNullOrWhiteSpace(request.Isbn))
-                {
-                    ISBN = ISBN.For(request.Isbn);
-                }
-
                 Material material = new Material
                 {
-                    ISBN = ISBN,
+                    ISBN = ISBN.For(request.Isbn),
                     Title = request.Title,
                     Description = request.Description,
                     Edition = request.Edition,

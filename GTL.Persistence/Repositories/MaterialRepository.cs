@@ -24,7 +24,7 @@ namespace GTL.Persistence.Repositories
                  VALUES (@isbn, @title, @description, @edition, @type)";
 
                 var para = new DynamicParameters();
-                para.Add("@isbn", material.ISBN.Number != null || !string.IsNullOrWhiteSpace(material.ISBN.Number) ? material.ISBN.Number : null);
+                para.Add("@isbn", material.ISBN.Number);
                 para.Add("@title", material.Title);
                 para.Add("@description", material.Description);
                 para.Add("@edition", material.Edition);
