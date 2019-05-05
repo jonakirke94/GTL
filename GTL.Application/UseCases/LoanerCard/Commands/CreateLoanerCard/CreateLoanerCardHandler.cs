@@ -37,7 +37,7 @@ namespace GTL.Application.UseCases.LoanerCard.Commands.CreateLoanerCard
                 IssueDate = DateTime.Now
             };
 
-            _loanerCardRepo.CreateLoanerCard(newLoanerCard);
+            _loanerCardRepo.Add(newLoanerCard);
 
             return Task.Run(() => Unit.Value);
         }

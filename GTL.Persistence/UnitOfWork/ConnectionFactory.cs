@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace GTL.Persistence
+namespace GTL.Persistence.UnitOfWork
 {
     public class ConnectionFactory : IConnectionFactory
     {
@@ -19,9 +19,8 @@ namespace GTL.Persistence
         }
         public IDbConnection Create()
         {
-            var connection = new SqlConnection();
+            var connection = new SqlConnection {ConnectionString = Options.ConnectionString};
 
-            connection.ConnectionString = Options.ConnectionString;
             connection.Open();
             return connection;
         }

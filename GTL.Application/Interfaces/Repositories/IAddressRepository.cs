@@ -7,6 +7,6 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface IAddressRepository
     {
-        void AddAddress(Address address);
+        void Add(Address address);
     }
 }

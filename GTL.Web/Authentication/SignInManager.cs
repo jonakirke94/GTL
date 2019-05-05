@@ -17,25 +17,10 @@ namespace GTL.Web.Authentication
         private readonly IHttpContextAccessor _context;
         private readonly IUserRepository _userRepo;
 
-        public SignInManager(IHttpContextAccessor context, IUserRepository userRepo, IAuthService authService)
+        public SignInManager(IHttpContextAccessor context, IUserRepository userRepo)
         {
             _context = context;
             _userRepo = userRepo;
-        }
-
-        public int GetCurrentUserId()
-        {
-            if (!_context.HttpContext.User.Identity.IsAuthenticated)
-                return -1;
-
-            Claim claim = _context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-            if (claim == null)
-                return -1;
-       
-            int.TryParse(claim.Value, out int currentId);
-
-            return currentId;
         }
 
         public bool IsSignedIn()
@@ -49,7 +34,7 @@ namespace GTL.Web.Authentication
                  principal,
             new AuthenticationProperties
             {
-                ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                ExpiresUtc = DateTime.UtcNow.AddDays(1),
                 IsPersistent = isPersistent,
                 AllowRefresh = false
             });

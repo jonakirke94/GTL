@@ -21,7 +21,7 @@ namespace GTL.Persistence.Repositories
             _context = context;
         }
      
-        public void CreateLoanerCard(LoanerCard loanerCard)
+        public void Add(LoanerCard loanerCard)
         {
             using (var cmd = _context.CreateCommand())
             {

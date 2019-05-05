@@ -1,29 +1,17 @@
-﻿using GTL.Application.Interfaces;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Threading;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
-using GTL.Persistence.Configurations;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace GTL.Persistence
+namespace GTL.Persistence.UnitOfWork
 {
     public class GTLContext : IGTLContext
     {
         private readonly IDbConnection _connection;
-        private readonly IConnectionFactory _connectionFactory;
         private readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
         private readonly LinkedList<UnitOfWork> _uows = new LinkedList<UnitOfWork>();
-
-        private IUnitOfWork _unitOfWork;
-
+        
         public GTLContext(IConnectionFactory connectionFactory)
         {
             _connection = connectionFactory.Create();
@@ -59,10 +47,6 @@ namespace GTL.Persistence
             _rwLock.ExitWriteLock();
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             _connection.Dispose();

@@ -45,31 +45,31 @@
             <div class="address-area">
 
                 <div class="form-group">
-                    <label asp-for="Address.StreetName" class="control-label"></label>
-                    <input asp-for="Address.StreetName" type="text" class="form-control" />
-                    <span asp-validation-for="Address.StreetName" class="text-danger"></span>
+                    <label asp-for="StreetName" class="control-label"></label>
+                    <input asp-for="StreetName" type="text" class="form-control" />
+                    <span asp-validation-for="StreetName" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Address.HouseNumber" class="control-label"></label>
-                    <input asp-for="Address.HouseNumber" type="text" class="form-control" />
-                    <span asp-validation-for="Address.HouseNumber" class="text-danger"></span>
+                    <label asp-for="HouseNumber" class="control-label"></label>
+                    <input asp-for="HouseNumber" type="text" class="form-control" />
+                    <span asp-validation-for="HouseNumber" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Address.City" class="control-label"></label>
-                    <input asp-for="Address.City" type="text" class="form-control" />
-                    <span asp-validation-for="Address.City" class="text-danger"></span>
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" type="text" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Address.ZipCode" class="control-label"></label>
-                    <input asp-for="Address.ZipCode" type="text" class="form-control" />
-                    <span asp-validation-for="Address.ZipCode" class="text-danger"></span>
+                    <label asp-for="ZipCode" class="control-label"></label>
+                    <input asp-for="ZipCode" type="text" class="form-control" />
+                    <span asp-validation-for="ZipCode" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <select asp-for="Address.AddressType" asp-items="Html.GetEnumSelectList<AddressType>()"></select>
+                    <select asp-for="AddressType" asp-items="Html.GetEnumSelectList<AddressType>()"></select>
                 </div>
             </div>
 

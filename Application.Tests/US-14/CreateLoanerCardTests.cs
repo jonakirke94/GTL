@@ -27,7 +27,7 @@ namespace Application.Tests
             await sut.Handle(command.Object, CancellationToken.None);
 
             // Assert
-            loanerCardRepo.Verify(x => x.CreateLoanerCard(It.IsAny<LoanerCard>()), Times.Once());
+            loanerCardRepo.Verify(x => x.Add(It.IsAny<LoanerCard>()), Times.Once());
         }
 
         [Theory]

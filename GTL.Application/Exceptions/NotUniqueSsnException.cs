@@ -7,7 +7,7 @@ namespace GTL.Application.Exceptions
     public class NotUniqueSsnException : Exception
     {
         public NotUniqueSsnException(string ssn)
-            : base($"Member with ssn \"{ssn}\" already exists.")
+            : base($"Member with ssn: {ssn} already exists.")
         {
         }
     }

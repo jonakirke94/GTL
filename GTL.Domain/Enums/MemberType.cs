@@ -6,7 +6,6 @@ namespace GTL.Domain.Enums
 {
     public enum MemberType
     {
-        Professor = 0,
-        Member = 1, 
+        STUDENT, PROFESSOR
     }
 }
