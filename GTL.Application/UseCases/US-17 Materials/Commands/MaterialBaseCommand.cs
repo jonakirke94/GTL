@@ -13,5 +13,7 @@ namespace GTL.Application.UseCases.Commands
         public string Description { get; set; }
         public int Edition { get; set; }
         public MaterialType Type { get; set; }
+        public string Area { get; set; }
+        public string Size { get; set; }
     }
 }

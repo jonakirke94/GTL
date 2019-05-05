@@ -14,6 +14,8 @@ namespace GTL.Application.UseCases.Commands
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Edition).GreaterThanOrEqualTo(1).LessThanOrEqualTo(int.MaxValue);
             RuleFor(x => x.Type).IsInEnum();
+            RuleFor(x => x.Area).MaximumLength(50);
+            RuleFor(x => x.Size).MaximumLength(20);
         }
 
         private static bool ValidIsbn(MaterialBaseCommand model, string isbn, PropertyValidatorContext ctx)

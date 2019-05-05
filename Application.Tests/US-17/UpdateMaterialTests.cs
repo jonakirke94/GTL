@@ -40,25 +40,5 @@ namespace Application.Tests
                 x => x.Update(It.IsAny<Material>()), Times.Exactly(1));
         }
 
-        [Theory]
-        [ClassData(typeof(TDS5_EC2))]
-        public void EditMaterialShouldNotBePossibleTest(string isbn, string title, string description, int edition, MaterialType type)
-        {
-            // Arrange
-            var sut = new MaterialBaseValidator();
-
-            Mock<MaterialBaseCommand> command = new Mock<MaterialBaseCommand>();
-            command.Object.Isbn = isbn;
-            command.Object.Title = title;
-            command.Object.Description = description;
-            command.Object.Edition = edition;
-            command.Object.Type = type;
-
-            // Act
-            var validationRes = sut.Validate(command.Object);
-
-            // Assert
-            Assert.False(validationRes.IsValid);
-        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using GTL.Domain.Entities;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using GTL.Domain.Entities;
 
 namespace GTL.Application.Interfaces.Repositories
 {
@@ -9,5 +12,6 @@ namespace GTL.Application.Interfaces.Repositories
         Material GetById(int id);
         Material GetByTitle(string title);
         void Update(Material material);
+        Task<IEnumerable<Material>> GetAsync(CancellationToken cancellationToken);
     }
 }

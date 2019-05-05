@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\US-17 Materials\Queries\" />
     <Folder Include="UseCases\Users\Commands\Login\" />
   </ItemGroup>
 

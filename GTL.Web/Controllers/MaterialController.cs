@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Commands;
+using GTL.Application.ViewModels;
 using GTL.Domain.Exceptions;
 using GTL.Web.Helpers;
 using MediatR;
@@ -15,14 +16,29 @@ namespace GTL.Web.Controllers
 {
     public class MaterialController : BaseController
     {
-        public IActionResult Index()
+        public IActionResult Create()
         {
             return View();
         }
 
-        public IActionResult Create()
+        public IActionResult Update()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            //var materials = await Mediator.Send(new GetMaterialListQuery());
+            //return View(materials);
+
+            var vm = new MaterialListViewModel
+            {
+                DeleteEnabled = true,
+                EditEnabled = true,
+                Materials = new List<MaterialBaseCommand>()
+            };
+
+            return View(vm);
         }
 
         [HttpPost]
@@ -47,5 +63,9 @@ namespace GTL.Web.Controllers
 
             return View();
         }
+    }
+
+    public class GetMaterialListQuery
+    {
     }
 }

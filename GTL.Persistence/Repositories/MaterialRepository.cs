@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Dapper;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
@@ -65,6 +68,44 @@ namespace GTL.Persistence.Repositories
 
         public void Update(Material material)
         {
+            using (var cmd = _context.CreateCommand())
+            {
+                const string query = @"UPDATE [Material]" +
+                                     "SET [Title] = @title, " +
+                                     "[Description], " +
+                                     "[Edition] = @edition, " +
+                                     "[Type] = @type, " +
+                                     "[Area] = @area, " +
+                                     "[Size] = @size " +
+                                     "WHERE ISBN = @isbn";
+
+                var para = new DynamicParameters();
+                para.Add("@title", material.Title);
+                para.Add("@description", material.Description);
+                para.Add("@edition", material.Edition);
+                para.Add("@type", material.Type.ToString());
+                para.Add("@area", material.Area);
+                para.Add("@size", material.Size);
+                para.Add("@isbn", material.ISBN.Number);
+
+                cmd.Connection.Execute(query, para, cmd.Transaction);
+            }
+        }
+
+        public Task<IEnumerable<Material>> GetAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var cmd = _context.CreateCommand())
+            {
+                const string query = @"SELECT * FROM [User]";
+
+                // TODO Ask Jonathan hvordan vi gør
+
+                //var materials = cmd.Connection.QueryMultipleAsync<Material>(query);
+
+                //return materials.Result == null ? materials.Result : new List<Material>();
+            }
             throw new NotImplementedException();
         }
     }

@@ -19,6 +19,8 @@ namespace GTL.Domain.Entities
         public int Edition { get; set; }
 
         public MaterialType Type { get; set; }
+        public string Area { get; set; }
+        public string Size { get; set; }
 
         public DateTime DeletedAt { get; set; }
 
@@ -27,6 +29,7 @@ namespace GTL.Domain.Entities
         public List<Subject> Subjects { get; set; }
 
         public Publisher Publisher { get; set; }
+
     }
 }
 
