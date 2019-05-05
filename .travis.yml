@@ -18,9 +18,8 @@ script:
  notifications:
   email:
     recipients:
-      - 1061832@ucn.dk
-      - 1061832@ucn.dk
-      - 1061832@ucn.dk
+      - $EMAIL1
+      - $EMAIL2
     on_success: always # default: change
     on_failure: always # default: always
  
