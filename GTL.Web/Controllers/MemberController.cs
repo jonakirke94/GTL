@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using FluentValidation;
 using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Members.Commands.CreateMember;
+using GTL.Domain.Enums;
+using GTL.Web.Configurations;
+using GTL.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ValidationException = GTL.Application.Exceptions.ValidationException;
@@ -23,6 +27,7 @@ namespace GTL.Web.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = RoleHierarchy.CHECKOUTSTAFF)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateMemberCommand command)
         {

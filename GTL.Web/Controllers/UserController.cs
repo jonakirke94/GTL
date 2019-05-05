@@ -18,7 +18,6 @@ namespace GTL.Web.Controllers
 
 
         [HttpPost]
-        //[Authorize(Policy = "CanCreateLoanerCard")]
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> CreateLoanerCard(string ssn)
         {

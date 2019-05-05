@@ -1,6 +1,7 @@
 ﻿using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Persistence;
 using GTL.Persistence.Configurations;
+using GTL.Persistence.UnitOfWork;
 using GTL.Web.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,17 +27,7 @@ namespace GTL.Web
                 mySettings.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
             });
 
-            services.AddMemoryCache();
-
             ServiceConfiguration.ConfigureServices(services);
-
-            services.AddScoped<AuthExceptionFilter>();
-
-
-            services.AddScoped<IGTLContext, GTLContext>();
-            services.AddScoped<IConnectionFactory, ConnectionFactory>();
-
-            PolicyConfiguration.ConfigurePolicies(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

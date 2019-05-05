@@ -20,6 +20,7 @@ using GTL.Application.Users.Queries.GetUser;
 using GTL.Infrastructure;
 using GTL.Persistence;
 using GTL.Persistence.Repositories;
+using GTL.Persistence.UnitOfWork;
 
 namespace GTL.Web.Configurations
 {
@@ -27,17 +28,21 @@ namespace GTL.Web.Configurations
     {
         public static void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+
+
             // repos
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<IStaffRepository, StaffRepository>();
+
 
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddScoped<IPermissionFactory, PermissionFactory>();        
             services.AddHttpContextAccessor();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
@@ -57,8 +62,8 @@ namespace GTL.Web.Configurations
             // Add MediatR
             services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -66,6 +71,11 @@ namespace GTL.Web.Configurations
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddScoped<AuthExceptionFilter>();
+
+            services.AddScoped<IGTLContext, GTLContext>();
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services

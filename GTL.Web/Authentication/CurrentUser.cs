@@ -25,18 +25,6 @@ namespace GTL.Web.Authentication
             return _context.HttpContext.User.Identity.IsAuthenticated;
         }
 
-        public int GetUserId()
-        {
-            var claim = _context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-            if (claim == null)
-                return -1;
-
-            int.TryParse(claim.Value, out var currentId);
-
-            return currentId;
-        }
-
         public PermissionLevel GetCurrentPermission()
         {
             var claim = _context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
@@ -47,6 +35,12 @@ namespace GTL.Web.Authentication
             var perm = PermissionLevel.DEFAULT;
             Enum.TryParse(claim.Value, out perm);
             return perm;
+        }
+
+        public string GetSsn()
+        {
+            var claim = _context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            return claim == null ? string.Empty : claim.Value;
         }
     }
 }
