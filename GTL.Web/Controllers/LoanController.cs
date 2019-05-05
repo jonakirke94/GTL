@@ -20,13 +20,8 @@ namespace GTL.Web.Controllers
         {
             try
             {
-                /*      var command = new CreateLoanCommand { };
-                      command.Loan.LoanDate = loanDate;
-                      command.Loan.MemberSsn = memberSsn;
-                      command.Loan.CopyBarcode = copyBarCode;*/
-                command.Loan.LibraryName = "Accounting";
-                command.Loan.ReturnDate = null;
-                command.Loan.DueDate = null;
+                //command.Loan.ReturnDate = null;
+                //command.Loan.DueDate = null;
                 command.Loan.LoanDate = DateTime.Now;
                 await Mediator.Send(command); 
             }

@@ -41,7 +41,7 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
 
                 Library library = _libraryRepo.GetLibraryByName(request.Loan.LibraryName);
 
-                if (copy.Status != null || (copy.Status == CopyStatus.IsOnLoan || copy.Status == CopyStatus.Broken) || member is null || library.Name != null)
+                if ((copy.Status == CopyStatus.IsOnLoan || copy.Status == CopyStatus.Broken) || member is null || library.Name != null)
                 {
                     //TODO cast exception
                 }
