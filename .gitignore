@@ -1,4 +1,4 @@
-###################
+﻿###################
 # compiled source #
 ###################
 *.com
@@ -11,6 +11,8 @@
 *.suo
 
 appsettings.Production.json
+
+testconfig.json
 
 # Include dlls if they�re in the NuGet packages directory
 

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Application.Tests.Infrastructure;
+using Application.Tests.US_5.Setup;
+using Dapper;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Domain.Entities;
 using GTL.Domain.Enums;
@@ -9,28 +10,17 @@ using Xunit;
 
 namespace Application.Tests
 {
-    public class RestrictedMaterialLoanTests
+    public class RestrictedMaterialLoanTests : DatabaseFixture
     {
-        private readonly IMemberRepository _memberRepo;
-
-        public RestrictedMaterialLoanTests(IMemberRepository memberRepo)
-        {
-            _memberRepo = memberRepo;
-        }
 
         [Fact]
-        [AutoRollback]
         public void InsertTest()
         {
-            var member = new Member
-            {
-                Ssn = "1234567891",
-                Email = "fakemail@fake.dk",
-                Type = MemberType.PROFESSOR,
-                Name = "FAKETESTNAME"
-            };
+                var member =
+                    $@"INSERT INTO [Member] ([Ssn], [Name], [Email], [Type]) VALUES('1234567891', 'FAKE', 'fake@fake.dk', 'PROFESSOR')";
+                Cmd.Connection.Execute(member);
+            
 
-            _memberRepo.Add(member);
 
             Assert.True(true);
         }
