@@ -14,9 +14,11 @@ using GTL.Application.Infrastructure.AutoMapper;
 using GTL.Application.Infrastructure.Pipeline;
 using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Authentication;
+using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Application.UseCases.Users.Commands.CreateUser;
 using GTL.Application.Users.Queries.GetUser;
 using GTL.Infrastructure;
+using GTL.Persistence;
 using GTL.Persistence.Repositories;
 
 namespace GTL.Web.Configurations
@@ -34,6 +36,8 @@ namespace GTL.Web.Configurations
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ICopyRepository, CopyRepository>();
             services.AddScoped<ILibraryRepository, LibraryRepository>();
+
+            services.AddScoped<IGTLContext, GTLContext>();
 
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
