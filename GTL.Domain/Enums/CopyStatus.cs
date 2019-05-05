@@ -6,8 +6,10 @@ namespace GTL.Domain.Enums
 {
     public enum CopyStatus
     {
-        AvailableForLoan = 0,
-        IsOnLoan = 1,
-        Broken = 2,
+        AVAILABLE,
+        SOLD,
+        BROKEN,
+        FORBIDDEN,
+        DELETED,
     }
 }

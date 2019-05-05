@@ -22,12 +22,12 @@ namespace GTL.Persistence.Repositories
             _context = context;
         }
 
-        public void createLoan(Loan loan)
+        public void Add(Loan loan)
         {
           /*  connection.Execute($@"INSERT INTO [LoanerCard] ([IssueDate], [IsActive], [MemberSsn])
                     VALUES (@{nameof(loanerCard.IssueDate)}, @{nameof(loanerCard.IsActive)}, @{nameof(loanerCard.MemberSsn)});",
                 loanerCard); */
-            var query = $@"INSERT INTO LOAN [Loan] ([LoanDate], [DueDate], [MemberSsn], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
+            var query = $@"INSERT INTO [Loan] ([LoanDate], [DueDate], [MemberSsn], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
@@ -44,11 +44,12 @@ namespace GTL.Persistence.Repositories
         public int GetAllActiveLoans(string ssn)
         {
             var query = $@"SELECT COUNT (*) as numberOfLoans FROM Loan WHERE MemberSsn = @ssn AND returnDate != null";
-            using (var connection = new SqlConnection(Options.ConnectionString))
+            using (var cmd = _context.CreateCommand())
             {
-                connection.Open();
-                var numberOfLoans = connection.Execute(query, new { ssn });
-                return numberOfLoans;
+                var param = new DynamicParameters();
+                param.Add("@ssn", ssn);
+                var amount = cmd.Connection.Execute(query, param, cmd.Transaction);
+                return amount;
             }
         }
     }

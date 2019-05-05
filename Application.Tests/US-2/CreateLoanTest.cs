@@ -57,7 +57,7 @@ namespace Application.Tests.US_2
             fakeLibrary.MemberLoanDuration = loanDuration;
             fakeCopy.Barcode = copyBarcode;
 
-            _memberRepo.Setup(x => x.GetMemberBySsn(fakeMember.Ssn)).Returns(fakeMember);
+            _memberRepo.Setup(x => x.GetBySsn(fakeMember.Ssn)).Returns(fakeMember);
             _libraryRepo.Setup(x => x.GetLibraryByName(fakeLibrary.Name)).Returns(fakeLibrary);
             _copyRepo.Setup(x => x.GetCopyByBarcode(fakeCopy.Barcode)).Returns(fakeCopy);
             _loanRepo.Setup(x => x.GetAllActiveLoans(memberSsn)).Returns(numberOfBooksLended);
@@ -71,7 +71,7 @@ namespace Application.Tests.US_2
             await sut.Handle(_command, CancellationToken.None);
 
             //Assert
-            _loanRepo.Verify(x => x.createLoan(It.IsAny<Loan>()), Times.Once);
+            _loanRepo.Verify(x => x.Add(It.IsAny<Loan>()), Times.Once);
         }
 
         [Theory]

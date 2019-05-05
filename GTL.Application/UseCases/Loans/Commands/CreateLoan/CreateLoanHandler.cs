@@ -35,58 +35,62 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
 
             using (var db = _context.CreateUnitOfWork())
             {
-                var member = _memberRepo.GetMemberBySsn(request.Loan.MemberSsn);
+                //APPERENTLY CHANGE THIS BECAUSE WE CANT DO EVERYTHING AT ONCE
+                request.Loan.DueDate = request.Loan.LoanDate.AddDays(21);
+                _loanRepo.Add(request.Loan);
 
-                var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
+                /*        var member = _memberRepo.GetBySsn(request.Loan.MemberSsn);
 
-                Library library = _libraryRepo.GetLibraryByName(request.Loan.LibraryName);
+                        var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
 
-                if ((copy.Status == CopyStatus.IsOnLoan || copy.Status == CopyStatus.Broken) || member is null || library.Name != null)
-                {
-                    //TODO cast exception
-                }
+                        Library library = _libraryRepo.GetLibraryByName(request.Loan.LibraryName);
 
-                
-                //TODO maybe not set theese to null.
-                int loanDuration = 0;
-                int gracePeriod = 0;
-                int maxBooksOnLoan = 0;
+                 /*       if ((copy.Status != CopyStatus.AVAILABLE) || member is null || library.Name != null)
+                        {
+                            //TODO cast exception
+                        } 
 
-                if (member.Type == MemberType.PROFESSOR)
-                {
-                    loanDuration = library.ProfessorLoanDuration;
-                    gracePeriod = library.ProfessorGracePeriod;
-                    maxBooksOnLoan = library.ProfessorMaxBooksOnLoan;
-                }
-                else if (member.Type == MemberType.MEMBER)
-                {
-                    loanDuration = library.MemberLoanDuration;
-                    gracePeriod = library.MemberGracePeriod;
-                    maxBooksOnLoan = library.MemberMaxBooksOnLoan;
-                }
-                else
-                {
-                    //TODO throw exception "member was not a type."
-                }
 
-                int amountOfBooksLoanedByMember = _loanRepo.GetAllActiveLoans(member.Ssn);
+                        //TODO maybe not set theese to null.
+                        int loanDuration = 0;
+                        int gracePeriod = 0;
+                        int maxBooksOnLoan = 0;
 
-                if (amountOfBooksLoanedByMember < maxBooksOnLoan)
-                {
-                    request.Loan.DueDate = request.Loan.LoanDate.AddDays(loanDuration);
+                        if (member.Type == MemberType.PROFESSOR)
+                        {
+                            loanDuration = library.ProfessorLoanDuration;
+                            gracePeriod = library.ProfessorGracePeriod;
+                            maxBooksOnLoan = library.ProfessorMaxBooksOnLoan;
+                        }
+                        else if (member.Type == MemberType.STUDENT)
+                        {
+                            loanDuration = library.MemberLoanDuration;
+                            gracePeriod = library.MemberGracePeriod;
+                            maxBooksOnLoan = library.MemberMaxBooksOnLoan;
+                        }
+                        else
+                        {
+                            //TODO throw exception "member was not a type."
+                        }
 
-                    _loanRepo.createLoan(request.Loan);
-                }
-                else if (maxBooksOnLoan == 0)
-                {
-                    request.Loan.DueDate = request.Loan.LoanDate.AddDays(loanDuration);
+                        int amountOfBooksLoanedByMember = _loanRepo.GetAllActiveLoans(member.Ssn);
 
-                    _loanRepo.createLoan(request.Loan);
-                }
-                else
-                {
-                    //TODO Throw exception "too many books on loan"
-                }
+                        if (amountOfBooksLoanedByMember < maxBooksOnLoan)
+                        {
+                            request.Loan.DueDate = request.Loan.LoanDate.AddDays(loanDuration);
+
+                            _loanRepo.Add(request.Loan);
+                        }
+                        else if (maxBooksOnLoan == 0)
+                        {
+                            request.Loan.DueDate = request.Loan.LoanDate.AddDays(loanDuration);
+
+                            _loanRepo.Add(request.Loan);
+                        }
+                        else
+                        {
+                            //TODO Throw exception "too many books on loan"
+                        } */
 
                 db.SaveChanges();
             }
