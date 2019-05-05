@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Commands;
+using GTL.Web.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GTL.Web.Controllers
 {
@@ -22,25 +25,21 @@ namespace GTL.Web.Controllers
         }
 
         [HttpPost]
+        // TODO Uncomment line below to enable authentication
+        //[Authorize(Roles = RoleHierarchy.ASSOCIATELIBRARIAN)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MaterialBaseCommand command)
         {
             try
             {
                 await Mediator.Send(command);
+                TempData["Status"] = "Successfully created material";
             }
-            catch (GTL.Application.Exceptions.ValidationException e)
+            catch (ValidationException e)
             {
-                ModelState.AddModelError("", e.Failures.FirstOrDefault().Value[0]);
-                return View();
-            }
-            catch (Exception e)
-            {
-                TempData["Status"] = "Something unexpected happened";
-                return View();
+                ModelState.AddValidationErrors(e);
             }
 
-            TempData["Status"] = "Succesfully created member";
             return View();
         }
     }

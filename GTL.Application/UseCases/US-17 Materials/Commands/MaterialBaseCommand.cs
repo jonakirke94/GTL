@@ -1,8 +1,11 @@
-﻿using GTL.Domain.Enums;
+﻿using GTL.Application.Helper.CustomAttributes;
+using GTL.Domain.Enums;
 using MediatR;
 
 namespace GTL.Application.UseCases.Commands
 {
+    // TODO Uncomment line below to enable auth
+    //[Authorize(Role.ASSOCIATELIBRARIAN)]
     public class MaterialBaseCommand : IRequest
     {
         public string Isbn { get; set; }
