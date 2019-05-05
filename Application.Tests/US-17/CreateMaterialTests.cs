@@ -39,6 +39,17 @@ namespace Application.Tests
                 x => x.Add(It.IsAny<Material>()), Times.Exactly(1));
         }
 
+        [Fact]
+        public void MaterialWithSameIsbnAsExistingWasNotCreatedTest()
+        {
+            Mock<IGTLContext> context = new Mock<IGTLContext>();
+            var uow = new Mock<IUnitOfWork>();
+            context.Setup(x => x.CreateUnitOfWork()).Returns(uow.Object);
+            Mock<IMaterialRepository> materialRepository = new Mock<IMaterialRepository>();
+            Mock<MaterialBaseCommand> command = new Mock<MaterialBaseCommand>();
+
+        }
+
         [Theory]
         [ClassData(typeof(TDS5_EC2))]
         public void MaterialHasInvalidAttributesTest(string isbn, string title, string description, int edition)

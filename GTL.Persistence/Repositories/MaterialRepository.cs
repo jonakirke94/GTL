@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 using Dapper;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
+using GTL.Domain.Exceptions;
 
 namespace GTL.Persistence.Repositories
 {
@@ -29,8 +31,20 @@ namespace GTL.Persistence.Repositories
                 para.Add("@description", material.Description);
                 para.Add("@edition", material.Edition);
                 para.Add("@type", material.Type.ToString());
+                try
+                {
+                    cmd.Connection.Execute(query, para, cmd.Transaction);
+                }
+                catch (SqlException e)
+                {
+                    if (e.Number == 2627)
+                    {
+                        throw new ISBNAlreadyExistException(material.ISBN.Number, e);
+                    }
 
-                cmd.Connection.Execute(query, para, cmd.Transaction);
+                    throw;
+
+                }
             }
         }
 

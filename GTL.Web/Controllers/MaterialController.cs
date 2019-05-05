@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.UseCases.Commands;
+using GTL.Domain.Exceptions;
 using GTL.Web.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,10 @@ namespace GTL.Web.Controllers
             {
                 await Mediator.Send(command);
                 TempData["Status"] = "Successfully created material";
+            }
+            catch (ISBNAlreadyExistException)
+            {
+                ModelState.AddModelError("ISBN", "This ISBN is already created in the database");
             }
             catch (ValidationException e)
             {

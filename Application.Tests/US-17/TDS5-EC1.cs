@@ -11,8 +11,8 @@ namespace Application.Tests
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "0123456789", "Titel", "Beskrivelse", 0 };
-            yield return new object[] { "0123456789012", "Titel", "Beskrivelse", int.MinValue };
+            yield return new object[] { "0805000763", "Titel", "Beskrivelse", 1 };
+            yield return new object[] { "9780261102385", "Titel", "Beskrivelse", int.MinValue };
             yield return new object[] { "9788740046526", "Titel", "Beskrivelse", int.MaxValue };
         }
 
