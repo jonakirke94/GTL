@@ -37,8 +37,6 @@ namespace GTL.Web.Configurations
             services.AddScoped<ICopyRepository, CopyRepository>();
             services.AddScoped<ILibraryRepository, LibraryRepository>();
 
-            services.AddScoped<IGTLContext, GTLContext>();
-
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<IAuthService, AuthService>();
