@@ -24,9 +24,7 @@ namespace GTL.Persistence.Repositories
 
         public void Add(Loan loan)
         {
-          /*  connection.Execute($@"INSERT INTO [LoanerCard] ([IssueDate], [IsActive], [MemberSsn])
-                    VALUES (@{nameof(loanerCard.IssueDate)}, @{nameof(loanerCard.IsActive)}, @{nameof(loanerCard.MemberSsn)});",
-                loanerCard); */
+
             var query = $@"INSERT INTO [Loan] ([LoanDate], [DueDate], [MemberSsn], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
             using (var cmd = _context.CreateCommand())
             {
@@ -37,7 +35,16 @@ namespace GTL.Persistence.Repositories
                 param.Add("@copyBarcode", loan.CopyBarcode);
                 param.Add("@libraryName", loan.LibraryName);
 
-                cmd.Connection.Execute(query, param, cmd.Transaction);
+                try
+                {
+                    cmd.Connection.Execute(query, param, cmd.Transaction);
+                }
+                catch (Exception e)
+                {
+                    //if ()
+                    //var ex = e;
+                }
+
             }
         }
 

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\GTL.Application\GTL.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>
