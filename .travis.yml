@@ -14,3 +14,13 @@ script:
  - dotnet restore
  - dotnet build
  - find . -maxdepth 2 -name “*Test.csproj” -type f | xargs dotnet test
+
+ notifications:
+  email:
+    recipients:
+      - 1061832@ucn.dk
+      - 1061832@ucn.dk
+      - 1061832@ucn.dk
+    on_success: always # default: change
+    on_failure: always # default: always
+ 
