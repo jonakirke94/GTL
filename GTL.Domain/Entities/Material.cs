@@ -10,8 +10,6 @@ namespace GTL.Domain.Entities
 {
     public class Material
     {
-        public int Id { get; set; }
-
         public ISBN ISBN { get; set; }
 
         public string Title { get; set; }

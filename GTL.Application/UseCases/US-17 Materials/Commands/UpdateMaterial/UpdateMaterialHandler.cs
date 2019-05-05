@@ -19,15 +19,15 @@ namespace GTL.Application.UseCases.Commands.UpdateMaterial
             _materialRepository = materialRepository;
         }
 
-        public Task<Unit> Handle(UpdateMaterialCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(MaterialBaseCommand request, CancellationToken cancellationToken)
         {
             var material = new Material
             {
-                Id = request.Id,
-                ISBN = ISBN.For(request.Material.Isbn),
-                Title = request.Material.Title,
-                Description = request.Material.Description,
-                Edition = request.Material.Edition
+                ISBN = ISBN.For(request.Isbn),
+                Title = request.Title,
+                Description = request.Description,
+                Edition = request.Edition,
+                Type = request.Type
             };
 
             using (var db = _context.CreateUnitOfWork())
