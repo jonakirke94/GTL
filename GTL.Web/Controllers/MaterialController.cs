@@ -63,9 +63,31 @@ namespace GTL.Web.Controllers
 
             return View();
         }
-    }
 
-    public class GetMaterialListQuery
-    {
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            throw new NotImplementedException();
+
+            //var user = await Mediator.Send(new GetUserDetailQuery {Id = id ?? default(int)});
+            //return View(user);
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            throw new NotImplementedException();
+            //var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int) });
+            //return View(user);
+        }
+
     }
 }

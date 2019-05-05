@@ -31,29 +31,38 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EditEnabled)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeleteEnabled)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ISBN)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Edition)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EditEnabled)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeleteEnabled)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edition)
+                </td>
+                <td>
+                    @if (item.EditEnabled)
+                    {
+                        <a asp-action="Update" asp-route-id="@item.ISBN">Edit |</a>
+                    }
+
+                    <a asp-action="Details" asp-route-id="@item.ISBN">Details</a>
+
+                    @if (item.DeleteEnabled)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.ISBN" method="post">| Delete</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

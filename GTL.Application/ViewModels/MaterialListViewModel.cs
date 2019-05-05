@@ -2,13 +2,14 @@
 using AutoMapper;
 using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Authentication;
+using GTL.Application.Interfaces.Mapping;
 using GTL.Application.UseCases.Commands;
 using GTL.Domain.Entities;
 using GTL.Domain.Enums;
 
 namespace GTL.Application.ViewModels
 {
-    public class MaterialListViewModel
+    public class MaterialListViewModel : IHaveCustomMapping
     {
         public IEnumerable<MaterialBaseCommand> Materials { get; set; }
 
@@ -45,7 +46,7 @@ namespace GTL.Application.ViewModels
         {
             try
             {
-                return _currentUser.GetCurrentRole() >= Role.CHECKOUTSTAFF;
+                return _currentUser.GetCurrentRole() >= Role.LIBRARYASSISTANT;
             }
             catch (NotInRoleException)
             {
