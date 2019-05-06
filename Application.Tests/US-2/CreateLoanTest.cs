@@ -11,7 +11,7 @@ using GTL.Domain.Entities;
 using Moq;
 using Xunit;
 
-namespace Application.Tests.US_2
+namespace Application.Tests
 {
     public class CreateLoanTest
     {

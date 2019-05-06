@@ -6,6 +6,16 @@
 
 <h1>CreateLoan</h1>
 
+@{
+    var status = TempData["Status"] != null ? TempData["Status"].ToString() : "";
+
+    if (!string.IsNullOrEmpty(status))
+    {
+        @Html.Partial("_StatusMessage", status);
+         
+
+    }
+}
 
 <div class="row">
     <div class="col-md-4">

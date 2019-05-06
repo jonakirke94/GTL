@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GTL.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using GTL.Application.UseCases.Loans.Commands.CreateLoan;
 
@@ -14,26 +15,36 @@ namespace GTL.Web.Controllers
             return View();
         }
 
+        public IActionResult CreateLoan()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLoan(CreateLoanCommand command)
         {
+            command.Loan.LoanDate = DateTime.Now;
+
             try
             {
-                //command.Loan.ReturnDate = null;
-                //command.Loan.DueDate = null;
-                command.Loan.LoanDate = DateTime.Now;
-                await Mediator.Send(command); 
+                var response = await Mediator.Send(command);
+                if (response.HasRequestError)
+                {
+                    ModelState.AddModelError("", response.ErrorMessage);
+                    return View();
+                }
             }
-            catch (Exception e)
+            catch (ValidationException e)
             {
-                ModelState.AddModelError("Unexpected Error", e.Message);
-                // redirect to edit view
+                ModelState.AddValidationErrors(e);
                 return View();
             }
 
-            // redirect to edit view
-            TempData["Message"] = "Loan was successfully created";
+
+  
+
+            TempData["Status"] = "Loan was successfully created";
             return View();
         }
     }

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using FluentValidation;
+using GTL.Application.Infrastructure.RequestModels;
 using GTL.Domain.Entities;
 using MediatR;
 
 
 namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
 {
-    public class CreateLoanCommand : IRequest
+    public class CreateLoanCommand : IRequest<CommandResponse>
     {
         public Loan Loan { get; set; } = new Loan();
     }

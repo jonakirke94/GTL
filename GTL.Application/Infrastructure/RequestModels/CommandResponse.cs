@@ -4,7 +4,7 @@
     {
         public string ErrorMessage { get; set; }
 
-        public bool HasRequestError => string.IsNullOrEmpty(ErrorMessage);
+        public bool HasRequestError => !string.IsNullOrEmpty(ErrorMessage);
     }
 
     public class CommandResponse<TModel> : CommandResponse where TModel : class
