@@ -33,6 +33,8 @@ namespace GTL.Web.Controllers
             // var users = await Mediator.Send(new GetUserListQuery());
             // return View(users);
 
+            ViewBag.Status = new Status { Type = Type.danger, Message = "Check home controller index() for how to generate status messages" };
+
             var vm = new UserListViewModel
             {
                 DeleteEnabled = true,

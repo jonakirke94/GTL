@@ -4,6 +4,14 @@
     ViewData["Title"] = "Home Page";
 }
 
+@{
+    if (ViewBag.Status != null)
+    {
+        Status model = ViewBag.Status as Status;
+        <partial name="_StatusMessage" model="model" />
+    }
+}
+
 <p>
     <a asp-controller="Home" asp-action="Create">Create New</a>
 </p>
@@ -36,37 +44,37 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var user in Model.Users)
-     {
-         <tr>
-             <td>
-                 @Html.DisplayFor(modelItem => user.Id)
-             </td>
-             <td>
-                 @Html.DisplayFor(modelItem => user.Name)
-             </td>
-             <td>
-                 @Html.DisplayFor(modelItem => user.City)
-             </td>
-             <td>
-                 @Html.DisplayFor(modelItem => user.ZipCode)
-             </td>
-             <td>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.ZipCode)
+                </td>
+                <td>
 
-                 @if (Model.EditEnabled)
-                 {
-                     <a asp-action="Edit" asp-route-id="@user.Id">Edit |</a> 
-                 }
-                 <a asp-action="Details" asp-route-id="@user.Id">Details</a>
-                 
-                 @if (Model.DeleteEnabled)
-                 {
-                    <a asp-action="Delete" asp-route-id="@user.Id" method="post">| Delete</a>
-                 }
+                    @if (Model.EditEnabled)
+                    {
+                        <a asp-action="Edit" asp-route-id="@user.Id">Edit |</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@user.Id">Details</a>
 
-             </td>
-         </tr>
-     }
-    
+                    @if (Model.DeleteEnabled)
+                    {
+                        <a asp-action="Delete" asp-route-id="@user.Id" method="post">| Delete</a>
+                    }
+
+                </td>
+            </tr>
+        }
+
     </tbody>
 </table>
