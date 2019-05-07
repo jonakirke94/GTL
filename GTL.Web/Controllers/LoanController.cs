@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GTL.Application.UseCases.Loans.Commands.CreateLoan;
+using GTL.Application.UseCases.Loans.Commands.ReturnLoan;
 
 namespace GTL.Web.Controllers
 {
@@ -24,6 +25,26 @@ namespace GTL.Web.Controllers
                 //command.Loan.DueDate = null;
                 command.Loan.LoanDate = DateTime.Now;
                 await Mediator.Send(command); 
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("Unexpected Error", e.Message);
+                // redirect to edit view
+                return View();
+            }
+
+            // redirect to edit view
+            TempData["Message"] = "Loan was successfully created";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReturnLoan(ReturnLoanCommand command)
+        {
+            try
+            {
+                await Mediator.Send(command);
             }
             catch (Exception e)
             {

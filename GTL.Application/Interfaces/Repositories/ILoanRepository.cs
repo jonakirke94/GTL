@@ -10,6 +10,7 @@ namespace GTL.Application.Interfaces.Repositories
     public interface ILoanRepository
     {
         void Add(Loan loan);
-        int GetAllActiveLoans(string ssn);
+        int GetAllActive(string ssn);
+        void Return(string copyBarcode);
     }
 }
