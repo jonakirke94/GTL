@@ -34,8 +34,11 @@ namespace GTL.Web.Configurations
             // repos
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
+            services.AddScoped<ILoanRepository, LoanRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
+            services.AddScoped<ICopyRepository, CopyRepository>();
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
 
 
