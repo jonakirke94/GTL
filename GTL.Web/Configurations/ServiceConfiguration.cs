@@ -21,6 +21,7 @@ using GTL.Infrastructure;
 using GTL.Persistence;
 using GTL.Persistence.Repositories;
 using GTL.Persistence.UnitOfWork;
+using GTL.Persistence.Configurations;
 
 namespace GTL.Web.Configurations
 {
@@ -28,6 +29,8 @@ namespace GTL.Web.Configurations
     {
         public static void ConfigureServices(IServiceCollection services)
         {
+ 
+
             services.AddMemoryCache();
 
             // repos
