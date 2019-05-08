@@ -10,6 +10,6 @@ namespace GTL.Application.Interfaces.Repositories
         void Add(LoanerCard loanerCard);
         IEnumerable<LoanerCard> GetLoanerCardsBySsn(string ssn);
 
-        void DeactiveLoanerCard(string barcode);
+        void DeactivateLoanerCard(string barcode);
     }
 }

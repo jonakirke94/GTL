@@ -34,6 +34,11 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
         {
 
             using (var db = _context.CreateUnitOfWork())
+            var member = _memberRepo.GetBySsn(request.Loan.MemberSsn);
+
+            var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
+
+            if (copy.Status != null || (copy.Status == CopyStatus.IsOnLoan || copy.Status == CopyStatus.Broken) || member is null)
             {
                 //APPERENTLY CHANGE THIS BECAUSE WE CANT DO EVERYTHING AT ONCE
                 request.Loan.DueDate = request.Loan.LoanDate.AddDays(21);
@@ -44,6 +49,23 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
                         var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
 
                         Library library = _libraryRepo.GetLibraryByName(request.Loan.LibraryName);
+
+            if (member.Type == MemberType.PROFESSOR)
+            {
+                loanDuration = library.ProfessorLoanDuration;
+                gracePeriod = library.ProfessorGracePeriod;
+                maxBooksOnLoan = library.ProfessorMaxBooksOnLoan;
+            }
+            else if (member.Type == MemberType.STUDENT)
+            {
+                loanDuration = library.MemberLoanDuration;
+                gracePeriod = library.MemberGracePeriod;
+                maxBooksOnLoan = library.MemberMaxBooksOnLoan;
+            }
+            else
+            {
+                //TODO throw exception "member was not a type."
+            }
 
                  /*       if ((copy.Status != CopyStatus.AVAILABLE) || member is null || library.Name != null)
                         {
@@ -94,9 +116,6 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
 
                 db.SaveChanges();
             }
-
-
-
 
             return Task.Run(() => Unit.Value);
 

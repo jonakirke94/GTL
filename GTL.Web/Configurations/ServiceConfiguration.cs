@@ -30,12 +30,13 @@ namespace GTL.Web.Configurations
         {
             services.AddMemoryCache();
 
-
             // repos
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
-            services.AddScoped<ILoanRepository, LoanRepository>();
+
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<ILoanRepository, LoanRepository>();
+            services.AddScoped<IMaterialRepository, MaterialRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ICopyRepository, CopyRepository>();
             services.AddScoped<ILibraryRepository, LibraryRepository>();
@@ -48,10 +49,8 @@ namespace GTL.Web.Configurations
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddHttpContextAccessor();
 
-
-
             services.AddScoped<CustomCookieAuthenticationEvents>();
-        
+
             // Add AutoMapper
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 

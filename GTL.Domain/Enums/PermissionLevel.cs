@@ -11,4 +11,3 @@ namespace GTL.Domain.Enums
         DEFAULT = 0,
     }
 }
-

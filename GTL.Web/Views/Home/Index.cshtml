@@ -21,6 +21,7 @@
         <button class="btn btn-info"> Create Loan</button>
     </form>
 </div>
+
 <div>
     <form asp-action="ReturnLoan" asp-controller="Loan">
         <button class="btn btn-info"> Return Loan</button>
@@ -31,10 +32,13 @@
         <input type="text" name="ssn" value="123" hidden />
         <button class="btn btn-info"> Create Loanercard</button>
     </form>
-
 </div>
 
-<a asp-action="Create" asp-controller="Member">Create new member!"</a>
+<a asp-action="Create" asp-controller="Member">Create new member</a>
+
+<div>
+    <a asp-controller="Material" asp-action="Create">Create Material</a>
+</div>
 
 <table class="table">
     <thead>

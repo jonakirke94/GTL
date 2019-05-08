@@ -64,7 +64,7 @@ namespace GTL.Application.UseCases.Members.Commands.CreateMember
                 MemberSsn = request.Ssn
             };
 
-            using(var db = _context.CreateUnitOfWork())
+            using (var db = _context.CreateUnitOfWork())
             {
                 _memberRepo.Add(member);
                 _loanerCardRepo.Add(loanerCard);
