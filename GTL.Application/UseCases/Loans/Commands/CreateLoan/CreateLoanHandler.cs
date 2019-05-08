@@ -36,12 +36,12 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
         {
             var response = new CommandResponse();
 
-            using (var db = _context.CreateUnitOfWork())
-            var member = _memberRepo.GetBySsn(request.Loan.MemberSsn);
+            //var member = _memberRepo.GetBySsn(request.Loan.MemberSsn);
 
             //var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
-          
 
+            using (var db = _context.CreateUnitOfWork())
+            {
                 try
                 {
                     _loanRepo.Add(request.Loan);
@@ -53,6 +53,7 @@ namespace GTL.Application.UseCases.Loans.Commands.CreateLoan
                     response.ErrorMessage = "Warning. The requested copy is not available for loaning";
                     return Task.FromResult(response);
                 }
+            }
             
 
 
