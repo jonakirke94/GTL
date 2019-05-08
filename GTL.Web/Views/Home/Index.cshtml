@@ -16,17 +16,14 @@
     <a asp-controller="Home" asp-action="Create">Create New</a>
 </p>
 
-<div>
-    <form asp-action="CreateLoan" asp-controller="Loan">
-        <button class="btn btn-info"> Create Loan</button>
-    </form>
-</div>
 
-<div>
-    <form asp-action="ReturnLoan" asp-controller="Loan">
-        <button class="btn btn-info"> Return Loan</button>
-    </form>
-</div>
+
+<a class="btn btn-warning" asp-controller="Loan" asp-action="ReturnLoan">Return Loan</a>
+
+<p>
+    <a class="btn btn-secondary" asp-controller="Loan" asp-action="CreateLoan">Create loan</a>
+</p>
+
 <div>
     <form asp-action="CreateLoanerCard" asp-controller="User" method="post">
         <input type="text" name="ssn" value="123" hidden />
