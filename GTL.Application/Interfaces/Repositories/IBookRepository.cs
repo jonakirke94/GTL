@@ -8,9 +8,9 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface IBookRepository
     {
-        Task<ICollection<Book>> GetBooksAsync();
+        Task<ICollection<Material>> GetBooksAsync();
 
-        Task<ICollection<Book>> GetBooksByUserId(int userId);
+        Task<ICollection<Material>> GetBooksByUserId(int userId);
 
         Task DeleteBookAsync(int id);
     }

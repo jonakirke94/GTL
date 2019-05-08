@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 using Dapper;
+using GTL.Application.Exceptions;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
@@ -25,10 +26,7 @@ namespace GTL.Persistence.Repositories
 
         public void Add(Loan loan)
         {
-          /*  connection.Execute($@"INSERT INTO [LoanerCard] ([IssueDate], [IsActive], [MemberSsn])
-                    VALUES (@{nameof(loanerCard.IssueDate)}, @{nameof(loanerCard.IsActive)}, @{nameof(loanerCard.MemberSsn)});",
-                loanerCard); */
-            var query = $@"INSERT INTO [Loan] ([LoanDate], [DueDate], [MemberSsn], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
+            const string query = "INSERT INTO [Loan] ([LoanDate], [DueDate], [MemberSsn], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
@@ -38,7 +36,18 @@ namespace GTL.Persistence.Repositories
                 param.Add("@copyBarcode", loan.CopyBarcode);
                 param.Add("@libraryName", loan.LibraryName);
 
-                cmd.Connection.Execute(query, param, cmd.Transaction);
+                try
+                {
+                    cmd.Connection.Execute(query, param, cmd.Transaction);
+                }
+                catch (SqlException e)
+                {
+                    if (e.Procedure == "CHECK_LOANABLE")
+                    {
+                        throw new NotAllowedForLoan(loan.CopyBarcode);
+                    }
+                }
+
             }
         }
 

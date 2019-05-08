@@ -11,7 +11,7 @@ namespace GTL.Domain.Entities
         // Always set collections setter to private and instantiate it in the constructor 
         public User()
         {
-            Books = new List<Book>();
+            Books = new List<Material>();
         }
 
         public string Name { get; set; }
@@ -32,7 +32,7 @@ namespace GTL.Domain.Entities
 
         public DateTime LastChanged { get; set; }
 
-        public ICollection<Book> Books { get; private set; }
+        public ICollection<Material> Books { get; private set; }
 
         public PermissionLevel PermissionLevel { get; set; }
     }

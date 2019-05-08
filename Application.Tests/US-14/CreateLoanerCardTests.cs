@@ -56,7 +56,7 @@ namespace Application.Tests
             await sut.Handle(command.Object, CancellationToken.None);
 
             // Assert
-            loanerCardRepo.Verify(x => x.DeactiveLoanerCard(It.IsAny<string>()), Times.Once());
+            loanerCardRepo.Verify(x => x.DeactivateLoanerCard(It.IsAny<string>()), Times.Once());
         }
 
         [Theory]
@@ -84,7 +84,7 @@ namespace Application.Tests
             await sut.Handle(command.Object, CancellationToken.None);
 
             // Assert
-            loanerCardRepo.Verify(x => x.DeactiveLoanerCard(It.IsAny<string>()), Times.Never());
+            loanerCardRepo.Verify(x => x.DeactivateLoanerCard(It.IsAny<string>()), Times.Never());
         }
 
         [Theory]

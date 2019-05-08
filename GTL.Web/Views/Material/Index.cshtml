@@ -1,0 +1,68 @@
+﻿@model IEnumerable<GTL.Application.ViewModels.MaterialListViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EditEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeleteEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Edition)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EditEnabled)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeleteEnabled)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edition)
+                </td>
+                <td>
+                    @if (item.EditEnabled)
+                    {
+                        <a asp-action="Update" asp-route-id="@item.ISBN">Edit |</a>
+                    }
+
+                    <a asp-action="Details" asp-route-id="@item.ISBN">Details</a>
+
+                    @if (item.DeleteEnabled)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.ISBN" method="post">| Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

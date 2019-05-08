@@ -6,6 +6,7 @@ namespace GTL.Domain.Enums
 {
     public enum AddressType
     {
-        HOME, CAMPUS
+        HOME,
+        CAMPUS
     }
 }

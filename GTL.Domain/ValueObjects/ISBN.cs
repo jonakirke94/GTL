@@ -23,7 +23,9 @@ namespace GTL.Domain.ValueObjects
                 var isValid = false;
 
                 if (string.IsNullOrEmpty(ISBN))
+                {
                     throw new ArgumentNullException();
+                }
 
                 var formatted = ISBN.Replace("-", "").Replace(" ", "");
 
@@ -34,11 +36,13 @@ namespace GTL.Domain.ValueObjects
                         break;
                     case 13:
                         isValid = IsValid13(formatted);
-                        break;                    
+                        break;
                 }
 
                 if (!isValid)
-                    throw  new ArgumentException();
+                {
+                    throw new ArgumentException();
+                }
 
                 ISBNObject.Number = ISBN;
             }
@@ -57,7 +61,7 @@ namespace GTL.Domain.ValueObjects
 
             if (reg.IsMatch(ISBN))
             {
-                
+
 
                 for (var i = 0; i < 9; i++)
                 {
@@ -78,7 +82,7 @@ namespace GTL.Domain.ValueObjects
             var sum = 0;
 
             if (reg.IsMatch(ISBN))
-            {            
+            {
                 var index = 0;
                 sum = ISBN.Sum(c => ToInt(c) * (IsOdd(index++) ? 3 : 1));
             }

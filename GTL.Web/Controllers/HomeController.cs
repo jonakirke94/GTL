@@ -121,7 +121,7 @@ namespace GTL.Web.Controllers
             }
 
 
-            var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int)});
+            var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int) });
             return View(user);
         }
 

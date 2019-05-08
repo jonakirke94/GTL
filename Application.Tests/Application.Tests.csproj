@@ -17,6 +17,8 @@
   <ItemGroup>
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.Internal" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="xunit" Version="2.3.1" />
@@ -27,6 +29,13 @@
   <ItemGroup>
     <ProjectReference Include="..\GTL.Application\GTL.Application.csproj" />
     <ProjectReference Include="..\GTL.Domain\GTL.Domain.csproj" />
+    <ProjectReference Include="..\GTL.Persistence\GTL.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Data.SqlClient">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\system.data.sqlclient\4.6.0\ref\netcoreapp2.1\System.Data.SqlClient.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

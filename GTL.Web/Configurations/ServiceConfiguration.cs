@@ -21,6 +21,7 @@ using GTL.Infrastructure;
 using GTL.Persistence;
 using GTL.Persistence.Repositories;
 using GTL.Persistence.UnitOfWork;
+using GTL.Persistence.Configurations;
 
 namespace GTL.Web.Configurations
 {
@@ -28,14 +29,17 @@ namespace GTL.Web.Configurations
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddMemoryCache();
+ 
 
+            services.AddMemoryCache();
 
             // repos
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
-            services.AddScoped<ILoanRepository, LoanRepository>();
+
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<ILoanRepository, LoanRepository>();
+            services.AddScoped<IMaterialRepository, MaterialRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<ICopyRepository, CopyRepository>();
             services.AddScoped<ILibraryRepository, LibraryRepository>();
@@ -48,10 +52,8 @@ namespace GTL.Web.Configurations
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddHttpContextAccessor();
 
-
-
             services.AddScoped<CustomCookieAuthenticationEvents>();
-        
+
             // Add AutoMapper
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
