@@ -12,7 +12,7 @@
 
 appsettings.Production.json
 
-testconfig.json
+appsettings.test.json
 
 # Include dlls if they�re in the NuGet packages directory
 

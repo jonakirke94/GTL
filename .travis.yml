@@ -15,10 +15,6 @@ script:
  - dotnet build
  - find . -maxdepth 2 -name “*Test.csproj” -type f | xargs dotnet test
 
- notifications:
-  email:
-    recipients:
-      - 1061832@ucn.dk
-    on_success: always
-    on_failure: always
+notifications:
+  email: false
  
