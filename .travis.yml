@@ -13,7 +13,7 @@ after_failure:
 script:
  - dotnet restore
  - dotnet build
- - find . -maxdepth 2 -name “*Test.csproj” -type f | xargs dotnet test
+ - find . -maxdepth 2 -name “*.Test.csproj” -type f | xargs dotnet test
 
 notifications:
   email: false
