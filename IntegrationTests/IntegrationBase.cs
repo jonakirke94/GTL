@@ -20,9 +20,6 @@ namespace IntegrationTests
 
         public IntegrationBase()
         {
-            var fileExists = File.Exists(System.IO.Directory.GetCurrentDirectory() + "/appsettings.test.json");
-
-            if (!fileExists) return;
 
             var server = new TestServer(new WebHostBuilder()
                 .ConfigureAppConfiguration(config =>
@@ -32,8 +29,6 @@ namespace IntegrationTests
             _mediator = server.Host.Services.GetRequiredService<IMediator>();
 
             _context = server.Host.Services.GetRequiredService<IGTLContext>();
-
-            ResetDatabase();
         }
 
         public void Dispose()
