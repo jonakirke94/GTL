@@ -20,7 +20,6 @@ namespace IntegrationTests
 
         public IntegrationBase()
         {
-
             var server = new TestServer(new WebHostBuilder()
                 .ConfigureAppConfiguration(config =>
                     config.AddJsonFile("appsettings.test.json", optional: true, reloadOnChange: true))
