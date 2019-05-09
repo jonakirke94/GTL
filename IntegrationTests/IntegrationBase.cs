@@ -20,6 +20,10 @@ namespace IntegrationTests
 
         public IntegrationBase()
         {
+            var fileExists = File.Exists(System.IO.Directory.GetCurrentDirectory() + "/appsettings.test.json");
+
+            if (!fileExists) return;
+
             var server = new TestServer(new WebHostBuilder()
                 .ConfigureAppConfiguration(config =>
                     config.AddJsonFile("appsettings.test.json", optional: true, reloadOnChange: true))
