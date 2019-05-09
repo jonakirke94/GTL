@@ -47,7 +47,7 @@ namespace IntegrationTests
 
         public void RunScript(string fileName)
         {
-            var script = File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/" + fileName + ".sql");
+            var script = File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/scripts/" + fileName + ".sql");
 
             using (var cmd = _context.CreateCommand())
             {

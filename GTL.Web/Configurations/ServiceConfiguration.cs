@@ -10,14 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using GTL.Application;
+using GTL.Application.Features.Loans.Commands.CreateLoan;
 using GTL.Application.Infrastructure.AutoMapper;
 using GTL.Application.Infrastructure.Pipeline;
 using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Authentication;
 using GTL.Application.Interfaces.UnitOfWork;
-using GTL.Application.UseCases.Users.Commands.CreateUser;
-using GTL.Application.Users.Queries.GetUser;
-using GTL.Infrastructure;
 using GTL.Persistence;
 using GTL.Persistence.Repositories;
 using GTL.Persistence.UnitOfWork;
@@ -28,21 +26,11 @@ namespace GTL.Web.Configurations
     public static class ServiceConfiguration
     {
         public static void ConfigureServices(IServiceCollection services)
-        {
- 
-
+        {         
             services.AddMemoryCache();
 
             // repos
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<ILoanerCardRepository, LoanerCardRepository>();
-
-            services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ILoanRepository, LoanRepository>();
-            services.AddScoped<IMaterialRepository, MaterialRepository>();
-            services.AddScoped<IMemberRepository, MemberRepository>();
-            services.AddScoped<ICopyRepository, CopyRepository>();
-            services.AddScoped<ILibraryRepository, LibraryRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
 
 
@@ -57,11 +45,8 @@ namespace GTL.Web.Configurations
             // Add AutoMapper
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
-            // Add framework services.
-            services.AddTransient<INotificationService, NotificationService>();
-
             // Add MediatR
-            services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateLoanCommand).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
@@ -91,7 +76,7 @@ namespace GTL.Web.Configurations
                   config.Filters.Add(new AuthExceptionFilter());
               })
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
+              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateLoanCommandValidator>());
         }
     }
 }

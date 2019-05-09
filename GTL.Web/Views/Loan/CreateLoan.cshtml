@@ -1,4 +1,4 @@
-﻿@model GTL.Application.UseCases.Loans.Commands.CreateLoan.CreateLoanCommand
+﻿@model GTL.Application.Features.Loans.Commands.CreateLoan.CreateLoanCommand
 @{
     ViewData["Title"] = "CreateLoan";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,13 +7,10 @@
 <h1>CreateLoan</h1>
 
 @{
-    var status = TempData["Status"] != null ? TempData["Status"].ToString() : "";
-
-    if (!string.IsNullOrEmpty(status))
+    if (ViewBag.Status != null)
     {
-        @Html.Partial("_StatusMessage", status);
-         
-
+        var model = ViewBag.Status as Status;
+        <partial name="_StatusMessage" model="model" />
     }
 }
 

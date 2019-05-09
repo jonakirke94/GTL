@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using GTL.Application.Features.Login.Commands;
 using GTL.Application.Interfaces.Repositories;
-using GTL.Application.UseCases.Login.Commands;
 using Xunit;
 
 namespace IntegrationTests
@@ -27,15 +27,11 @@ namespace IntegrationTests
                 Password = "12345678"
             };
 
+            // Act
             var response = await _mediator.Send(command);
-
-
-            Assert.False(response);
-
-            //var mediator = testServer.Host.Services.GetRequiredService<IMediator>();
-
-
+       
             // Assert
+            Assert.False(response);
         }
 
     }

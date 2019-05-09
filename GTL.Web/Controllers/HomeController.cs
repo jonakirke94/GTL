@@ -2,18 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GTL.Web.Models;
-using GTL.Application.Users.Queries.GetUser;
 using GTL.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using GTL.Application.Exceptions;
-using GTL.Application.UseCases.Users;
-using GTL.Application.UseCases.Users.Commands.CreateUser;
-using GTL.Application.UseCases.Users.Commands.DeleteUser;
-using GTL.Application.UseCases.Users.Commands.UpdateUser;
-using GTL.Application.UseCases.Users.Queries.GetUser;
-using GTL.Application.UseCases.Users.Queries.GetUserList;
-using GTL.Application.ViewModels;
-using GTL.Application.UseCases.Users.Queries;
 using System.Collections.Generic;
 using GTL.Web.Helpers;
 
@@ -28,115 +19,22 @@ namespace GTL.Web.Controllers
             _signInManager = signInManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             // var users = await Mediator.Send(new GetUserListQuery());
             // return View(users);
 
             ViewBag.Status = new Status { Type = Type.danger, Message = "Check home controller index() for how to generate status messages" };
 
-            var vm = new UserListViewModel
-            {
-                DeleteEnabled = true,
-                EditEnabled = true,
-                Users = new List<UserDto>()
-            };
 
-            return View(vm);
-        }
-
-        [Authorize(Roles = RoleHierarchy.CHECKOUTSTAFF)]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int) });
-            return View(user);
-        }
-
-        public IActionResult Create()
-        {
             return View();
         }
 
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int) });
-            return View(user);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, UserViewModel model)
-        {
-            if (id != model.User.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                var command = new UpdateUserCommand
-                {
-                    Id = model.User.Id,
-                    Name = model.User.Name,
-                    City = model.User.City,
-                    ZipCode = model.User.ZipCode,
-                };
-                await Mediator.Send(command);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateUserCommand command)
-        {
-            //try
-            //{
-            //    await Mediator.Send(command);
-            //}
-            //catch (AuthException)
-            //{
-            //}
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-
-            var user = await Mediator.Send(new GetUserDetailQuery { Id = id ?? default(int) });
-            return View(user);
-        }
-
+            
         public IActionResult AccessDenied(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await Mediator.Send(new DeleteUserCommand { Id = id });
-            return RedirectToAction(nameof(Index));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -4,9 +4,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation.TestHelper;
+using GTL.Application.Features.Loans.Commands.CreateLoan;
+using GTL.Application.Helper;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
-using GTL.Application.UseCases.Loans.Commands.CreateLoan;
 using GTL.Domain.Entities;
 using Moq;
 using Xunit;
@@ -16,9 +17,6 @@ namespace Application.Tests
     public class CreateLoanTest
     {
         private readonly Mock<ILoanRepository> _loanRepo;
-        private readonly Mock<IMemberRepository> _memberRepo;
-        private readonly Mock<ICopyRepository> _copyRepo;
-        private readonly Mock<ILibraryRepository> _libraryRepo;
         private readonly CreateLoanCommand _command;
         private readonly Mock<IUnitOfWork> _uow;
         private readonly Mock<IGTLContext> _context;
@@ -26,14 +24,10 @@ namespace Application.Tests
         public CreateLoanTest()
         {
             _loanRepo = new Mock<ILoanRepository>();
-            _memberRepo = new Mock<IMemberRepository>();
-            _copyRepo = new Mock<ICopyRepository>();
-            _libraryRepo = new Mock<ILibraryRepository>();
             _command = new Mock<CreateLoanCommand>().Object;
             _context = new Mock<IGTLContext>();
             _uow = new Mock<IUnitOfWork>();
         }
-
 
         [Theory]
         [InlineData("072-34-9710", "00302198556622852554", "Accounting", 1, 7, 5, 21)]
@@ -56,16 +50,11 @@ namespace Application.Tests
             fakeLibrary.MemberMaxBooksOnLoan = maxBooksOnLoan;
             fakeLibrary.MemberLoanDuration = loanDuration;
             fakeCopy.Barcode = copyBarcode;
-
-            _memberRepo.Setup(x => x.GetBySsn(fakeMember.Ssn)).Returns(fakeMember);
-            _libraryRepo.Setup(x => x.GetLibraryByName(fakeLibrary.Name)).Returns(fakeLibrary);
-            _copyRepo.Setup(x => x.GetCopyByBarcode(fakeCopy.Barcode)).Returns(fakeCopy);
-            _loanRepo.Setup(x => x.GetAllActive(memberSsn)).Returns(numberOfBooksLended);
             _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
             
 
 
-            var sut = new CreateLoanHandler(_context.Object,_loanRepo.Object, _memberRepo.Object, _copyRepo.Object, _libraryRepo.Object);
+            var sut = new CreateLoanHandler(_context.Object,_loanRepo.Object);
 
             //Act
             await sut.Handle(_command, CancellationToken.None);

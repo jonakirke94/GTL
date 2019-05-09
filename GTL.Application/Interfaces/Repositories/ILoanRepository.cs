@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using GTL.Application.Interfaces.UnitOfWork;
-using GTL.Application.UseCases.LoanerCard.Commands.CreateLoanerCard;
 using GTL.Domain.Entities;
 
 namespace GTL.Application.Interfaces.Repositories
@@ -10,7 +9,5 @@ namespace GTL.Application.Interfaces.Repositories
     public interface ILoanRepository
     {
         void Add(Loan loan);
-        int GetAllActive(string ssn);
-        void Return(string copyBarcode);
     }
 }

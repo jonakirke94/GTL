@@ -32,10 +32,10 @@
     <None Update="appsettings.test.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ResetDatabase.sql">
+    <None Update="scripts\ResetDatabase.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SeedDatabase.sql">
+    <None Update="scripts\SeedDatabase.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

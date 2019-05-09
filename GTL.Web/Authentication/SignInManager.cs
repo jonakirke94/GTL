@@ -15,12 +15,10 @@ namespace GTL.Web.Authentication
     public class SignInManager : ISignInManager
     {
         private readonly IHttpContextAccessor _context;
-        private readonly IUserRepository _userRepo;
 
-        public SignInManager(IHttpContextAccessor context, IUserRepository userRepo)
+        public SignInManager(IHttpContextAccessor context)
         {
             _context = context;
-            _userRepo = userRepo;
         }
 
         public bool IsSignedIn()
@@ -42,14 +40,15 @@ namespace GTL.Web.Authentication
 
         public async Task<bool> ValidateLastChanged(int id, string lastChanged)
         {
-            var user = await _userRepo.GetUserByIdAsync(id, CancellationToken.None);
+            //var user = await _userRepo.GetUserByIdAsync(id, CancellationToken.None);
 
-            if (user == null)
-            {
-                return false;
-            }
+            //if (user == null)
+            //{
+            //    return false;
+            //}
 
-            return user.LastChanged > DateTime.Parse(lastChanged);        
+            //return user.LastChanged > DateTime.Parse(lastChanged);        
+            return true;
         }
 
         public async Task SignOutAsync()

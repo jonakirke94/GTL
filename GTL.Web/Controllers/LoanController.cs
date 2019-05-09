@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
+using GTL.Application.Features.Loans.Commands.CreateLoan;
+using GTL.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using GTL.Application.UseCases.Loans.Commands.CreateLoan;
-using GTL.Application.UseCases.Loans.Commands.ReturnLoan;
+using Type = GTL.Web.Models.Type;
 
 namespace GTL.Web.Controllers
 {
@@ -42,30 +43,7 @@ namespace GTL.Web.Controllers
                 return View();
             }
 
-
-  
-
-            TempData["Status"] = "Loan was successfully created";
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReturnLoan(ReturnLoanCommand command)
-        {
-            try
-            {
-                await Mediator.Send(command);
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("Unexpected Error", e.Message);
-                // redirect to edit view
-                return View();
-            }
-
-            // redirect to edit view
-            TempData["Message"] = "Loan was successfully created";
+            ViewBag.Status = new Status { Type = Type.success, Message = "Loan was successfully created" };
             return View();
         }
     }
