@@ -17,7 +17,7 @@ namespace SeleniumTests
     {
         private IWebDriver driver;
         private StringBuilder verificationErrors;
-        private string baseURL;
+        private string baseURL = "https://localhost:44327/";
         private bool acceptNextAlert = true;
 
         [SetUp]

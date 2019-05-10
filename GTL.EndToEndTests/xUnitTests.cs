@@ -10,6 +10,8 @@ namespace GTL.EndToEndTests
     public class xUnitTests
     {
         private IWebDriver driver;
+        private string baseURL = "https://localhost:44327/";
+
 
         private string GetDriverPath()
         {
@@ -31,7 +33,8 @@ namespace GTL.EndToEndTests
         [Fact]
         public void SomeSampleTest()
         {
-            driver.Navigate().GoToUrl("https://localhost:44327/");
+            driver = new ChromeDriver(GetDriverPath());
+            driver.Navigate().GoToUrl(baseURL);
             driver.FindElement(By.LinkText("GTL")).Click();
         }
         private bool IsElementPresent(By by)
