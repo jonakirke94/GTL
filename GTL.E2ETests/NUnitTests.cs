@@ -13,7 +13,7 @@ using OpenQA.Selenium.Support.UI;
 namespace SeleniumTests
 {
     [TestFixture]
-    public class UntitledTestCase
+    public class NUnitTests
     {
         private IWebDriver driver;
         private StringBuilder verificationErrors;
@@ -48,7 +48,7 @@ namespace SeleniumTests
         }
 
         [Test]
-        public void TheUntitledTestCaseTest()
+        public void SomeTestCase()
         {
             driver.Navigate().GoToUrl(baseURL);
             driver.FindElement(By.LinkText("GTL")).Click();

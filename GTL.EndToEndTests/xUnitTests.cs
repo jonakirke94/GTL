@@ -7,7 +7,7 @@ using Xunit;
 
 namespace GTL.EndToEndTests
 {
-    public class UnitTest1
+    public class xUnitTests
     {
         private IWebDriver driver;
 
@@ -29,7 +29,7 @@ namespace GTL.EndToEndTests
         }
 
         [Fact]
-        public void TheSampleTest()
+        public void SomeSampleTest()
         {
             driver.Navigate().GoToUrl("https://localhost:44327/");
             driver.FindElement(By.LinkText("GTL")).Click();
