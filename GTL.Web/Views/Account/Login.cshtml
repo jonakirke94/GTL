@@ -4,34 +4,84 @@
     ViewData["Title"] = "Login";
 }
 
-<h4>Login</h4>
-<hr />
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="row flex-container">
+    <div class="col-md-4 offset-2 login-box">
+        <h2>Log in to your account</h2>
+        <form asp-action="Login" class="login-form" asp-route-returnurl="@ViewData["ReturnUrl"]" id="login-form">
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" placeholder="Email"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" class="form-control" />
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group no-margin">
+                <input type="submit" value="Login" class="btn btn-login" id="login-button"/>
             </div>
         </form>
     </div>
+    <img src="~/images/login.svg" class="col-md-4" alt="Alternate Text" />
 </div>
 
-<div>
-    <a asp-controller="Home" asp-action="Index">Back to List</a>
-</div>
+<style>
+
+    .login-box {
+        border-radius: 5px;
+        background-color: white;
+        padding: 2rem;
+        margin-right: 6rem;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 0;
+    }
+
+    .form-group input[type="text"],input[type="password"] {
+        background-color: #F0F5F5;
+        border-color: #E3E6EA;
+        height: 45px;
+    }
+
+    .no-margin {
+        margin-bottom: 0;
+
+    }
+    
+    .btn-login {
+        width: 100%;
+        color: white;
+        background-color: #6c63ff;
+        height: 50px;
+    }
+
+    .login-form {
+        padding-top: 2rem;
+    }
+
+</style>
 
 @section Scripts {
+    
+    <script>
+
+        var $form = $("#login-form");
+        var $submitbutton = $("#login-button");
+
+        $form.on("blur", "input", () => {
+            if ($form.valid()) {
+                $submitbutton.removeAttr("disabled");   
+            } else {
+                $submitbutton.attr("disabled", "disabled");
+            }
+        });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

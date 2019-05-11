@@ -18,12 +18,12 @@ html {
   }
 }
 
-.border-top {
+/*.border-top {
   border-top: 1px solid #e5e5e5;
 }
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
-}
+}*/
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
@@ -39,18 +39,91 @@ button.accept-policy {
 html {
   position: relative;
   min-height: 100%;
+    margin: 0;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
+    background-color: white;
   /* Set the fixed height of the footer here */
-  height: 60px;
+  height: 61px;
   line-height: 60px; /* Vertically center the text there */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.flex-fill {
+    flex: 1;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: calc(100% - 60px);
+    background-color: #E6EBF0;
+}
+
+.full-h {
+    height: calc(100% - 90px);
+}
+
+.btn-primary {
+    background-color: #6c63ff;
+    border-color: #6c63ff;
+    font-size: 2rem;
+}
+
+.btn-primary:hover {
+    background-color: #4a3fff;
+}
+
+.flex-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
+    width: 100%;
+    height: 600px;
+}
+
+.buttons {
+    height: 100%;
+    min-height: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 40%;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.buttons button {
+    padding-left: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons button i {
+    margin-left: auto;
+}
+    
+.img {
+    width: 50%;
 }

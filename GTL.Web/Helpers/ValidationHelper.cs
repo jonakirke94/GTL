@@ -11,8 +11,6 @@ namespace GTL.Web
     {
         public static void AddValidationErrors(this ModelStateDictionary modelState, ValidationException e)
         {
-            modelState.AddModelError(string.Empty, e.Message);
-
             foreach (var (key, value) in e.Failures)
             {
                 foreach (var error in value)
