@@ -5,6 +5,8 @@
         public string ErrorMessage { get; set; }
 
         public bool HasRequestError => !string.IsNullOrEmpty(ErrorMessage);
+
+        public dynamic SubjectId { get; set; }
     }
 
     public class CommandResponse<TModel> : CommandResponse where TModel : class

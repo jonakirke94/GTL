@@ -17,16 +17,14 @@ namespace GTL.Persistence.Repositories
     {
         protected readonly IGTLContext _context;
 
-        private DataBaseSettings Options { get; }
-
         public LoanRepository(IGTLContext context)
         {
             _context = context;
         }
 
-        public void Add(Loan loan)
+        public int Add(Loan loan)
         {
-            const string query = "INSERT INTO [Loan] ([LoanDate], [DueDate], [LoanerCardBarcode], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
+            const string query = "INSERT INTO [Loan] ([LoanDate], [DueDate], [LoanerCardBarcode], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName); SELECT CAST(SCOPE_IDENTITY() as int)";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
@@ -36,18 +34,7 @@ namespace GTL.Persistence.Repositories
                 param.Add("@copyBarcode", loan.CopyBarcode);
                 param.Add("@libraryName", loan.LibraryName);
 
-                try
-                {
-                    cmd.Connection.Execute(query, param, cmd.Transaction);
-                }
-                catch (SqlException e)
-                {
-                    if (e.Procedure == "CHECK_LOANABLE")
-                    {
-                        throw new NotAllowedForLoan(loan.CopyBarcode);
-                    }
-                }
-
+                return cmd.Connection.QuerySingle<int>(query, param, cmd.Transaction);
             }
         }
 

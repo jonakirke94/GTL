@@ -21,16 +21,16 @@
         <form asp-action="CreateLoan" class="buttons">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Loan.MemberSsn" class="control-label">Loanercard Barcode</label>
-                <input asp-for="Loan.MemberSsn" class="form-control" />
+                <label asp-for="LoanerCardBarcode" class="control-label">Loanercard Barcode</label>
+                <input asp-for="LoanerCardBarcode" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Loan.CopyBarcode" class="control-label">Copy Barcode</label>
-                <input asp-for="Loan.CopyBarcode" class="form-control" />
+                <label asp-for="CopyBarcode" class="control-label">Copy Barcode</label>
+                <input asp-for="CopyBarcode" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Loan.LibraryName" class="control-label">Library name</label>
-                <select asp-for="Loan.LibraryName" class="form-control">
+                <label asp-for="LibraryName" class="control-label">Library name</label>
+                <select asp-for="LibraryName" class="form-control">
                     <option value="Accounting">Accounting</option>
                     <option value="BusinessSales">BusinessSales</option>
                     <option value="NationalSales">NationalSales</option>

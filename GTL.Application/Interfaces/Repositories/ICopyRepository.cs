@@ -5,8 +5,8 @@ using GTL.Domain.Entities;
 
 namespace GTL.Application.Interfaces.Repositories
 {
-    public interface IMemberRepository
+    public interface ICopyRepository
     {
-        Member GetByLoanerCard(int barcode);
+        Copy GetByBarcode(int barcode);
     }
 }

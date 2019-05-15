@@ -10,22 +10,23 @@ using GTL.Persistence.Configurations;
 
 namespace GTL.Persistence.Repositories
 {
-    public class MemberRepository : IMemberRepository
+    public class CopyRepository : ICopyRepository
     {
         protected readonly IGTLContext _context;
 
-        public MemberRepository(IGTLContext context)
+        public CopyRepository(IGTLContext context)
         {
             _context = context;
         }
-        public Member GetByLoanerCard(int barcode)
+
+        public Copy GetByBarcode(int barcode)
         {
-            const string query = @"SELECT m.* FROM Member m LEFT JOIN LoanerCard l ON m.Ssn = l.MemberSsn WHERE l.Barcode = @barcode";
+            const string query = @"SELECT * FROM Copy WHERE Barcode = @barcode";
             using (var cmd = _context.CreateCommand())
             {
                 var para = new DynamicParameters();
                 para.Add("@barcode", barcode);
-                var results = cmd.Connection.Query<Member>(query, para, cmd.Transaction);
+                var results = cmd.Connection.Query<Copy>(query, para, cmd.Transaction);
                 return results.FirstOrDefault();
             }
         }

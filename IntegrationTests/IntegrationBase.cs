@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Dapper;
 using GTL.Application.Interfaces.UnitOfWork;
+using GTL.Domain.Entities;
 using GTL.Web;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +15,7 @@ namespace IntegrationTests
 {
     public class IntegrationBase : IDisposable
     {
-        private readonly IGTLContext _context;
+        protected readonly IGTLContext _context;
 
         protected IMediator _mediator;
 
@@ -28,6 +29,8 @@ namespace IntegrationTests
             _mediator = server.Host.Services.GetRequiredService<IMediator>();
 
             _context = server.Host.Services.GetRequiredService<IGTLContext>();
+
+            ResetDatabase();
         }
 
         public void Dispose()

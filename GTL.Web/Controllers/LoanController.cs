@@ -26,8 +26,6 @@ namespace GTL.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLoan(CreateLoanCommand command)
         {
-            command.Loan.LoanDate = DateTime.Now;
-
             try
             {
                 var response = await Mediator.Send(command);

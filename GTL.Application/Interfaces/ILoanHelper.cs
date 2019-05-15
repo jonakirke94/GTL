@@ -6,8 +6,9 @@ namespace GTL.Application.Interfaces
 {
     public interface ILoanHelper
     {
-        bool IsLoanerCardActive(string barcode);
+        bool IsLoanerCardActive(int barcode);
 
-        DateTime GetDueDateByMemberType(string barcode, string libraryName);
+        DateTime GetDueDateByMemberType(int barcode, string libraryName);
     }
 }
+

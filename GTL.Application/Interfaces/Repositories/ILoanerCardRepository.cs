@@ -7,8 +7,8 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface ILoanerCardRepository
     {
-        LoanerCard GetByBarcode(string barcode);
+        LoanerCard GetByBarcode(int barcode);
 
-        void DeactiveLoanerCard(string barcode);
+        void DeactiveLoanerCard(int barcode);
     }
 }

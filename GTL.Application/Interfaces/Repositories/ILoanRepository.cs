@@ -8,6 +8,8 @@ namespace GTL.Application.Interfaces.Repositories
 {
     public interface ILoanRepository
     {
-        void Add(Loan loan);
+        int Add(Loan loan);
+
+        int GetNoOfActiveLoans(int barcode);
     }
 }

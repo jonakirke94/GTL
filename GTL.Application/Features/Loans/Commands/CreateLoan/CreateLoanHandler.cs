@@ -15,13 +15,15 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
     public class CreateLoanHandler : IRequestHandler<CreateLoanCommand, CommandResponse>
     {
         private readonly ILoanRepository _loanRepo;
+        private readonly ICopyRepository _copyRepo;
         private readonly ILoanHelper _loanHelper;
         private readonly IGTLContext _context;
 
-        public CreateLoanHandler(IGTLContext context, ILoanRepository loanRepo, ILoanHelper loanHelper)
+        public CreateLoanHandler(IGTLContext context, ILoanRepository loanRepo, ILoanHelper loanHelper, ICopyRepository copyRepo)
         {
             _loanRepo = loanRepo;
             _loanHelper = loanHelper;
+            _copyRepo = copyRepo;
             _context = context;
         }
 
@@ -37,29 +39,28 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
                 return Task.FromResult(response);
             }
 
+            var copy = _copyRepo.GetByBarcode(request.CopyBarcode);
+
+            if (copy.Status != CopyStatus.AVAILABLE)
+            {
+                response.ErrorMessage = $"The requested copy is not available for loaning Status: {copy.Status}";
+                return Task.FromResult(response);
+            }
+
             var loanToAdd = new Loan
             {
                 LibraryName = request.LibraryName,
                 CopyBarcode = request.CopyBarcode,
                 LoanerCardBarcode = request.LoanerCardBarcode,
-                LoanDate = DateTime.Now
+                LoanDate = DateTime.Now,
+                DueDate = _loanHelper.GetDueDateByMemberType(request.LoanerCardBarcode, request.LibraryName)
             };
 
-            loanToAdd.DueDate = _loanHelper.GetDueDateByMemberType(request.LoanerCardBarcode, request.LibraryName);
 
             using (var db = _context.CreateUnitOfWork())
             {
-                try
-                {
-                    _loanRepo.Add(loanToAdd);
-                    db.SaveChanges();
-
-                }
-                catch (NotAllowedForLoan)
-                {
-                    response.ErrorMessage = "Warning. The requested copy is not available for loaning";
-                    return Task.FromResult(response);
-                }
+                response.SubjectId = _loanRepo.Add(loanToAdd);
+                db.SaveChanges();
             }
 
             return Task.FromResult(response);

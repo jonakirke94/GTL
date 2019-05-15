@@ -20,29 +20,37 @@ namespace Application.Tests
     {
         private readonly Mock<ILoanRepository> _loanRepo;
         private readonly Mock<ILoanHelper> _loanHelper;
+        private readonly Mock<ICopyRepository> _copyRepo;
         private readonly CreateLoanCommand _command;
         private readonly Mock<IUnitOfWork> _uow;
         private readonly Mock<IGTLContext> _context;
+        private readonly Copy _fakeCopy;
 
         public CreateLoanTest()
         {
+            _copyRepo = new Mock<ICopyRepository>();
             _loanHelper = new Mock<ILoanHelper>();
             _loanRepo = new Mock<ILoanRepository>();
             _command = new Mock<CreateLoanCommand>().Object;
             _context = new Mock<IGTLContext>();
             _uow = new Mock<IUnitOfWork>();
+            _fakeCopy = new Mock<Copy>().Object;
+
         }
 
         [Fact(DisplayName = "LoanWasAdded")]
         public void TDS_1_TC2_1()
         {
             // Arrange
-            _command.LoanerCardBarcode = "072-34-9710";
-            _command.CopyBarcode = "00302198556622852554";
+            _command.LoanerCardBarcode = 072-34-9710;
+            _command.CopyBarcode = 36554;
             _command.LibraryName = "Georgia Tech Library";
 
+            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(true);
+            _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
+
             _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
-            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object);
+            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
 
             // Act
             sut.Handle(_command, default);
@@ -52,12 +60,12 @@ namespace Application.Tests
         }
 
         [Theory(DisplayName = "ShouldValidateLoanData")]
-        [InlineData("","302198556622852000", "Georgia Tech Library", false)]
-        [InlineData("302198556622852000", "", "Georgia Tech Library", false)]
-        [InlineData("302198556622852000", "302198556622852000", "", false)]
-        [InlineData("302198556622852000", "302198556622852000", "Georgia Tech Library", true)]
+        [InlineData(0,3021, "Georgia Tech Library", false)]
+        [InlineData(3021, 0, "Georgia Tech Library", false)]
+        [InlineData(3021, 3021, "", false)]
+        [InlineData(3021, 3021, "Georgia Tech Library", true)]
 
-        public void TDS_1_TC2_2(string loanerCardBarcode, string copyBarcode, string libraryName, bool expectedResult)
+        public void TDS_1_TC2_2(int loanerCardBarcode, int copyBarcode, string libraryName, bool expectedResult)
         {
             // Arrange
             var sut = new CreateLoanCommandValidator();
@@ -80,9 +88,10 @@ namespace Application.Tests
         {
             // Arrange
             _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
-            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<string>())).Returns(activeStatus);
+            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(activeStatus);
+            _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
 
-            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object);
+            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
 
             // Act
             var response = await sut.Handle(_command, default);
@@ -96,15 +105,16 @@ namespace Application.Tests
         {
             // Arrange
             _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
-            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<string>())).Returns(true);
+            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(true);
+            _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
 
-            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object);
+            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
 
             // Act
             sut.Handle(_command, default);
 
             // Assert
-            _loanHelper.Verify(x => x.GetDueDateByMemberType(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(1));
+            _loanHelper.Verify(x => x.GetDueDateByMemberType(It.IsAny<int>(), It.IsAny<string>()), Times.Exactly(1));
         }
 
     }

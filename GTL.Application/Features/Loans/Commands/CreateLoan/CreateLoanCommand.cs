@@ -6,9 +6,9 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
 {
     public class CreateLoanCommand : IRequest<CommandResponse>
     {
-        public string LoanerCardBarcode { get; set; }
+        public int LoanerCardBarcode { get; set; }
 
-        public string CopyBarcode { get; set; }
+        public int CopyBarcode { get; set; }
 
         public string LibraryName { get; set; }
     }
