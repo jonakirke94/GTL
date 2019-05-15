@@ -1,9 +1,13 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GTL.Application.Exceptions;
 using GTL.Application.Infrastructure.RequestModels;
+using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
+using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 using MediatR;
 
 namespace GTL.Application.Features.Loans.Commands.CreateLoan
@@ -11,11 +15,13 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
     public class CreateLoanHandler : IRequestHandler<CreateLoanCommand, CommandResponse>
     {
         private readonly ILoanRepository _loanRepo;
+        private readonly ILoanHelper _loanHelper;
         private readonly IGTLContext _context;
 
-        public CreateLoanHandler(IGTLContext context, ILoanRepository loanRepo)
+        public CreateLoanHandler(IGTLContext context, ILoanRepository loanRepo, ILoanHelper loanHelper)
         {
             _loanRepo = loanRepo;
+            _loanHelper = loanHelper;
             _context = context;
         }
 
@@ -23,15 +29,29 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
         {
             var response = new CommandResponse();
 
-            //var member = _memberRepo.GetBySsn(request.Loan.MemberSsn);
+            var isCardActive = _loanHelper.IsLoanerCardActive(request.LoanerCardBarcode);
 
-            //var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
+            if (!isCardActive)
+            {
+                response.ErrorMessage = "The used loanercard is no longer active";
+                return Task.FromResult(response);
+            }
+
+            var loanToAdd = new Loan
+            {
+                LibraryName = request.LibraryName,
+                CopyBarcode = request.CopyBarcode,
+                LoanerCardBarcode = request.LoanerCardBarcode,
+                LoanDate = DateTime.Now
+            };
+
+            loanToAdd.DueDate = _loanHelper.GetDueDateByMemberType(request.LoanerCardBarcode, request.LibraryName);
 
             using (var db = _context.CreateUnitOfWork())
             {
                 try
                 {
-                    _loanRepo.Add(request.Loan);
+                    _loanRepo.Add(loanToAdd);
                     db.SaveChanges();
 
                 }
@@ -41,69 +61,8 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
                     return Task.FromResult(response);
                 }
             }
-            
-
-
-            /*        var member = _memberRepo.GetBySsn(request.Loan.MemberSsn);
-
-                    var copy = _copyRepo.GetCopyByBarcode(request.Loan.CopyBarcode);
-
-                    Library library = _libraryRepo.GetLibraryByName(request.Loan.LibraryName);
-
-             /*       if ((copy.Status != CopyStatus.AVAILABLE) || member is null || library.Name != null)
-                    {
-                        //TODO cast exception
-                    } 
-
-
-                    //TODO maybe not set theese to null.
-                    int loanDuration = 0;
-                    int gracePeriod = 0;
-                    int maxBooksOnLoan = 0;
-
-                    if (member.Type == MemberType.PROFESSOR)
-                    {
-                        loanDuration = library.ProfessorLoanDuration;
-                        gracePeriod = library.ProfessorGracePeriod;
-                        maxBooksOnLoan = library.ProfessorMaxBooksOnLoan;
-                    }
-                    else if (member.Type == MemberType.STUDENT)
-                    {
-                        loanDuration = library.MemberLoanDuration;
-                        gracePeriod = library.MemberGracePeriod;
-                        maxBooksOnLoan = library.MemberMaxBooksOnLoan;
-                    }
-                    else
-                    {
-                        //TODO throw exception "member was not a type."
-                    }
-
-                    int amountOfBooksLoanedByMember = _loanRepo.GetAllActiveLoans(member.Ssn);
-
-                    if (amountOfBooksLoanedByMember < maxBooksOnLoan)
-                    {
-                        request.Loan.DueDate = request.Loan.LoanDate.AddDays(loanDuration);
-
-                        _loanRepo.Add(request.Loan);
-                    }
-                    else if (maxBooksOnLoan == 0)
-                    {
-                        request.Loan.DueDate = request.Loan.LoanDate.AddDays(loanDuration);
-
-                        _loanRepo.Add(request.Loan);
-                    }
-                    else
-                    {
-                        //TODO Throw exception "too many books on loan"
-                    } */
-
-            
-
-
-
 
             return Task.FromResult(response);
-
         }
     }
 }

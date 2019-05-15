@@ -33,6 +33,7 @@ namespace GTL.Web.Configurations
             services.AddScoped<ILoanRepository, LoanRepository>();
             services.AddScoped<IStaffRepository, StaffRepository>();
 
+            services.AddScoped<ILoanHelper, LoanHelper>();
 
             // services related to authentication and authorization
             services.AddScoped<ISignInManager, SignInManager>();

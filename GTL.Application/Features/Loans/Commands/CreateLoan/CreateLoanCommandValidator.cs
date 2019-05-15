@@ -9,10 +9,10 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
     {
         public CreateLoanCommandValidator()
         {
-            RuleFor(x => x.Loan.MemberSsn).NotEmpty().Length(10);
-            RuleFor(x => x.Loan.CopyBarcode).NotEmpty();
-            RuleFor(x => x.Loan.LoanDate).NotEmpty();
-            RuleFor(x => x.Loan.LibraryName).NotEmpty();
+            RuleFor(x => x.CopyBarcode).NotEmpty();
+            RuleFor(x => x.LoanerCardBarcode).NotEmpty();
+            RuleFor(x => x.LibraryName).NotEmpty();
+
         }
     }
 }

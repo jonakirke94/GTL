@@ -26,13 +26,13 @@ namespace GTL.Persistence.Repositories
 
         public void Add(Loan loan)
         {
-            const string query = "INSERT INTO [Loan] ([LoanDate], [DueDate], [MemberSsn], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
+            const string query = "INSERT INTO [Loan] ([LoanDate], [DueDate], [LoanerCardBarcode], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
                 param.Add("@loanDate", loan.LoanDate);
                 param.Add("@dueDate", loan.DueDate);
-                param.Add("@memberSsn", loan.MemberSsn);
+                param.Add("@memberSsn", loan.LoanerCardBarcode);
                 param.Add("@copyBarcode", loan.CopyBarcode);
                 param.Add("@libraryName", loan.LibraryName);
 
