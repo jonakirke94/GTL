@@ -39,6 +39,14 @@ namespace GTL.Application.Features.Loans.Commands.CreateLoan
                 return Task.FromResult(response);
             }
 
+            var activeLoans = _loanRepo.GetNoOfActiveLoans(request.LoanerCardBarcode);
+
+            if (activeLoans > 4 || activeLoans < 0)
+            {
+                response.ErrorMessage = "Member has reached limit of allowed active loans";
+                return Task.FromResult(response);
+            }
+
             var copy = _copyRepo.GetByBarcode(request.CopyBarcode);
 
             if (copy.Status != CopyStatus.AVAILABLE)

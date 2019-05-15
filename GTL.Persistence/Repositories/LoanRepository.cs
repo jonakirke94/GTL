@@ -38,27 +38,16 @@ namespace GTL.Persistence.Repositories
             }
         }
 
-        public int GetAllActive(string ssn)
+        public int GetNoOfActiveLoans(int barcode)
         {
-            var query = $@"SELECT COUNT (*) as numberOfLoans FROM Loan WHERE MemberSsn = @ssn AND returnDate != null";
+            const string query = @"SELECT COUNT(*) FROM Loan WHERE LoanerCardBarcode = @barcode AND returnDate <> NULL";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
-                param.Add("@ssn", ssn);
-                var amount = cmd.Connection.Execute(query, param, cmd.Transaction);
-                return amount;
+                param.Add("@barcode", barcode);
+                return cmd.Connection.QuerySingle<int>(query, param, cmd.Transaction);
             }
         }
 
-        public void Return(string copyBarcode)
-        {
-            var storedProcedure = "[dbo].[ReturnLoan]";
-            using( var cmd = _context.CreateCommand())
-            {
-                var param = new DynamicParameters();
-                param.Add("@CopyBarcode", copyBarcode);
-                cmd.Connection.Execute(storedProcedure, param, commandType: CommandType.StoredProcedure, transaction: cmd.Transaction);
-            }
-        }
     }
 }
