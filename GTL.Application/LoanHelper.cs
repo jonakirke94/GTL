@@ -32,7 +32,7 @@ namespace GTL.Application
 
             var library = _libraryRepo.GetByName(libraryName);
 
-            return member.Type == MemberType.STUDENT
+            return member.Type == MemberType.MEMBER
                 ? DateTime.Now.AddDays(library.MemberLoanDuration)
                 : DateTime.Now.AddDays(library.ProfessorLoanDuration);
         }
