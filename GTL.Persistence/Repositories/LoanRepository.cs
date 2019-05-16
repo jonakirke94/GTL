@@ -40,7 +40,7 @@ namespace GTL.Persistence.Repositories
 
         public int GetNoOfActiveLoans(int barcode)
         {
-            const string query = @"SELECT COUNT(*) FROM Loan WHERE LoanerCardBarcode = @barcode AND returnDate <> NULL";
+            const string query = @"SELECT COUNT(*) FROM Loan WHERE LoanerCardBarcode = @barcode AND returnDate IS NULL";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
