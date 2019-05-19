@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using GTL.Application.Exceptions;
+﻿using System.Threading.Tasks;
 using GTL.Application.Features.Loans.Commands.CreateLoan;
 using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
-using GTL.Domain.Enums;
 using Moq;
 using Xunit;
 
 namespace Application.Tests
 {
-    public class RestrictedLoanMaterialTests
+    public class LoanLimitTests
     {
         private readonly Mock<ILoanRepository> _loanRepo;
         private readonly Mock<ILoanHelper> _loanHelper;
@@ -24,7 +19,7 @@ namespace Application.Tests
         private readonly Mock<IGTLContext> _context;
         private readonly Copy _fakeCopy;
 
-        public RestrictedLoanMaterialTests()
+        public LoanLimitTests()
         {
             _copyRepo = new Mock<ICopyRepository>();
             _loanHelper = new Mock<ILoanHelper>();
@@ -35,26 +30,48 @@ namespace Application.Tests
             _fakeCopy = new Mock<Copy>().Object;
         }
 
-        [Theory(DisplayName = "ReturnsErrorMessageIfNotAllowedForLoan")]
-        [InlineData(CopyStatus.SOLD, "The requested copy is not available for loaning Status: SOLD")]
-        [InlineData(CopyStatus.AVAILABLE, null)]
-        public async Task ReturnsErrorIfNotAllowedForLoan(CopyStatus status, string errorMessage)
+        [Theory(DisplayName = "CanLoanBookWithinLimits")]
+        [InlineData(4)]
+        [InlineData(0)]
+        public void TDS_1_TC25_1(int activeLoans)
         {
             // Arrange
-            _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
             _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(true);
-
-            _fakeCopy.Status = status;
-
             _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
+            _loanRepo.Setup(x => x.GetNoOfActiveLoans(It.IsAny<int>())).Returns(activeLoans);
+            _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
+            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
 
+            // Act
+            sut.Handle(_command, default);
+
+            // Assert
+            _loanRepo.Verify(x => x.Add(It.IsAny<Loan>()), Times.Once());
+        }
+
+        [Theory(DisplayName = "ReturnsErrorMessageOnExceededLoanLimit")]
+        [InlineData(50)]
+        [InlineData(5)]
+        [InlineData(-1)]
+        [InlineData(-50)]
+        public async Task TDS_1_TC25_2(int activeLoans)
+        {
+            // Arrange
+            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(true);
+            _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
+            _loanRepo.Setup(x => x.GetNoOfActiveLoans(It.IsAny<int>())).Returns(activeLoans);
+
+            _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
             var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
 
             // Act
             var response = await sut.Handle(_command, default);
 
             // Assert
-            Assert.Equal(errorMessage, response.ErrorMessage);
+            Assert.Equal("Member has reached limit of allowed active loans", response.ErrorMessage);
+
         }
+
+
     }
 }

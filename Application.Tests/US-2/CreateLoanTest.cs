@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using FluentValidation.TestHelper;
 using GTL.Application.Features.Loans.Commands.CreateLoan;
 using GTL.Application.Helper;
+using GTL.Application.Interfaces;
 using GTL.Application.Interfaces.Repositories;
 using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
+using GTL.Domain.Enums;
 using Moq;
 using Xunit;
 
@@ -17,90 +19,103 @@ namespace Application.Tests
     public class CreateLoanTest
     {
         private readonly Mock<ILoanRepository> _loanRepo;
+        private readonly Mock<ILoanHelper> _loanHelper;
+        private readonly Mock<ICopyRepository> _copyRepo;
         private readonly CreateLoanCommand _command;
         private readonly Mock<IUnitOfWork> _uow;
         private readonly Mock<IGTLContext> _context;
+        private readonly Copy _fakeCopy;
 
         public CreateLoanTest()
         {
+            _copyRepo = new Mock<ICopyRepository>();
+            _loanHelper = new Mock<ILoanHelper>();
             _loanRepo = new Mock<ILoanRepository>();
             _command = new Mock<CreateLoanCommand>().Object;
             _context = new Mock<IGTLContext>();
             _uow = new Mock<IUnitOfWork>();
+            _fakeCopy = new Mock<Copy>().Object;
+
         }
 
-        [Theory]
-        [InlineData("072-34-9710", "00302198556622852554", "Accounting", 1, 7, 5, 21)]
-        [InlineData("123-45-6789", "12345678998765432154", "SuperCoolLibrary", 4, 7, 5, 21)]
-        public async Task LoanWasCreated(string memberSsn, string copyBarcode, string libraryName, int numberOfBooksLended, int gracePeriod, int maxBooksOnLoan, int loanDuration)
+        [Fact(DisplayName = "LoanWasAdded")]
+        public void TDS_1_TC2_1()
         {
-            //Arrange
-            _command.Loan.MemberSsn = memberSsn;
-            _command.Loan.CopyBarcode = copyBarcode;
-            _command.Loan.LibraryName = libraryName;
-            _command.Loan.LoanDate = DateTime.Now;
+            // Arrange
+            _command.LoanerCardBarcode = 072-34-9710;
+            _command.CopyBarcode = 36554;
+            _command.LibraryName = "Georgia Tech Library";
 
-            Member fakeMember = new Mock<Member>().Object;
-            Library fakeLibrary = new Mock<Library>().Object;
-            Copy fakeCopy = new Mock<Copy>().Object;
-            Loan fakeLoan = new Mock<Loan>().Object;
-            fakeMember.Ssn = memberSsn;
-            fakeLibrary.Name = libraryName;
-            fakeLibrary.MemberGracePeriod = gracePeriod;
-            fakeLibrary.MemberMaxBooksOnLoan = maxBooksOnLoan;
-            fakeLibrary.MemberLoanDuration = loanDuration;
-            fakeCopy.Barcode = copyBarcode;
+            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(true);
+            _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
+
             _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
-            
+            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
 
+            // Act
+            sut.Handle(_command, default);
 
-            var sut = new CreateLoanHandler(_context.Object,_loanRepo.Object);
-
-            //Act
-            await sut.Handle(_command, CancellationToken.None);
-
-            //Assert
-            _loanRepo.Verify(x => x.Add(It.IsAny<Loan>()), Times.Once);
+            // Assert
+            _loanRepo.Verify(x =>x.Add(It.IsAny<Loan>()), Times.Once());
         }
 
-        [Theory]
-        [InlineData( "")]
-        [InlineData("1234")]
-        [InlineData("123456789123")]
-        public void LoanValidationShouldThrowOnMemberSsnTest(string memberSsn)
+        [Theory(DisplayName = "ShouldValidateLoanData")]
+        [InlineData(0,3021, "Georgia Tech Library", false)]
+        [InlineData(3021, 0, "Georgia Tech Library", false)]
+        [InlineData(3021, 3021, "", false)]
+        [InlineData(3021, 3021, "Georgia Tech Library", true)]
+
+        public void TDS_1_TC2_2(int loanerCardBarcode, int copyBarcode, string libraryName, bool expectedResult)
         {
-            var validator = new CreateLoanCommandValidator();
-            _command.Loan.MemberSsn = memberSsn;
+            // Arrange
+            var sut = new CreateLoanCommandValidator();
 
-            validator.ShouldHaveValidationErrorFor(loan => loan.Loan.MemberSsn, _command);
+            _command.LoanerCardBarcode = loanerCardBarcode;
+            _command.CopyBarcode = copyBarcode;
+            _command.LibraryName = libraryName;
+
+            // Act
+            var validationRes = sut.Validate(_command);
+
+            // Assert
+            Assert.Equal(expectedResult, validationRes.IsValid);
         }
 
-        [Theory]
-        [InlineData("")]
-        public void LoanValidationShouldThrowOnCopyBarcodeTest(string copyBarcode)
+        [Theory(DisplayName = "CheckForActiveLoanercardTest")]
+        [InlineData(true, null)]
+        [InlineData(false, "The used loanercard is no longer active")]
+        public async Task TDS_1_TC2_3(bool activeStatus, string errorMessage)
         {
-            var validator = new CreateLoanCommandValidator();
-            _command.Loan.CopyBarcode = copyBarcode;
+            // Arrange
+            _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
+            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(activeStatus);
+            _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
 
-            validator.ShouldHaveValidationErrorFor(loan => loan.Loan.CopyBarcode, _command);
+            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
+
+            // Act
+            var response = await sut.Handle(_command, default);
+
+            // Assert
+            Assert.Equal(errorMessage, response.ErrorMessage);
         }
 
-        [Fact]
-        public void LoanValidationShouldThrowOnLoanDateTest()
+        [Fact(DisplayName = "CheckDueDateIsBeingCalculated")]
+        public void TDS_1_TC2_4()
         {
-            var validator = new CreateLoanCommandValidator();
-            
-            validator.ShouldHaveValidationErrorFor(loan => loan.Loan.LoanDate, _command);
+            // Arrange
+            _context.Setup(x => x.CreateUnitOfWork()).Returns(_uow.Object);
+            _loanHelper.Setup(x => x.IsLoanerCardActive(It.IsAny<int>())).Returns(true);
+            _copyRepo.Setup(x => x.GetByBarcode(It.IsAny<int>())).Returns(_fakeCopy);
+
+            var sut = new CreateLoanHandler(_context.Object, _loanRepo.Object, _loanHelper.Object, _copyRepo.Object);
+
+            // Act
+            sut.Handle(_command, default);
+
+            // Assert
+            _loanHelper.Verify(x => x.GetDueDateByMemberType(It.IsAny<int>(), It.IsAny<string>()), Times.Exactly(1));
         }
 
-        [Theory]
-        [InlineData("")]
-        public void LoanValidationShouldThrowOnLibraryNameTest(string libraryName)
-        {
-            var validator = new CreateLoanCommandValidator();
-            _command.Loan.LibraryName = libraryName;
-
-            validator.ShouldHaveValidationErrorFor(loan => loan.Loan.LibraryName, _command);
-        }
     }
 }

@@ -17,61 +17,37 @@ namespace GTL.Persistence.Repositories
     {
         protected readonly IGTLContext _context;
 
-        private DataBaseSettings Options { get; }
-
         public LoanRepository(IGTLContext context)
         {
             _context = context;
         }
 
-        public void Add(Loan loan)
+        public int Add(Loan loan)
         {
-            const string query = "INSERT INTO [Loan] ([LoanDate], [DueDate], [MemberSsn], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName)";
+            const string query = "INSERT INTO [Loan] ([LoanDate], [DueDate], [LoanerCardBarcode], [CopyBarcode], [LibraryName]) VALUES (@loanDate, @dueDate, @memberSsn, @copyBarcode, @libraryName); SELECT CAST(SCOPE_IDENTITY() as int)";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
                 param.Add("@loanDate", loan.LoanDate);
                 param.Add("@dueDate", loan.DueDate);
-                param.Add("@memberSsn", loan.MemberSsn);
+                param.Add("@memberSsn", loan.LoanerCardBarcode);
                 param.Add("@copyBarcode", loan.CopyBarcode);
                 param.Add("@libraryName", loan.LibraryName);
 
-                try
-                {
-                    cmd.Connection.Execute(query, param, cmd.Transaction);
-                }
-                catch (SqlException e)
-                {
-                    if (e.Procedure == "CHECK_LOANABLE")
-                    {
-                        throw new NotAllowedForLoan(loan.CopyBarcode);
-                    }
-                }
-
+                return cmd.Connection.QuerySingle<int>(query, param, cmd.Transaction);
             }
         }
 
-        public int GetAllActive(string ssn)
+        public int GetNoOfActiveLoans(int barcode)
         {
-            var query = $@"SELECT COUNT (*) as numberOfLoans FROM Loan WHERE MemberSsn = @ssn AND returnDate != null";
+            const string query = @"SELECT COUNT(*) FROM Loan WHERE LoanerCardBarcode = @barcode AND returnDate IS NULL";
             using (var cmd = _context.CreateCommand())
             {
                 var param = new DynamicParameters();
-                param.Add("@ssn", ssn);
-                var amount = cmd.Connection.Execute(query, param, cmd.Transaction);
-                return amount;
+                param.Add("@barcode", barcode);
+                return cmd.Connection.QuerySingle<int>(query, param, cmd.Transaction);
             }
         }
 
-        public void Return(string copyBarcode)
-        {
-            var storedProcedure = "[dbo].[ReturnLoan]";
-            using( var cmd = _context.CreateCommand())
-            {
-                var param = new DynamicParameters();
-                param.Add("@CopyBarcode", copyBarcode);
-                cmd.Connection.Execute(storedProcedure, param, commandType: CommandType.StoredProcedure, transaction: cmd.Transaction);
-            }
-        }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using GTL.Application.Interfaces.UnitOfWork;
 using GTL.Domain.Entities;
 
 namespace GTL.Application.Interfaces.Repositories
 {
-    public interface ILoanRepository
+    public interface ILoanerCardRepository
     {
-        int Add(Loan loan);
+        LoanerCard GetByBarcode(int barcode);
 
-        int GetNoOfActiveLoans(int barcode);
+        void DeactiveLoanerCard(int barcode);
     }
 }
