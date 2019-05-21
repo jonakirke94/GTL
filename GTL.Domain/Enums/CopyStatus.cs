@@ -11,5 +11,6 @@ namespace GTL.Domain.Enums
         BROKEN,
         FORBIDDEN,
         DELETED,
+        LEND
     }
 }
