@@ -19,7 +19,7 @@ namespace GTL.EndToEndTests
             {
                 Thread.Sleep(time);
             }
-            catch (ThreadInterruptedException)
+            catch (ThreadInterruptedException e)
             {
             }
         }

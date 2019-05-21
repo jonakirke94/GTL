@@ -16,6 +16,12 @@ namespace GTL.EndToEndTests
         {
             try
             {
+                // Arrange
+                if (AuthenticationHelpers.IsLoggedIn(_driver))
+                {
+                    AuthenticationHelpers.Logout(_driver);
+                }
+
                 // Act
                 AuthenticationHelpers.LoginAsTestUser(_driver);
 
@@ -35,7 +41,10 @@ namespace GTL.EndToEndTests
             try
             {
                 // Arrange
-                AuthenticationHelpers.LoginAsTestUser(_driver);
+                if (!AuthenticationHelpers.IsLoggedIn(_driver))
+                {
+                    AuthenticationHelpers.LoginAsTestUser(_driver);
+                }
 
                 // Act
                 AuthenticationHelpers.Logout(_driver);

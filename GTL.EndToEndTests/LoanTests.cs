@@ -36,6 +36,9 @@ namespace GTL.EndToEndTests
             {
                 _driver.Close();
             }
+
+
+
         }
 
     }
