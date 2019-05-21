@@ -11,8 +11,8 @@ after_failure:
   - chmod +x send.sh
   - ./send.sh failure $WEBHOOK_URL
 before_script:
-- wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip
-- unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+- wget http://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_win32.zip
+- unzip chromedriver_win32.zip -d /home/travis/virtualenv/python2.7.12/bin/
 - export CHROME_BIN=chromium-browser
 script:
  - dotnet restore
