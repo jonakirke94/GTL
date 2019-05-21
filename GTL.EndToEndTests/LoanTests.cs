@@ -45,7 +45,7 @@ namespace GTL.EndToEndTests
             finally
             {
                 _driver.Close();
-                new ScriptRunner().ResetDatabase();
+                ScriptRunner.ResetDatabase();
             }
         }
 

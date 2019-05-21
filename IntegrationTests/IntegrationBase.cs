@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using TestDatabaseManager;
 
 namespace IntegrationTests
 {
@@ -29,36 +29,13 @@ namespace IntegrationTests
             _mediator = server.Host.Services.GetRequiredService<IMediator>();
 
             _context = server.Host.Services.GetRequiredService<IGTLContext>();
-
-            ResetDatabase();
         }
 
         public void Dispose()
         {
-            ResetDatabase();
+            ScriptRunner.ResetDatabase();
         }
 
-        public void ResetDatabase()
-        {
-            RunScript("ResetDatabase");        
-        }
 
-        public void SeedDatabase()
-        {
-            RunScript("SeedDatabase");
-        }
-
-        public void RunScript(string fileName)
-        {
-            var script = File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/scripts/" + fileName + ".sql");
-
-            using (var cmd = _context.CreateCommand())
-            {
-                foreach (var sqlBatch in script.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    cmd.Connection.Execute(sqlBatch);
-                }
-            }
-        }
     }
 }

@@ -11,30 +11,29 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace TestDatabaseManager
 {
-    public class ScriptRunner
+    public static class ScriptRunner
     {
-        private readonly string connectionString = "Data Source=gtl.cebo28xw992s.eu-west-1.rds.amazonaws.com,1433;Initial Catalog=GTL_TEST; User ID=master;Password=hejhej123;";
+        private static readonly string connectionString = "Data Source=gtl.cebo28xw992s.eu-west-1.rds.amazonaws.com,1433;Initial Catalog=GTL_TEST; User ID=master;Password=hejhej123;";
 
-        public void ResetDatabase()
+        public static void ResetDatabase()
         {
             ClearDatabase();
             SeedDatabase();
         }
 
-        private void ClearDatabase()
+        private static void ClearDatabase()
         {
             RunScript("ClearDatabase");
         }
 
-        private void SeedDatabase()
+        private static void SeedDatabase()
         {
             RunScript("SeedDatabase");
         }
 
-        private void RunScript(string fileName)
+        private static void RunScript(string fileName)
         {
             var script = File.ReadAllText(Directory.GetCurrentDirectory() + "/scripts/" + fileName + ".sql");
 
