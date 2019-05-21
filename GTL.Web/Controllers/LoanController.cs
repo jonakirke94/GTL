@@ -31,7 +31,7 @@ namespace GTL.Web.Controllers
                 var response = await Mediator.Send(command);
                 if (response.HasRequestError)
                 {
-                    ModelState.AddModelError("", response.ErrorMessage);
+                    ViewBag.Status = new Status { Type = Type.danger, Message = response.ErrorMessage };
                     return View();
                 }
             }
