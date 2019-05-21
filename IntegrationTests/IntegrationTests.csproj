@@ -7,17 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings.test.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.test.json">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
@@ -30,20 +19,23 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GTL.Web\GTL.Web.csproj" />
-    <ProjectReference Include="..\TestDatabaseManager\TestDatabaseManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="scripts\ResetDatabase.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="scripts\SeedDatabase.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
