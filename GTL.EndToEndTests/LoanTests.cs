@@ -30,7 +30,7 @@ namespace GTL.EndToEndTests
                 new SelectElement(_driver.FindElement(By.Id("LibraryName"))).SelectByText("Georgia Tech Library");
                 _driver.FindElement(By.Id("Create")).Click();
 
-                bool isCreateLoanConfirmationShown = ElementHelpers.IsElementPresent(_driver, By.CssSelector("alert alert-success alert-dismissible"));
+                bool isCreateLoanConfirmationShown = ElementHelpers.IsElementPresent(_driver, By.ClassName("alert-success"));
 
                 // Assert
                 Assert.True(isCreateLoanConfirmationShown);
