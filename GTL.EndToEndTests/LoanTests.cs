@@ -18,7 +18,10 @@ namespace GTL.EndToEndTests
             try
             {
                 // Arrange
-                AuthenticationHelpers.LoginAsTestUser(_driver);
+                if (!AuthenticationHelpers.IsLoggedIn(_driver))
+                {
+                    AuthenticationHelpers.LoginAsTestUser(_driver);
+                }
 
                 // Act
                 _driver.FindElement(By.PartialLinkText("New Loan")).Click();
@@ -27,7 +30,7 @@ namespace GTL.EndToEndTests
                 new SelectElement(_driver.FindElement(By.Id("LibraryName"))).SelectByText("Georgia Tech Library");
                 _driver.FindElement(By.Id("Create")).Click();
 
-                bool isCreateLoanConfirmationShown = ElementHelpers.IsElementPresent(_driver, By.ClassName("alert alert-success alert-dismissible"));
+                bool isCreateLoanConfirmationShown = ElementHelpers.IsElementPresent(_driver, By.CssSelector("alert alert-success alert-dismissible"));
 
                 // Assert
                 Assert.True(isCreateLoanConfirmationShown);

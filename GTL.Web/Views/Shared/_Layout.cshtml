@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GTL.Web</title>
-    
+
     <link rel="stylesheet" type="text/css" href="~/css/default.css" />
     <link rel="stylesheet" type="text/css" href="~/css/component.css" />
 
@@ -42,7 +42,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Loan" asp-action="CreateLoan">New Loan +</a>
+                                <a class="nav-link text-dark" id="NewLoan" asp-controller="Loan" asp-action="CreateLoan">New Loan +</a>
                             </li>
 
                             <li class="nav-item">
@@ -62,7 +62,7 @@
     </header>
     <div class="container full-h">
         <partial name="_CookieConsentPartial" />
-            @RenderBody()
+        @RenderBody()
     </div>
 
     <footer class="border-top footer text-muted">
@@ -88,7 +88,7 @@
                 crossorigin="anonymous"
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
         </script>
-        
+
 
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
