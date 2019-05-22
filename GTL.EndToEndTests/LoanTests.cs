@@ -26,11 +26,11 @@ namespace GTL.EndToEndTests
                 bool isCreateLoanConfirmationShown = false;
 
                 // Act
-                _driver.FindElement(By.PartialLinkText("New Loan")).Click();
-                _driver.FindElement(By.Id("LoanerCardBarcode")).SendKeys("10000");
-                _driver.FindElement(By.Id("CopyBarcode")).SendKeys("100001");
-                new SelectElement(_driver.FindElement(By.Id("LibraryName"))).SelectByText("Georgia Tech Library");
-                _driver.FindElement(By.Id("Create")).Click();
+                ElementHelpers.ClickElement(_driver, By.PartialLinkText("New Loan"));
+                ElementHelpers.SendKeys(_driver, By.Id("LoanerCardBarcode"), "10000");
+                ElementHelpers.SendKeys(_driver, By.Id("CopyBarcode"), "100001");
+                ElementHelpers.SelectElementByText(_driver, By.Id("LibraryName"), "Georgia Tech Library");
+                ElementHelpers.ClickElement(_driver, By.Id("Create"));
 
                 isCreateLoanConfirmationShown = ElementHelpers.IsElementPresent(_driver, By.ClassName("alert-success"));
 
@@ -39,8 +39,8 @@ namespace GTL.EndToEndTests
             }
             finally
             {
-                _driver.Close();
-                ScriptRunner.ResetDatabase();
+                DriverHelpers.CleanUpTest(_driver);
+
             }
         }
 

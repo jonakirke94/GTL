@@ -30,7 +30,7 @@ namespace GTL.EndToEndTests
             }
             finally
             {
-                _driver.Close();
+                DriverHelpers.CleanUpTest(_driver);
             }
 
         }
@@ -54,7 +54,7 @@ namespace GTL.EndToEndTests
             }
             finally
             {
-                _driver.Close();
+                DriverHelpers.CleanUpTest(_driver);
             }
         }
     }

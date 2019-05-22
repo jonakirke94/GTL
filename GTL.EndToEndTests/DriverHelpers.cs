@@ -6,6 +6,7 @@ using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using TestDatabaseManager;
 
 namespace GTL.EndToEndTests
 {
@@ -17,7 +18,7 @@ namespace GTL.EndToEndTests
         public static IWebDriver GetChromeDriver()
         {
             IWebDriver driver = new ChromeDriver(GetDriverPath());
-            NavigateToStartPage(driver);
+            NavigationHelpers.NavigateToStartPage(driver);
             return driver;
         }
 
@@ -36,10 +37,10 @@ namespace GTL.EndToEndTests
             return null;
         }
 
-
-        public static void NavigateToStartPage(IWebDriver driver)
+        internal static void CleanUpTest(IWebDriver driver)
         {
-            driver.Navigate().GoToUrl(BaseURL);
+            driver.Close();
+            ScriptRunner.ResetDatabase();
         }
     }
 }

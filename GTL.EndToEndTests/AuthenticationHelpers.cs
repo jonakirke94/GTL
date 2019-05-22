@@ -10,32 +10,22 @@ namespace GTL.EndToEndTests
 
         public static bool IsLoggedIn(IWebDriver driver)
         {
-            try
-            {
-                return driver.FindElement(By.LinkText("Logout")).Displayed;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            return ElementHelpers.IsElementPresent(driver, By.LinkText("Logout"));
         }
 
         public static void LoginAsTestUser(IWebDriver driver)
         {
-            driver.FindElement(By.LinkText("Login")).Click();
-            driver.FindElement(By.Id("Email")).Clear();
-            driver.FindElement(By.Id("Email")).SendKeys("test@gtl.dk");
-            driver.FindElement(By.Id("Password")).Clear();
-            driver.FindElement(By.Id("Password")).SendKeys("12345678");
-            driver.FindElement(By.Id("login-button")).Click();
+            ElementHelpers.ClickElement(driver, By.LinkText("Login"));
+            ElementHelpers.ClearElement(driver, By.Id("Email"));
+            ElementHelpers.SendKeys(driver, By.Id("Email"), "test@gtl.dk");
+            ElementHelpers.ClearElement(driver, By.Id("Password"));
+            ElementHelpers.SendKeys(driver, By.Id("Password"), "12345678");
+            ElementHelpers.ClickElement(driver, By.LinkText("login-button"));
         }
 
         public static void Logout(IWebDriver driver)
         {
-            if (ElementHelpers.IsElementPresent(driver, By.LinkText("Logout")))
-            {
-                driver.FindElement(By.LinkText("Logout")).Click();
-            }
+            ElementHelpers.ClickElement(driver, By.LinkText("Logout"));
         }
 
     }
