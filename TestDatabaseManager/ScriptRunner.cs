@@ -15,7 +15,7 @@ namespace TestDatabaseManager
 {
     public static class ScriptRunner
     {
-        private static readonly string connectionString = "Data Source=gtl.cebo28xw992s.eu-west-1.rds.amazonaws.com,1433;Initial Catalog=GTL_TEST; User ID=master;Password=hejhej123;";
+        private static readonly string connectionString = Settings.Default.GTL_TEST;
 
         public static void ResetDatabase()
         {

@@ -32,7 +32,10 @@ namespace GTL.EndToEndTests
 
         public static void Logout(IWebDriver driver)
         {
-            driver.FindElement(By.LinkText("Logout")).Click();
+            if (ElementHelpers.IsElementPresent(driver, By.LinkText("Logout")))
+            {
+                driver.FindElement(By.LinkText("Logout")).Click();
+            }
         }
 
     }

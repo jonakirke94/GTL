@@ -12,11 +12,6 @@ namespace GTL.EndToEndTests
     {
         private readonly IWebDriver _driver = DriverHelpers.GetChromeDriver();
 
-
-        public LoanTests()
-        {
-        }
-
         [Fact]
         public void CanCreateLoanTest()
         {
