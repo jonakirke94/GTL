@@ -4,6 +4,7 @@ using Dapper;
 using GTL.Application.Features.Loans.Commands.CreateLoan;
 using GTL.Domain.Entities;
 using Xunit;
+using TestDatabaseManager;
 
 namespace IntegrationTests
 {
@@ -11,7 +12,7 @@ namespace IntegrationTests
     {
         public RestrictedLoanMaterialTests()
         {
-            SeedDatabase();
+            ScriptRunner.ResetDatabase();
         }
 
         [Fact(DisplayName = "CanLoanCopyWithAvailableStatus")]
@@ -20,9 +21,9 @@ namespace IntegrationTests
             // Arrange
             var command = new CreateLoanCommand
             {
-               LoanerCardBarcode  = 10000,
-               CopyBarcode = 100001,
-               LibraryName = "Georgia Tech Library"
+                LoanerCardBarcode = 10000,
+                CopyBarcode = 100001,
+                LibraryName = "Georgia Tech Library"
             };
 
             // Act
