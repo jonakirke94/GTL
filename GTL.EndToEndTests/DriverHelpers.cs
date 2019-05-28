@@ -13,7 +13,7 @@ namespace GTL.EndToEndTests
     public static class DriverHelpers
     {
 
-        public static string BaseURL { get; private set; } = "http://gtl.vefi.dk";
+        public static string BaseURL { get; private set; } = "http://gtl.krabbee.dk";
 
         public static IWebDriver GetChromeDriver()
         {

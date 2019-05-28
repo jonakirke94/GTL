@@ -20,7 +20,7 @@ namespace GTL.EndToEndTests
             ElementHelpers.SendKeys(driver, By.Id("Email"), "test@gtl.dk");
             ElementHelpers.ClearElement(driver, By.Id("Password"));
             ElementHelpers.SendKeys(driver, By.Id("Password"), "12345678");
-            ElementHelpers.ClickElement(driver, By.LinkText("login-button"));
+            ElementHelpers.ClickElement(driver, By.Id("login-button"));
         }
 
         public static void Logout(IWebDriver driver)
